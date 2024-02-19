@@ -1,7 +1,4 @@
-import {
-  integer, primaryKey, text,
-  timestamp
-} from "drizzle-orm/pg-core";
+import { integer, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
 import { createPgTable } from "./_table";
 

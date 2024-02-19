@@ -1,9 +1,9 @@
-
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
+
+import { connectionString } from "./config";
 import * as auth from "./schema/auth";
 import * as post from "./schema/post";
-import { connectionString } from "./config";
 
 export const schema = { ...auth, ...post };
 

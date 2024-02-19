@@ -5,6 +5,7 @@ const config = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
+    "prettier",
   ],
   env: {
     es2022: true,
@@ -12,8 +13,9 @@ const config = {
   },
   parser: "@typescript-eslint/parser",
   parserOptions: { project: true },
-  plugins: ["@typescript-eslint", "import"],
+  plugins: ["@typescript-eslint", "import", "prettier"],
   rules: {
+    "prettier/prettier": "error",
     "turbo/no-undeclared-env-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",

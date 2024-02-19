@@ -1,4 +1,5 @@
 import type { Config } from "drizzle-kit";
+
 import { connectionString } from "./src/config";
 
 export default {

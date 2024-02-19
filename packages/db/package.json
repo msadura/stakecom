@@ -1,5 +1,5 @@
 {
-  "name": "@acme/db",
+  "name": "@comstaked/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -23,9 +23,9 @@
     "pg-native": "^3.0.1"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@comstaked/eslint-config": "workspace:^0.2.0",
+    "@comstaked/prettier-config": "workspace:^0.1.0",
+    "@comstaked/tsconfig": "workspace:^0.1.0",
     "@types/pg": "^8.11.0",
     "dotenv-cli": "^7.3.0",
     "drizzle-kit": "^0.20.14",
@@ -36,8 +36,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base"
+      "@comstaked/eslint-config/base"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@comstaked/prettier-config"
 }

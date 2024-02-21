@@ -30,6 +30,9 @@ const config = {
       { checksVoidReturn: { attributes: false } },
     ],
     "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "jsx-a11y/heading-has-content": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
   },
   ignorePatterns: [
     "**/*.config.js",

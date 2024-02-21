@@ -3,15 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./button": "./src/button.tsx",
-    "./form": "./src/form.tsx",
-    "./input": "./src/input.tsx",
-    "./label": "./src/label.tsx",
-    "./theme": "./src/theme.tsx",
-    "./toast": "./src/toast.tsx"
-  },
+  "main": "./index.ts",
   "license": "MIT",
   "scripts": {
     "add": "pnpm dlx shadcn-ui add",

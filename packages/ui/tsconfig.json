@@ -2,10 +2,6 @@
   "extends": "@comstaked/tsconfig/base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
-    "paths": {
-      "@components/*": ["./src/*"],
-      "@utils": ["./src/utils"],
-    }
   },
   "include": [
     "*.ts",

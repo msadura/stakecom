@@ -2,14 +2,17 @@ import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
-import { cn } from "@comstaked/ui";
-import { ThemeProvider, ThemeToggle } from "@comstaked/ui/theme";
-import { Toaster } from "@comstaked/ui/toast";
+import { cn, ThemeProvider, ThemeToggle, Toaster, Toggle } from "@comstaked/ui";
 
 import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
+
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+import { Providers } from "~/app/_components/Providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -50,11 +53,15 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
+          <Providers>
+            <Toggle />
+            <TRPCReactProvider>{props.children}</TRPCReactProvider>
+            <div className="absolute bottom-4 right-4">
+              <ConnectButton />
+              <ThemeToggle />
+            </div>
+            <Toaster />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

@@ -9,7 +9,9 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import { Providers } from "~/components/Providers";
 import { SiteHeader } from "~/components/site-header";
+import { SiteFooter } from "~/components/SiteFooter";
 import { ThemeProvider } from "~/components/Theme";
+import { Box } from "~/components/ui/box";
 import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/lib/utils";
 
@@ -53,10 +55,12 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <Providers>
-            <SiteHeader />
-            {props.children}
-
-            <Toaster />
+            <Box className="min-h-screen flex-col">
+              <SiteHeader />
+              <Box className="flex-1 flex-col">{props.children}</Box>
+              <SiteFooter />
+              <Toaster />
+            </Box>
           </Providers>
         </ThemeProvider>
       </body>

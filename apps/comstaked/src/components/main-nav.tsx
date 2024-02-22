@@ -8,7 +8,7 @@ import { ModeToggle } from "~/components/mode-toggle";
 
 export function MainNav() {
   return (
-    <div className="mr-4 flex flex-1 flex-wrap">
+    <div className="flex flex-1 flex-wrap">
       <Link href="/" className="mr-6 flex max-h-[40px] items-center space-x-1">
         <Image
           src="/stake_logo.png"

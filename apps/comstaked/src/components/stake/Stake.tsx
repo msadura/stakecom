@@ -1,6 +1,5 @@
 import { ComLogo } from "~/components/ComLogo";
-import { Deposit } from "~/components/stake/Deposit";
-import { DepositButton } from "~/components/stake/DepositButton";
+import { DepositCard } from "~/components/stake/DepositCard";
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
@@ -19,14 +18,7 @@ export function Stake() {
         <TabsTrigger value="password">Withdraw</TabsTrigger>
       </TabsList>
       <TabsContent value="account">
-        <Card>
-          <CardContent className="justify-start space-y-2">
-            <Deposit />
-          </CardContent>
-          <CardFooter>
-            <DepositButton />
-          </CardFooter>
-        </Card>
+        <DepositCard />
       </TabsContent>
       <TabsContent value="password">
         <Card>

@@ -68,7 +68,7 @@ export function DepositCard() {
         <div className="pt-6">
           <Box justify="between">
             <Label htmlFor="name" className="mb-1 text-muted-foreground">
-              Deposit wCom
+              Deposit wCOM
             </Label>
             <Label htmlFor="name" className="text-muted-foreground">
               Balance:{" "}

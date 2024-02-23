@@ -26,6 +26,7 @@ export function useWCom() {
 
   const balance = {
     value: result.data?.[0].result || 0n,
+    isLoaded: !!result.data?.[0],
     formatted: result.data?.[0].result
       ? formatUnits(result.data?.[0].result, WCOM_DECIMALS)
       : "0",

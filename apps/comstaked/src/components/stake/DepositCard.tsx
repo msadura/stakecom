@@ -47,6 +47,10 @@ export function DepositCard() {
   }, [balance.value]);
 
   const error = useMemo(() => {
+    if (!balance.isLoaded) {
+      return "";
+    }
+
     if (value < toAmount(MIN_STAKE, WCOM_DECIMALS)) {
       return "Stake amount too low";
     }
@@ -56,7 +60,7 @@ export function DepositCard() {
     }
 
     return "";
-  }, [balance.value, value]);
+  }, [balance.isLoaded, balance.value, value]);
 
   return (
     <Card>

@@ -1,4 +1,5 @@
 import { ComLogo } from "~/components/ComLogo";
+import { Deposit } from "~/components/stake/Deposit";
 import { DepositButton } from "~/components/stake/DepositButton";
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
@@ -9,7 +10,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 export function Stake() {
   return (
-    <Tabs defaultValue="account" className="w-[400px] text-left">
+    <Tabs
+      defaultValue="account"
+      className="flex w-full max-w-[400px] flex-col self-stretch text-left"
+    >
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="account">Stake</TabsTrigger>
         <TabsTrigger value="password">Withdraw</TabsTrigger>
@@ -17,33 +21,7 @@ export function Stake() {
       <TabsContent value="account">
         <Card>
           <CardContent className="justify-start space-y-2">
-            <div className="space-y-1 pt-6">
-              <Box justify="between">
-                <Label htmlFor="name" className="text-muted-foreground">
-                  Deposit wCom
-                </Label>
-                <Label htmlFor="name" className="text-muted-foreground">
-                  Balance:{" "}
-                  <span className="font-bold text-foreground">0.0</span>
-                </Label>
-              </Box>
-              <Box className="relative" align="center">
-                <Box className="absolute left-2.5">
-                  <ComLogo size={24} />
-                </Box>
-                <Input
-                  id="amount"
-                  defaultValue="10"
-                  className="pl-[40px] pr-[60px]"
-                />
-                <Button
-                  variant="muted"
-                  className="absolute right-[0px] max-w-[60px] rounded-l-none py-1 text-xs"
-                >
-                  Max
-                </Button>
-              </Box>
-            </div>
+            <Deposit />
           </CardContent>
           <CardFooter>
             <DepositButton />

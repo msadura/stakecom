@@ -4,7 +4,7 @@ import { Box } from "~/components/ui/box";
 
 export default async function HomePage() {
   return (
-    <main className="container py-12">
+    <main className="container py-6 md:py-12">
       <div className="flex flex-col items-center justify-center text-center ">
         <Box align="center" className="flex-wrap justify-center gap-1">
           <ComLogo size={45} />
@@ -16,7 +16,7 @@ export default async function HomePage() {
           Stake your wCom tokens and enjoy native yield!
         </h2>
 
-        <Box className="mt-12">
+        <Box className="mt-6 flex-1 justify-center self-stretch md:mt-12">
           <Stake />
         </Box>
       </div>

@@ -68,7 +68,9 @@ export const DepositButton = () => {
       size="lg"
       disabled={isLoading || buttonConfig?.disabled}
     >
-      {isLoading && <Loader2 className="mr-1 animate-spin" />}
+      {isLoading && (
+        <Loader2 className="mr-1 animate-spin" width={50} height={50} />
+      )}
       {buttonConfig?.label}
     </Button>
   );

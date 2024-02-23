@@ -1,3 +1,5 @@
+import { ComLogo } from "~/components/ComLogo";
+import { DepositButton } from "~/components/stake/DepositButton";
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
@@ -27,7 +29,7 @@ export function Stake() {
               </Box>
               <Box className="relative" align="center">
                 <Box className="absolute left-2.5">
-                  <img src="/commune.svg" alt="wCom" width="24" height="24" />
+                  <ComLogo size={24} />
                 </Box>
                 <Input
                   id="amount"
@@ -44,9 +46,7 @@ export function Stake() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="flex-1" variant="warning" size="lg">
-              Connect wallet
-            </Button>
+            <DepositButton />
           </CardFooter>
         </Card>
       </TabsContent>
@@ -65,7 +65,7 @@ export function Stake() {
               </Box>
               <Box className="relative" align="center">
                 <Box className="absolute left-2.5">
-                  <img src="/commune.svg" alt="wCom" width="24" height="24" />
+                  <ComLogo size={24} />
                 </Box>
                 <Input
                   id="amount"

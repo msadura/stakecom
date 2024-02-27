@@ -43,7 +43,7 @@
     "superjson": "2.2.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "2.x",
+    "viem": "^2.7.15",
     "wagmi": "^2.5.7",
     "zod": "^3.22.4"
   },

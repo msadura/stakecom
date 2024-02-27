@@ -1,0 +1,33 @@
+{
+  "name": "@comstaked/core",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@comstaked/eslint-config": "workspace:^0.2.0",
+    "@comstaked/prettier-config": "workspace:^0.1.0",
+    "@comstaked/tsconfig": "workspace:^0.1.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@comstaked/eslint-config/base"
+    ]
+  },
+  "prettier": "@comstaked/prettier-config",
+  "dependencies": {
+    "viem": "^2.7.15"
+  }
+}

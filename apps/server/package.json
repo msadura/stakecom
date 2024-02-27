@@ -1,15 +1,21 @@
 {
-  "name": "server",
-  "version": "1.0.50",
+  "name": "@comstaked/server",
+  "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --env-file=../../.env --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "elysia": "latest",
+    "@comstaked/db": "^0.1.0",
+    "@comstaked/commune-sdk": "^0.1.0",
+    "@comstaked/core": "^0.1.0"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "@comstaked/eslint-config": "^0.2.0",
+    "@comstaked/prettier-config": "^0.1.0",
+    "@comstaked/tsconfig": "^0.1.0"
   },
   "module": "src/index.js"
 }

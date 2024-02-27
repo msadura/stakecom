@@ -4,10 +4,9 @@ import { useCallback, useMemo, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { switchChain } from "@wagmi/core";
 import { Loader2 } from "lucide-react";
-import { useAccount } from "wagmi";
+import { useAccount, useConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 
-import { wagmiConfig } from "~/components/Providers";
 import { Button } from "~/components/ui/button";
 
 interface ButtonConfig {
@@ -19,6 +18,7 @@ interface ButtonConfig {
 }
 
 export const WithdrawButton = () => {
+  const wagmiConfig = useConfig();
   const { openConnectModal } = useConnectModal();
   const { isConnected, chainId } = useAccount();
   const [isLoading, setIsLoading] = useState(false);

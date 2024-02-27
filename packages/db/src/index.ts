@@ -3,9 +3,9 @@ import postgres from "postgres";
 
 import { connectionString } from "./config";
 import * as auth from "./schema/auth";
-import * as post from "./schema/post";
+import * as stake from "./schema/stake";
 
-export const schema = { ...auth, ...post };
+export const schema = { ...auth, ...stake };
 
 export { createPgTable as tableCreator } from "./schema/_table";
 

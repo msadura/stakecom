@@ -61,6 +61,8 @@ export const stakeEvent = createPgTable(
     block: integer("block").notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }),
+    evmTxHash: varchar("evm_tx_hash", { length: 256 }).unique(),
+    communeTxHash: varchar("commune_tx_hash", { length: 256 }).unique(),
   },
   (t) => ({
     unq: unique().on(t.evmAddress, t.eventType, t.block),

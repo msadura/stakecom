@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   bigint,
   boolean,
@@ -32,6 +33,10 @@ export const staker = createPgTable(
     evmAddressIdx: index("evm_address_idx").on(t.evmAddress),
   }),
 );
+
+export const stakerRelations = relations(staker, ({ many }) => ({
+  posts: many(stakeEvent),
+}));
 
 export const eventTypeEnum = pgEnum("event_type", [
   "stake",
@@ -70,3 +75,10 @@ export const stakeEvent = createPgTable(
     blockAddressIdx: index("block_address_idx").on(t.block, t.evmAddress),
   }),
 );
+
+export const stakeEventRelations = relations(stakeEvent, ({ one }) => ({
+  staker: one(staker, {
+    fields: [stakeEvent.evmAddress],
+    references: [staker.evmAddress],
+  }),
+}));

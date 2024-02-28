@@ -29,6 +29,8 @@
   "prettier": "@comstaked/prettier-config",
   "dependencies": {
     "@comstaked/db": "workspace:^0.1.0",
+    "@polkadot/keyring": "^12.6.2",
+    "@polkadot/util-crypto": "^12.6.2",
     "viem": "^2.7.15",
     "zod": "^3.22.4"
   }

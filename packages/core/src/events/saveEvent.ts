@@ -10,5 +10,5 @@ export async function saveEvent(input: NewStakeEvent) {
     .onConflictDoNothing()
     .returning();
 
-  return event;
+  return event[0];
 }

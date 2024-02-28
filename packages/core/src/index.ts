@@ -4,3 +4,4 @@ export * from "./client";
 export * from "./abi/index";
 export * from "./constants";
 export * from "./evm/index";
+export * from "./wallet";

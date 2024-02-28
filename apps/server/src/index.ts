@@ -1,8 +1,8 @@
 import { Elysia } from "elysia";
-import { loadStakeEvents } from "@comstaked/core";
+import { generateCommuneWallet, loadStakeEvents } from "@comstaked/core";
 
 const app = new Elysia().get("/", () => "Hello Elysia").get("/events", async () => {
- const events = await loadStakeEvents();
+ const events =  generateCommuneWallet();
  return events;
 }).listen(3535);
 

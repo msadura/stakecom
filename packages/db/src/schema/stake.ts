@@ -15,19 +15,19 @@ import { createPgTable } from "./_table";
 export const staker = createPgTable(
   "staker",
   {
-    evmAddress: varchar("address", { length: 256 }).notNull().primaryKey(),
+    evmAddress: varchar("evm_address", { length: 256 }).notNull().primaryKey(),
     ss58Address: varchar("ss58_address", { length: 256 }).notNull().unique(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }),
     // currently staked validator
-    validator: varchar("validator", { length: 256 }).notNull(),
+    validator: varchar("validator", { length: 256 }),
     // current native stake
-    stake: varchar("stake", { length: 256 }).notNull(),
+    stake: varchar("stake", { length: 256 }),
     // initially deposited stake
-    deposit: varchar("deposit", { length: 256 }).notNull(),
+    deposit: varchar("deposit", { length: 256 }),
     // current native balance (not staked)
-    balance: varchar("balance", { length: 256 }).notNull(),
-    phraseEncrypted: varchar("phrase_encrypted", { length: 256 }).notNull(),
+    balance: varchar("balance", { length: 256 }),
+    mnemonicEncrypted: varchar("phrase_encrypted", { length: 256 }).notNull(),
   },
   (t) => ({
     evmAddressIdx: index("evm_address_idx").on(t.evmAddress),

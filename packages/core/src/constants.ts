@@ -1,8 +1,9 @@
 import type { Address } from "viem";
 import { blastSepolia, mainnet } from "viem/chains";
 
-console.log("🔥p", process.env);
-const chainId = process.env.USE_TESTNET ? blastSepolia.id : mainnet.id;
+export const chain =
+  process.env.USE_TESTNET === "true" ? blastSepolia : mainnet;
+const chainId = chain.id;
 
 interface CoreContract {
   STAKE: Address;
@@ -18,8 +19,8 @@ export const contracts: Record<168587773 | 1, CoreContract> = {
   },
   [mainnet.id]: {
     STAKE: "0x",
-    BRIDGE: "0x",
-    WCOMAI: "0x",
+    BRIDGE: "0xabe8dd90DADB368434b4a7a38Adb1F754a34f3A4",
+    WCOMAI: "0xc78B628b060258300218740B1A7a5b3c82b3bd9f",
   },
 };
 

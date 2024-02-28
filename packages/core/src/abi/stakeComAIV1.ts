@@ -1,4 +1,4 @@
-export const stakeComAIV1 = [
+export const stakeComAIV1Abi = [
   {
     inputs: [
       {

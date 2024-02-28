@@ -1,7 +1,6 @@
 import { createPublicClient, http } from "viem";
-import { blastSepolia, mainnet } from "viem/chains";
 
-const chain = process.env.USE_TESTNET ? blastSepolia : mainnet;
+import { chain } from "~/constants";
 
 export const publicClient = createPublicClient({
   chain,

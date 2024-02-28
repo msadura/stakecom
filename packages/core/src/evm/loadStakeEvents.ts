@@ -1,15 +1,14 @@
-import { stakeComAIV1 } from "~/abi";
+import { stakeComAIV1Abi } from "~/abi";
 import { publicClient } from "~/client";
 import { STAKE_ADDRESS } from "~/constants";
 
 export async function loadStakeEvents(fromBlock?: bigint) {
-  const events = await publicClient.getContractEvents({
+  const logs = await publicClient.getContractEvents({
     address: STAKE_ADDRESS,
-    abi: stakeComAIV1,
-    fromBlock: fromBlock,
+    abi: stakeComAIV1Abi,
+    toBlock: "latest",
+    fromBlock: fromBlock || "earliest",
   });
 
-  console.log("🔥 events", events);
-
-  return events;
+  return logs;
 }

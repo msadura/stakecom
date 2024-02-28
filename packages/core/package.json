@@ -28,6 +28,8 @@
   },
   "prettier": "@comstaked/prettier-config",
   "dependencies": {
-    "viem": "^2.7.15"
+    "@comstaked/db": "workspace:^0.1.0",
+    "viem": "^2.7.15",
+    "zod": "^3.22.4"
   }
 }

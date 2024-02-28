@@ -1,7 +1,7 @@
 import {
+  bigint,
   boolean,
   index,
-  integer,
   pgEnum,
   serial,
   timestamp,
@@ -58,7 +58,7 @@ export const stakeEvent = createPgTable(
     fromAmount: varchar("from_amount", { length: 256 }),
     validator: varchar("validator", { length: 256 }),
     unstakeAll: boolean("unstake_all"),
-    block: integer("block").notNull(),
+    block: bigint("bigint", { mode: "bigint" }).notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }),
     evmTxHash: varchar("evm_tx_hash", { length: 256 }).unique(),

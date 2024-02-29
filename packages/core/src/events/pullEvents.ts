@@ -22,8 +22,8 @@ export async function pullEvents() {
         await addEvent(event, "initUnstake");
         return;
       }
-      case "ValidatorChanged": {
-        await addEvent(event, "changeValidator");
+      case "ModuleChanged": {
+        await addEvent(event, "changeModule");
         return;
       }
       default:
@@ -47,7 +47,7 @@ async function addEvent(event: ChainEvent, eventType: StakeEventType) {
     status: "pending",
     amount: "amount" in args ? args.amount?.toString() || "0" : "0",
     fromAmount: "fromAmount" in args ? args.fromAmount?.toString() || "0" : "0",
-    validator: "validator" in args ? args.validator || "" : "",
+    module: "module" in args ? args.module || "" : "",
     unstakeAll: "unstakeAll" in args ? args.unstakeAll || false : false,
     evmTxHash: transactionHash,
   };

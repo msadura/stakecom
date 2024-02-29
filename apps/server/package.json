@@ -7,9 +7,9 @@
   },
   "dependencies": {
     "elysia": "latest",
-    "@comstaked/db": "^0.1.0",
-    "@comstaked/commune-sdk": "^0.1.0",
-    "@comstaked/core": "^0.1.0"
+    "@comstaked/db": "workspace:^0.1.0",
+    "@comstaked/commune-sdk": "workspace:^0.1.0",
+    "@comstaked/core": "workspace:^0.1.0"
   },
   "devDependencies": {
     "bun-types": "latest",

@@ -4,25 +4,27 @@ import { encryptData } from "~/utils/dataEncryption";
 import { generateCommuneWallet } from "~/wallet";
 
 export type NewStaker = typeof schema.staker.$inferInsert;
+export type Staker = typeof schema.staker.$inferSelect;
 
 export interface CommuneWalletEncryptedSeed {
   mnemonicEncrypted: string;
   ss58Address: string;
 }
 
-export async function getCommuneWalletForEvm(
+export async function getStakerWallet(
   evmAddress: string,
   createIfNotExists = false,
-): Promise<CommuneWalletEncryptedSeed> {
-  const existingWallet = await db.query.staker.findFirst({
+): Promise<Staker> {
+  const existingStaker = await db.query.staker.findFirst({
     where: (staker, { eq }) => eq(staker.evmAddress, evmAddress),
   });
 
-  if (existingWallet?.ss58Address) {
-    return {
-      mnemonicEncrypted: existingWallet.mnemonicEncrypted,
-      ss58Address: existingWallet.ss58Address,
-    };
+  if (existingStaker) {
+    if (!existingStaker.ss58Address) {
+      throw new Error("Staker missing commune address");
+    }
+
+    existingStaker;
   }
 
   if (createIfNotExists) {
@@ -39,11 +41,8 @@ export async function getCommuneWalletForEvm(
       .onConflictDoNothing()
       .returning();
 
-    return {
-      ss58Address: newStaker[0]?.ss58Address || ss58Address,
-      mnemonicEncrypted: newStaker[0]?.mnemonicEncrypted || mnemonicEncrypted,
-    };
+    return newStaker[0]!;
   }
 
-  throw new Error("Staker not found or missing commune address");
+  throw new Error(`Staker not found ${evmAddress}`);
 }

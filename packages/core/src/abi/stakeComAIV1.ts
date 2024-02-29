@@ -13,7 +13,7 @@ export const stakeComAIV1Abi = [
       },
       {
         internalType: "string",
-        name: "_defaultValidator",
+        name: "_defaultModule",
         type: "string",
       },
     ],
@@ -38,7 +38,7 @@ export const stakeComAIV1Abi = [
   },
   {
     inputs: [],
-    name: "CustomValidatorNotAllowed",
+    name: "CustomModuleNotAllowed",
     type: "error",
   },
   {
@@ -112,17 +112,17 @@ export const stakeComAIV1Abi = [
   },
   {
     inputs: [],
-    name: "InvalidValidator",
+    name: "InvalidModule",
     type: "error",
   },
   {
     inputs: [],
-    name: "InvalidValidatorChange",
+    name: "InvalidModuleChange",
     type: "error",
   },
   {
     inputs: [],
-    name: "NoStakeToChangeValidator",
+    name: "NoStakeToChangeModule",
     type: "error",
   },
   {
@@ -257,7 +257,7 @@ export const stakeComAIV1Abi = [
       {
         indexed: false,
         internalType: "string",
-        name: "validator",
+        name: "module",
         type: "string",
       },
     ],
@@ -276,11 +276,11 @@ export const stakeComAIV1Abi = [
       {
         indexed: false,
         internalType: "string",
-        name: "newValidator",
+        name: "newModule",
         type: "string",
       },
     ],
-    name: "ValidatorChanged",
+    name: "ModuleChanged",
     type: "event",
   },
   {
@@ -308,7 +308,7 @@ export const stakeComAIV1Abi = [
   },
   {
     inputs: [],
-    name: "allowCustomValidator",
+    name: "allowCustomModule",
     outputs: [
       {
         internalType: "bool",
@@ -336,11 +336,11 @@ export const stakeComAIV1Abi = [
     inputs: [
       {
         internalType: "string",
-        name: "newValidator",
+        name: "newModule",
         type: "string",
       },
     ],
-    name: "changeValidator",
+    name: "changeModule",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -360,7 +360,7 @@ export const stakeComAIV1Abi = [
   },
   {
     inputs: [],
-    name: "defaultValidator",
+    name: "defaultModule",
     outputs: [
       {
         internalType: "string",
@@ -456,7 +456,7 @@ export const stakeComAIV1Abi = [
       },
       {
         internalType: "string",
-        name: "validator",
+        name: "module",
         type: "string",
       },
       {
@@ -492,7 +492,7 @@ export const stakeComAIV1Abi = [
       },
       {
         internalType: "string",
-        name: "validator",
+        name: "module",
         type: "string",
       },
     ],
@@ -553,7 +553,7 @@ export const stakeComAIV1Abi = [
         type: "bool",
       },
     ],
-    name: "updateAllowCustomValidator",
+    name: "updateAllowCustomModule",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -588,11 +588,11 @@ export const stakeComAIV1Abi = [
     inputs: [
       {
         internalType: "string",
-        name: "_newDefaultValidator",
+        name: "_newDefaultModule",
         type: "string",
       },
     ],
-    name: "updateDefaultValidator",
+    name: "updateDefaultModule",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

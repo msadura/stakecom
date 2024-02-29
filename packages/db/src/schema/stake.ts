@@ -19,14 +19,14 @@ export const staker = createPgTable(
     ss58Address: varchar("ss58_address", { length: 256 }).notNull().unique(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }),
-    // currently staked validator
-    validator: varchar("validator", { length: 256 }),
+    // currently staked module / validator
+    module: varchar("module", { length: 256 }),
     // current native stake
     stake: varchar("stake", { length: 256 }),
     // initially deposited stake
-    deposit: varchar("deposit", { length: 256 }),
+    deposit: varchar("deposit", { length: 256 }).default("0"),
     // current native balance (not staked)
-    balance: varchar("balance", { length: 256 }),
+    balance: varchar("balance", { length: 256 }).default("0"),
     mnemonicEncrypted: varchar("phrase_encrypted", { length: 256 }).notNull(),
   },
   (t) => ({
@@ -41,7 +41,7 @@ export const stakerRelations = relations(staker, ({ many }) => ({
 export const eventTypeEnum = pgEnum("event_type", [
   "stake",
   "initUnstake",
-  "changeValidator",
+  "changeModule",
 ]);
 
 export const eventStatusEnum = pgEnum("event_status", [
@@ -61,9 +61,9 @@ export const stakeEvent = createPgTable(
     status: eventStatusEnum("event_status").notNull(),
     amount: varchar("amount", { length: 256 }),
     fromAmount: varchar("from_amount", { length: 256 }),
-    validator: varchar("validator", { length: 256 }),
+    module: varchar("module", { length: 256 }),
     unstakeAll: boolean("unstake_all"),
-    block: bigint("bigint", { mode: "bigint" }).notNull(),
+    block: bigint("block", { mode: "bigint" }).notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }),
     evmTxHash: varchar("evm_tx_hash", { length: 256 }).unique(),

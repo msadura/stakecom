@@ -166,13 +166,13 @@ importers:
   apps/server:
     dependencies:
       '@comstaked/commune-sdk':
-        specifier: ^0.1.0
+        specifier: workspace:^0.1.0
         version: link:../../packages/commune-sdk
       '@comstaked/core':
-        specifier: ^0.1.0
+        specifier: workspace:^0.1.0
         version: link:../../packages/core
       '@comstaked/db':
-        specifier: ^0.1.0
+        specifier: workspace:^0.1.0
         version: link:../../packages/db
       elysia:
         specifier: latest

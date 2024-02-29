@@ -12,6 +12,8 @@ export async function pullEvents() {
     latestBlock ? latestBlock + 1n : undefined,
   );
 
+  console.log("🔥", `Loaded ${events.length} new events from chain`);
+
   for (const event of events) {
     switch (event.eventName) {
       case "Staked": {
@@ -27,7 +29,7 @@ export async function pullEvents() {
         return;
       }
       default:
-        return;
+        continue;
     }
   }
 }

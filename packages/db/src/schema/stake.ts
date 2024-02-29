@@ -3,6 +3,7 @@ import {
   bigint,
   boolean,
   index,
+  integer,
   pgEnum,
   serial,
   timestamp,
@@ -68,6 +69,7 @@ export const stakeEvent = createPgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }),
     evmTxHash: varchar("evm_tx_hash", { length: 256 }).unique(),
     communeTxHash: varchar("commune_tx_hash", { length: 256 }).unique(),
+    retries: integer("retries").default(0),
   },
   (t) => ({
     unq: unique().on(t.evmAddress, t.eventType, t.block),

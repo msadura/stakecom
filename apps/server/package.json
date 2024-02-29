@@ -6,16 +6,17 @@
     "dev": "bun run --env-file=../../.env --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest",
-    "@stakecom/db": "workspace:^0.1.0",
+    "@elysiajs/cron": "^0.8.0",
     "@stakecom/commune-sdk": "workspace:^0.1.0",
-    "@stakecom/core": "workspace:^0.1.0"
+    "@stakecom/core": "workspace:^0.1.0",
+    "@stakecom/db": "workspace:^0.1.0",
+    "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest",
     "@stakecom/eslint-config": "^0.2.0",
     "@stakecom/prettier-config": "^0.1.0",
-    "@stakecom/tsconfig": "^0.1.0"
+    "@stakecom/tsconfig": "^0.1.0",
+    "bun-types": "latest"
   },
   "module": "src/index.js"
 }

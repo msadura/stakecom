@@ -10,7 +10,5 @@ export async function loadStakeEvents(fromBlock?: bigint) {
     fromBlock: fromBlock || "earliest",
   });
 
-  console.log("🔥", logs);
-
   return logs;
 }

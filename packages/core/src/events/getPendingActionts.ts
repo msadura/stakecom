@@ -1,4 +1,4 @@
-import { db } from "@comstaked/db";
+import { db } from "@stakecom/db";
 
 export async function getPendingActions() {
   const actions = await db.query.stakeEvent.findMany({

@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { generateCommuneWallet, getStakerUser, loadStakeEvents, } from "@comstaked/core";
+import { generateCommuneWallet, getStakerUser, loadStakeEvents, } from "@stakecom/core";
 
 const app = new Elysia().get("/", () => "Hello Elysia")
   .get("/events", async () => {

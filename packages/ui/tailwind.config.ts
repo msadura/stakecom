@@ -4,7 +4,7 @@
  */
 import type { Config } from "tailwindcss";
 
-import baseConfig from "@comstaked/tailwind-config/web";
+import baseConfig from "@stakecom/tailwind-config/web";
 
 export default {
   content: ["./src/**/*.tsx"],

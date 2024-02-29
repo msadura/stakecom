@@ -1,5 +1,5 @@
 {
-  "name": "@comstaked/server",
+  "name": "@stakecom/server",
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -7,15 +7,15 @@
   },
   "dependencies": {
     "elysia": "latest",
-    "@comstaked/db": "workspace:^0.1.0",
-    "@comstaked/commune-sdk": "workspace:^0.1.0",
-    "@comstaked/core": "workspace:^0.1.0"
+    "@stakecom/db": "workspace:^0.1.0",
+    "@stakecom/commune-sdk": "workspace:^0.1.0",
+    "@stakecom/core": "workspace:^0.1.0"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "@comstaked/eslint-config": "^0.2.0",
-    "@comstaked/prettier-config": "^0.1.0",
-    "@comstaked/tsconfig": "^0.1.0"
+    "@stakecom/eslint-config": "^0.2.0",
+    "@stakecom/prettier-config": "^0.1.0",
+    "@stakecom/tsconfig": "^0.1.0"
   },
   "module": "src/index.js"
 }

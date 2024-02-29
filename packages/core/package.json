@@ -1,5 +1,5 @@
 {
-  "name": "@comstaked/core",
+  "name": "@stakecom/core",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -14,21 +14,21 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@comstaked/eslint-config": "workspace:^0.2.0",
-    "@comstaked/prettier-config": "workspace:^0.1.0",
-    "@comstaked/tsconfig": "workspace:^0.1.0",
+    "@stakecom/eslint-config": "workspace:^0.2.0",
+    "@stakecom/prettier-config": "workspace:^0.1.0",
+    "@stakecom/tsconfig": "workspace:^0.1.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   },
   "eslintConfig": {
     "extends": [
-      "@comstaked/eslint-config/base"
+      "@stakecom/eslint-config/base"
     ]
   },
-  "prettier": "@comstaked/prettier-config",
+  "prettier": "@stakecom/prettier-config",
   "dependencies": {
-    "@comstaked/db": "workspace:^0.1.0",
+    "@stakecom/db": "workspace:^0.1.0",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
     "viem": "^2.7.15",

@@ -1,4 +1,4 @@
-import { db, schema } from "@comstaked/db";
+import { db, schema } from "@stakecom/db";
 
 export type NewStakeEvent = typeof schema.stakeEvent.$inferInsert;
 export type StakeEventType = NewStakeEvent["eventType"];

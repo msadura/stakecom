@@ -1,1 +1,1 @@
-export { GET, POST } from "@comstaked/auth";
+export { GET, POST } from "@stakecom/auth";

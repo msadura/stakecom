@@ -1,5 +1,5 @@
 {
-  "name": "@comstaked/ui",
+  "name": "@stakecom/ui",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -56,10 +56,10 @@
     "vaul": "^0.9.0"
   },
   "devDependencies": {
-    "@comstaked/eslint-config": "workspace:^0.2.0",
-    "@comstaked/prettier-config": "workspace:^0.1.0",
-    "@comstaked/tailwind-config": "workspace:^0.1.0",
-    "@comstaked/tsconfig": "workspace:^0.1.0",
+    "@stakecom/eslint-config": "workspace:^0.2.0",
+    "@stakecom/prettier-config": "workspace:^0.1.0",
+    "@stakecom/tailwind-config": "workspace:^0.1.0",
+    "@stakecom/tsconfig": "workspace:^0.1.0",
     "@types/react": "^18.2.55",
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
@@ -74,9 +74,9 @@
   },
   "eslintConfig": {
     "extends": [
-      "@comstaked/eslint-config/base",
-      "@comstaked/eslint-config/react"
+      "@stakecom/eslint-config/base",
+      "@stakecom/eslint-config/react"
     ]
   },
-  "prettier": "@comstaked/prettier-config"
+  "prettier": "@stakecom/prettier-config"
 }

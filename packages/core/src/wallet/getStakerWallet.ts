@@ -1,4 +1,4 @@
-import { db, schema } from "@comstaked/db";
+import { db, schema } from "@stakecom/db";
 
 import { encryptData } from "~/utils/dataEncryption";
 import { generateCommuneWallet } from "~/wallet";

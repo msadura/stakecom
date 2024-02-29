@@ -8,7 +8,7 @@ importers:
 
   .:
     devDependencies:
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:tooling/prettier
       '@turbo/gen':
@@ -26,46 +26,34 @@ importers:
 
   apps/server:
     dependencies:
-      '@comstaked/commune-sdk':
+      '@stakecom/commune-sdk':
         specifier: workspace:^0.1.0
         version: link:../../packages/commune-sdk
-      '@comstaked/core':
+      '@stakecom/core':
         specifier: workspace:^0.1.0
         version: link:../../packages/core
-      '@comstaked/db':
+      '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../../packages/db
       elysia:
         specifier: latest
         version: 0.8.17(typescript@5.3.3)
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: ^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: ^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: ^0.1.0
         version: link:../../tooling/typescript
       bun-types:
         specifier: latest
         version: 1.0.29
 
-  apps/stake.com.ai:
+  apps/stakecomai:
     dependencies:
-      '@comstaked/api':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/api
-      '@comstaked/auth':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/auth
-      '@comstaked/db':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/db
-      '@comstaked/validators':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/validators
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.2.19)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
@@ -90,6 +78,18 @@ importers:
       '@rainbow-me/rainbowkit':
         specifier: ^2.0.0
         version: 2.0.0(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.15)(wagmi@2.5.7)
+      '@stakecom/api':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/api
+      '@stakecom/auth':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/auth
+      '@stakecom/db':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/db
+      '@stakecom/validators':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/validators
       '@t3-oss/env-nextjs':
         specifier: ^0.9.2
         version: 0.9.2(typescript@5.3.3)(zod@3.22.4)
@@ -151,16 +151,16 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tailwind-config':
+      '@stakecom/tailwind-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/tailwind
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       '@types/node':
@@ -193,13 +193,13 @@ importers:
 
   packages/api:
     dependencies:
-      '@comstaked/auth':
+      '@stakecom/auth':
         specifier: workspace:^0.1.0
         version: link:../auth
-      '@comstaked/db':
+      '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../db
-      '@comstaked/validators':
+      '@stakecom/validators':
         specifier: workspace:^0.1.0
         version: link:../validators
       '@trpc/server':
@@ -212,13 +212,13 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       eslint:
@@ -236,7 +236,7 @@ importers:
       '@auth/drizzle-adapter':
         specifier: ^0.6.3
         version: 0.6.3
-      '@comstaked/db':
+      '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../db
       '@t3-oss/env-nextjs':
@@ -258,13 +258,13 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       eslint:
@@ -283,13 +283,13 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       '@types/lodash':
@@ -307,15 +307,15 @@ importers:
 
   packages/core:
     dependencies:
-      '@comstaked/db':
-        specifier: workspace:^0.1.0
-        version: link:../db
       '@polkadot/keyring':
         specifier: ^12.6.2
         version: 12.6.2(@polkadot/util-crypto@12.6.2)(@polkadot/util@12.6.2)
       '@polkadot/util-crypto':
         specifier: ^12.6.2
         version: 12.6.2(@polkadot/util@12.6.2)
+      '@stakecom/db':
+        specifier: workspace:^0.1.0
+        version: link:../db
       viem:
         specifier: ^2.7.15
         version: 2.7.15(typescript@5.3.3)(zod@3.22.4)
@@ -323,13 +323,13 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       eslint:
@@ -351,13 +351,13 @@ importers:
         specifier: ^3.4.3
         version: 3.4.3
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       '@types/pg':
@@ -508,16 +508,16 @@ importers:
         specifier: ^0.9.0
         version: 0.9.0(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tailwind-config':
+      '@stakecom/tailwind-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/tailwind
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       '@types/react':
@@ -548,13 +548,13 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       eslint:
@@ -600,10 +600,10 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0(eslint@8.56.0)
     devDependencies:
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../typescript
       '@types/eslint':
@@ -630,7 +630,7 @@ importers:
         specifier: ^0.5.11
         version: 0.5.11(@ianvs/prettier-plugin-sort-imports@4.1.1)(prettier@3.2.5)
     devDependencies:
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../typescript
       typescript:
@@ -652,13 +652,13 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.1)
     devDependencies:
-      '@comstaked/eslint-config':
+      '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../eslint
-      '@comstaked/prettier-config':
+      '@stakecom/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../prettier
-      '@comstaked/tsconfig':
+      '@stakecom/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../typescript
       eslint:

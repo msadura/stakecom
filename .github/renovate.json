@@ -3,7 +3,7 @@
   "extends": ["config:base"],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@comstaked/"],
+      "matchPackagePatterns": ["^@stakecom/"],
       "enabled": false
     }
   ],

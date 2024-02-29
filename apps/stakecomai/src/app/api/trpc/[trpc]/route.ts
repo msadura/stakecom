@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { appRouter, createTRPCContext } from "@comstaked/api";
-import { auth } from "@comstaked/auth";
+import { appRouter, createTRPCContext } from "@stakecom/api";
+import { auth } from "@stakecom/auth";
 
 /**
  * Configure basic CORS headers

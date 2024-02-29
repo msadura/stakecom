@@ -1,5 +1,5 @@
 {
-  "name": "@comstaked/eslint-config",
+  "name": "@stakecom/eslint-config",
   "version": "0.2.0",
   "private": true,
   "license": "MIT",
@@ -27,8 +27,8 @@
     "eslint-plugin-react-hooks": "^4.6.0"
   },
   "devDependencies": {
-    "@comstaked/prettier-config": "workspace:^0.1.0",
-    "@comstaked/tsconfig": "workspace:^0.1.0",
+    "@stakecom/prettier-config": "workspace:^0.1.0",
+    "@stakecom/tsconfig": "workspace:^0.1.0",
     "@types/eslint": "^8.56.2",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
@@ -39,5 +39,5 @@
       "./base.js"
     ]
   },
-  "prettier": "@comstaked/prettier-config"
+  "prettier": "@stakecom/prettier-config"
 }

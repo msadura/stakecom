@@ -24,7 +24,7 @@ export async function getStakerWallet(
       throw new Error("Staker missing commune address");
     }
 
-    existingStaker;
+    return existingStaker;
   }
 
   if (createIfNotExists) {

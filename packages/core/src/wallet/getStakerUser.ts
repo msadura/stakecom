@@ -1,9 +1,12 @@
 import { isAddress } from "viem";
 
 import type { Staker } from "~/wallet/getStakerWallet";
+import { getComAddressSignature } from "~/utils/getComAddressSignature";
 import { getStakerWallet } from "~/wallet/getStakerWallet";
 
-export type StakeUser = Omit<Staker, "mnemonicEncrypted">;
+export type StakeUser = Omit<Staker, "mnemonicEncrypted"> & {
+  addressSignature: string;
+};
 
 export async function getStakerUser(
   evmAddress: string,
@@ -18,5 +21,13 @@ export async function getStakerUser(
     createIfNotExists,
   );
 
-  return stakerUser;
+  const addressSignature = await getComAddressSignature({
+    evmAddress,
+    ss58Address: stakerUser.ss58Address,
+  });
+
+  return {
+    ...stakerUser,
+    addressSignature,
+  };
 }

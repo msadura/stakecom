@@ -27,3 +27,4 @@ export const contracts: Record<168587773 | 1, CoreContract> = {
 export const STAKE_ADDRESS = contracts[chainId].STAKE;
 export const BRIDGE_ADDRESS = contracts[chainId].BRIDGE;
 export const WCOMAI_ADDRESS = contracts[chainId].WCOMAI;
+export const WCOMAI_DECIMALS = 18;

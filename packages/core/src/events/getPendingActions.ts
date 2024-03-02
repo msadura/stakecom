@@ -1,4 +1,11 @@
+import type { schema } from "@stakecom/db";
 import { db } from "@stakecom/db";
+
+import type { Staker } from "~/wallet";
+
+export type PendingAction = typeof schema.stakeEvent.$inferSelect & {
+  staker: Staker;
+};
 
 export async function getPendingActions() {
   const actions = await db.query.stakeEvent.findMany({

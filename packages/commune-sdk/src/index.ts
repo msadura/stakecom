@@ -3,7 +3,16 @@ import { exec } from "child_process";
 import type { CommuneKey, CommuneTxResponse, ObjectResponse } from "./types";
 import { toCamelCaseObj } from "./toCamelCaseObj";
 
-export async function getOrCreateKey({
+export async function getKey(name: string) {
+  try {
+    const key = await execAsync<CommuneKey>(`c key_info ${name}`);
+    return key;
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function getOrAddKey({
   name,
   phrase,
 }: {
@@ -33,7 +42,7 @@ export async function stake({
 }: {
   key: string;
   module: string;
-  amount: number;
+  amount: string;
 }) {
   const res = await execAsync<ObjectResponse>(
     `c stake ${key} ${module} ${amount}`,
@@ -48,7 +57,7 @@ export async function unstake({
 }: {
   key: string;
   module: string;
-  amount?: number;
+  amount?: string;
 }) {
   // If not amount is provided, it will unstake all
   const res = await execAsync<ObjectResponse>(

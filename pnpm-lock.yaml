@@ -199,6 +199,9 @@ importers:
       '@stakecom/auth':
         specifier: workspace:^0.1.0
         version: link:../auth
+      '@stakecom/core':
+        specifier: workspace:^0.1.0
+        version: link:../core
       '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../db

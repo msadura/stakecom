@@ -6,9 +6,11 @@ import type { PendingAction } from "~/events/getPendingActions";
 import { stakeCom } from "~/commune/stakeCom";
 import { formatWCOMAmount } from "~/utils/formatWCOMAmount";
 
-export async function stakeComAction(
-  action: PendingAction,
-): Promise<{ result: CommuneTxResponse | null; canRetry?: boolean }> {
+export async function stakeComAction(action: PendingAction): Promise<{
+  result: CommuneTxResponse | null;
+  canRetry?: boolean;
+  pendingTransfer?: boolean;
+}> {
   console.log("🔥", `Processing stake action ${action.evmAddress}`);
 
   const params = getActionParams(action);

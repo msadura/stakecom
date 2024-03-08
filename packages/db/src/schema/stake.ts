@@ -69,6 +69,7 @@ export const stakeEvent = createPgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }),
     evmTxHash: varchar("evm_tx_hash", { length: 256 }).unique(),
     communeTxHash: varchar("commune_tx_hash", { length: 256 }).unique(),
+    pendingTransfer: boolean("pending_transfer").default(false),
     retries: integer("retries").default(0),
   },
   (t) => ({

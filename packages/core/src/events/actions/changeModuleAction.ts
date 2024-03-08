@@ -4,9 +4,11 @@ import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
 
 import type { PendingAction } from "~/events/getPendingActions";
 
-export function changeModuleAction(
-  action: PendingAction,
-): Promise<{ result: CommuneTxResponse | null; canRetry?: boolean }> {
+export function changeModuleAction(action: PendingAction): Promise<{
+  result: CommuneTxResponse | null;
+  canRetry?: boolean;
+  pendingTransfer?: boolean;
+}> {
   const params = getActionParams(action);
   console.log("🔥", `Processing stake action ${action.evmAddress}`);
 

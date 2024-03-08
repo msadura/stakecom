@@ -30,6 +30,16 @@ export async function actionHandler(action: PendingAction) {
       return true;
     }
 
+    // transfer funds step did not work, retry later
+    if (res.pendingTransfer) {
+      await updateEvent({
+        id: action.id,
+        updateInput: { pendingTransfer: true },
+      });
+
+      return false;
+    }
+
     // wrong data, no need to retry
     if (!res.result && !res.canRetry) {
       await updateEvent({ id: action.id, updateInput: { status: "failed" } });
@@ -52,7 +62,7 @@ async function handleAction(action: PendingAction) {
     case "changeModule":
       return changeModuleAction(action);
     default:
-      return { result: null, canRetry: false };
+      return { result: null, canRetry: false, pendingTransfer: false };
   }
 }
 

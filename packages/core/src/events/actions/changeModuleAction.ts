@@ -7,6 +7,8 @@ export function changeModuleAction(
   action: PendingAction,
 ): Promise<{ result: CommuneTxResponse | null; canRetry?: boolean }> {
   const params = getActionParams(action);
+  console.log("🔥", `Processing stake action ${action.evmAddress}`);
+
   console.log("🔥", params);
 
   throw new Error("Change Module not implemented");

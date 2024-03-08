@@ -35,6 +35,20 @@ export async function getBalance(key: string) {
   }
 }
 
+export async function getStake({
+  key,
+  module,
+}: {
+  key: string;
+  module: string;
+}) {
+  try {
+    return await execAsync<number>(`c get_staketo ${key} ${module}`);
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function stake({
   key,
   module,

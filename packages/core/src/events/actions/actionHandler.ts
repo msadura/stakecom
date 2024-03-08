@@ -3,6 +3,7 @@ import { changeModuleAction } from "~/events/actions/changeModuleAction";
 import { initUnstakeAction } from "~/events/actions/initUnstakeAction";
 import { stakeComAction } from "~/events/actions/stakeComAction";
 import { updateEvent } from "~/events/updateEvent";
+import { refreshStakerBalance } from "~/wallet/refreshStakerBalance";
 
 const MAX_RETRIES = 3;
 
@@ -17,13 +18,22 @@ export async function actionHandler(action: PendingAction) {
         updateInput: { status: "completed", communeTxHash: res.result.txHash },
       });
 
-      return;
+      try {
+        await refreshStakerBalance(action.evmAddress);
+      } catch (e) {
+        console.error(
+          `Failed to refresh user balances ${action.evmAddress} after action ${action.eventType}`,
+          e,
+        );
+      }
+
+      return true;
     }
 
     // wrong data, no need to retry
     if (!res.result && !res.canRetry) {
       await updateEvent({ id: action.id, updateInput: { status: "failed" } });
-      return;
+      return false;
     }
 
     // something went wrong, retry
@@ -55,4 +65,6 @@ async function handleUnsuccessfulAction(action: PendingAction) {
   } else {
     await updateEvent({ id: action.id, updateInput: { status: "failed" } });
   }
+
+  return false;
 }

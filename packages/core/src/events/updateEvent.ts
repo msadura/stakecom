@@ -11,7 +11,7 @@ export async function updateEvent({
 }) {
   return db
     .update(schema.stakeEvent)
-    .set(updateInput)
+    .set({ ...updateInput, updatedAt: new Date() })
     .where(eq(schema.stakeEvent.id, id))
     .returning();
 }

@@ -8,6 +8,8 @@ import { formatWCOMAmount } from "~/utils/formatWCOMAmount";
 export async function initUnstakeAction(
   action: PendingAction,
 ): Promise<{ result: CommuneTxResponse | null; canRetry?: boolean }> {
+  console.log("🔥", `Processing initUnstake action ${action.evmAddress}`);
+
   const params = getActionParams(action);
   if (!params) {
     return { result: null, canRetry: false };

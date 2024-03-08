@@ -1,7 +1,7 @@
 import { db, schema } from "@stakecom/db";
 
 import { encryptData } from "~/utils/dataEncryption";
-import { generateCommuneWallet } from "~/wallet";
+import { generateCommuneWallet } from "~/wallet/generateCommuneWallet";
 
 export type NewStaker = typeof schema.staker.$inferInsert;
 export type Staker = typeof schema.staker.$inferSelect;

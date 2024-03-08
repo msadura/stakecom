@@ -316,9 +316,15 @@ importers:
       '@polkadot/util-crypto':
         specifier: ^12.6.2
         version: 12.6.2(@polkadot/util@12.6.2)
+      '@stakecom/commune-sdk':
+        specifier: workspace:^0.1.0
+        version: link:../commune-sdk
       '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../db
+      ky:
+        specifier: ^1.2.2
+        version: 1.2.2
       viem:
         specifier: ^2.7.15
         version: 2.7.15(typescript@5.3.3)(zod@3.22.4)
@@ -326,9 +332,6 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@stakecom/commune-sdk':
-        specifier: workspace:^0.1.0
-        version: link:../commune-sdk
       '@stakecom/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
@@ -10353,6 +10356,11 @@ packages:
   /kleur@3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
+    dev: false
+
+  /ky@1.2.2:
+    resolution: {integrity: sha512-gYA2QOI3uIaImJPJjaBbLCdvKHzwxsuB03s7PjrXmoO6tcn6k53rwYoSRgqrmVsEV6wFFegOXDVjABxFZ0aRSg==}
+    engines: {node: '>=18'}
     dev: false
 
   /language-subtag-registry@0.3.22:

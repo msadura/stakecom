@@ -1,5 +1,6 @@
-import type { CommuneTxResponse } from "node_modules/@stakecom/commune-sdk/src/types";
 import { z } from "zod";
+
+import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
 
 import type { PendingAction } from "~/events/getPendingActions";
 

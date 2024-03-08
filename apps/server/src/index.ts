@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import {  getStakerUser, loadStakeEvents, processEvents, } from "@stakecom/core";
+import {  getStakerUser, processEvents, } from "@stakecom/core";
 import { cron } from '@elysiajs/cron'
 
 const app = new Elysia().get("/", () => "Hello Elysia")

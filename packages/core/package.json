@@ -17,7 +17,6 @@
     "@stakecom/eslint-config": "workspace:^0.2.0",
     "@stakecom/prettier-config": "workspace:^0.1.0",
     "@stakecom/tsconfig": "workspace:^0.1.0",
-    "@stakecom/commune-sdk": "workspace:^0.1.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3"
@@ -29,9 +28,11 @@
   },
   "prettier": "@stakecom/prettier-config",
   "dependencies": {
-    "@stakecom/db": "workspace:^0.1.0",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
+    "@stakecom/db": "workspace:^0.1.0",
+    "@stakecom/commune-sdk": "workspace:^0.1.0",
+    "ky": "^1.2.2",
     "viem": "^2.7.15",
     "zod": "^3.22.4"
   }

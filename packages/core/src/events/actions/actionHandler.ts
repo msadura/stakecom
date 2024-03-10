@@ -1,9 +1,10 @@
-import type { PendingAction } from "~/events/getPendingActions";
-import { changeModuleAction } from "~/events/actions/changeModuleAction";
-import { initUnstakeAction } from "~/events/actions/initUnstakeAction";
-import { stakeComAction } from "~/events/actions/stakeComAction";
-import { updateEvent } from "~/events/updateEvent";
-import { refreshStakerBalance } from "~/wallet/refreshStakerBalance";
+import { changeModuleAction } from "~core/events/actions/changeModuleAction";
+import { initUnstakeAction } from "~core/events/actions/initUnstakeAction";
+import { stakeComAction } from "~core/events/actions/stakeComAction";
+import { updateEvent } from "~core/events/updateEvent";
+import { refreshStakerBalance } from "~core/wallet/refreshStakerBalance";
+
+import type { PendingAction } from "~core/events/getPendingActions";
 
 const MAX_RETRIES = 3;
 

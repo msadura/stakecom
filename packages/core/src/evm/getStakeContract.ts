@@ -1,9 +1,8 @@
 import type { WalletClient } from "viem";
+import { stakeComAIV1Abi } from "~core/abi/stakeComAIV1";
+import { publicClient } from "~core/client";
+import { STAKE_ADDRESS } from "~core/constants";
 import { getContract } from "viem";
-
-import { stakeComAIV1Abi } from "~/abi/stakeComAIV1";
-import { publicClient } from "~/client";
-import { STAKE_ADDRESS } from "~/constants";
 
 export function getStakeContract(walletClient?: WalletClient) {
   return getContract({

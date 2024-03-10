@@ -1,7 +1,7 @@
 import type { schema } from "@stakecom/db";
 import { db } from "@stakecom/db";
 
-import type { Staker } from "~/wallet";
+import type { Staker } from "~core/wallet";
 
 export type PendingAction = typeof schema.stakeEvent.$inferSelect & {
   staker: Staker;

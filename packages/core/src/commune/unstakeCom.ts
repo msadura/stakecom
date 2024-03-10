@@ -1,6 +1,6 @@
-import { unstake } from "@stakecom/commune-sdk";
+import { getComKey } from "~core/events/getComKey";
 
-import { getComKey } from "~/events/getComKey";
+import { unstake } from "@stakecom/commune-sdk";
 
 export interface StakeComInput {
   key: string;

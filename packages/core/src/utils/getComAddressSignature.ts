@@ -1,8 +1,7 @@
 import type { Address, HDAccount } from "viem";
+import { env } from "~core/env";
 import { encodePacked, keccak256, toBytes } from "viem";
 import { mnemonicToAccount } from "viem/accounts";
-
-import { env } from "~/env";
 
 type BytesType = `0x${string}`;
 

@@ -1,8 +1,7 @@
+import { decryptData } from "~core/utils/dataEncryption";
 import { z } from "zod";
 
 import { getKey, getOrAddKey } from "@stakecom/commune-sdk";
-
-import { decryptData } from "~/utils/dataEncryption";
 
 export async function getComKey(
   evmAddress: string,

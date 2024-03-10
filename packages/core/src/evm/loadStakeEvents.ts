@@ -1,6 +1,6 @@
-import { stakeComAIV1Abi } from "~/abi";
-import { publicClient } from "~/client";
-import { STAKE_ADDRESS } from "~/constants";
+import { stakeComAIV1Abi } from "~core/abi";
+import { publicClient } from "~core/client";
+import { STAKE_ADDRESS } from "~core/constants";
 
 export async function loadStakeEvents(fromBlock?: bigint) {
   const logs = await publicClient.getContractEvents({

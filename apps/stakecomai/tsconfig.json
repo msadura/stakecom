@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "~/public/*": ["./public/*"]
+      "~core/*": ["../../packages/core/src/*"],
+      "~/public/*": ["./public/*"],
     },
     "plugins": [{ "name": "next" }],
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"

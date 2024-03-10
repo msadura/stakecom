@@ -1,5 +1,5 @@
-import { actionHandler } from "~/events/actions/actionHandler";
-import { getPendingActions } from "~/events/getPendingActions";
+import { actionHandler } from "~core/events/actions/actionHandler";
+import { getPendingActions } from "~core/events/getPendingActions";
 
 export async function processPendingActions() {
   const actions = await getPendingActions();

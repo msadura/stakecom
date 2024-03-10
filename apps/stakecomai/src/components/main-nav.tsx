@@ -11,7 +11,7 @@ export function MainNav() {
     <div className="flex flex-1 flex-wrap">
       <Link href="/" className="mr-6 flex max-h-[40px] items-center space-x-1">
         <Image
-          src="/stake_logo.png"
+          src="/stake_logo2.png"
           alt="logo"
           width={45}
           height={40}

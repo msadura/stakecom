@@ -1,6 +1,5 @@
+import { chain } from "~core/constants";
 import { createPublicClient, http } from "viem";
-
-import { chain } from "~/constants";
 
 export const publicClient = createPublicClient({
   chain,

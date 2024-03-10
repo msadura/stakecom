@@ -1,10 +1,10 @@
+import { stakeCom } from "~core/commune/stakeCom";
+import { formatWCOMAmount } from "~core/utils/formatWCOMAmount";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
 
-import type { PendingAction } from "~/events/getPendingActions";
-import { stakeCom } from "~/commune/stakeCom";
-import { formatWCOMAmount } from "~/utils/formatWCOMAmount";
+import type { PendingAction } from "~core/events/getPendingActions";
 
 export async function stakeComAction(action: PendingAction): Promise<{
   result: CommuneTxResponse | null;

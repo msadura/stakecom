@@ -1,12 +1,12 @@
-import { getBalance, getStake } from "@stakecom/commune-sdk";
+import { getStakerUser } from "~core/wallet";
+import { updateStaker } from "~core/wallet/updateStaker";
 
-import { getStakerUser } from "~/wallet";
-import { updateStaker } from "~/wallet/updateStaker";
+import { getBalance, getStake } from "@stakecom/commune-sdk";
 
 export async function refreshStakerBalance(evmAddress: string) {
   const stakerUser = await getStakerUser({ evmAddress });
 
-  if (!stakerUser || !stakerUser.ss58Address || !stakerUser.module) {
+  if (!stakerUser?.ss58Address || !stakerUser.module) {
     return;
   }
 

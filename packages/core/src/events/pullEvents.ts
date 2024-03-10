@@ -1,7 +1,8 @@
-import type { NewStakeEvent, StakeEventType } from "~/events/saveEvent";
-import { getLatestBlock } from "~/events/getLatestBlock";
-import { saveEvent } from "~/events/saveEvent";
-import { loadStakeEvents } from "~/evm";
+import { getLatestBlock } from "~core/events/getLatestBlock";
+import { saveEvent } from "~core/events/saveEvent";
+import { loadStakeEvents } from "~core/evm";
+
+import type { NewStakeEvent, StakeEventType } from "~core/events/saveEvent";
 
 type ChainEvent = Awaited<ReturnType<typeof loadStakeEvents>>[0];
 

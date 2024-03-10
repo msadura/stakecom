@@ -1,5 +1,5 @@
-import { processPendingActions } from "~/events/processPendingActions";
-import { pullEvents } from "~/events/pullEvents";
+import { processPendingActions } from "~core/events/processPendingActions";
+import { pullEvents } from "~core/events/pullEvents";
 
 export async function processEvents() {
   console.log("⚙️ Processing events...");

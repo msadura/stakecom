@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
 
-import type { PendingAction } from "~/events/getPendingActions";
+import type { PendingAction } from "~core/events/getPendingActions";
 
 export function changeModuleAction(action: PendingAction): Promise<{
   result: CommuneTxResponse | null;

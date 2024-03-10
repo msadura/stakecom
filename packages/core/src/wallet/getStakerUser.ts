@@ -1,9 +1,9 @@
+import { getComAddressSignature } from "~core/utils/getComAddressSignature";
+import { getStakerWallet } from "~core/wallet/getStakerWallet";
+import { refreshStakerBalance } from "~core/wallet/refreshStakerBalance";
 import { isAddress } from "viem";
 
-import type { Staker } from "~/wallet/getStakerWallet";
-import { getComAddressSignature } from "~/utils/getComAddressSignature";
-import { getStakerWallet } from "~/wallet/getStakerWallet";
-import { refreshStakerBalance } from "~/wallet/refreshStakerBalance";
+import type { Staker } from "~core/wallet/getStakerWallet";
 
 export const STALE_DATA_THRESHOLD = 1000 * 60 * 5; // 5 minutes
 

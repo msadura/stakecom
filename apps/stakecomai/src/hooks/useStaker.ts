@@ -26,7 +26,7 @@ export function useStaker() {
       address && refreshUserBalances(address);
     },
     // Delay in milliseconds or null to stop it
-    data?.isStaleData && data?.module ? 5000 : null,
+    data?.isStaleData && data?.module ? 10000 : null,
   );
 
   console.log("🔥staker", data);

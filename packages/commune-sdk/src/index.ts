@@ -20,10 +20,11 @@ export async function getOrAddKey({
   phrase: string;
 }) {
   try {
-    const key = await execAsync<CommuneKey>(`c key_info ${name}`);
+    const key = await getKey(name);
     return key;
   } catch (e) {
-    return await execAsync<CommuneKey>(`c add_key ${name} "${phrase}"`);
+    await execAsync<CommuneKey>(`c add_key ${name} "${phrase}"`);
+    return getKey(name);
   }
 }
 
@@ -98,6 +99,7 @@ export async function transfer({
 }
 
 const execAsync = <T = unknown>(command: string): Promise<T | null> => {
+  console.log("🔥c:", command);
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout) => {
       if (err) {

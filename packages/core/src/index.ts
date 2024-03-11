@@ -8,3 +8,4 @@ export * from "./wallet";
 export * from "./events";
 export * from "./bridge";
 export * from "./server-sdk";
+export * from "./utils";

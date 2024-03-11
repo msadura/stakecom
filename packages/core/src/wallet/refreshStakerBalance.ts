@@ -1,30 +1,38 @@
-import { getStakerUser } from "~core/wallet";
+import { getComKey } from "~core/commune/getComKey";
+import { getStakerWallet } from "~core/wallet";
 import { updateStaker } from "~core/wallet/updateStaker";
 
 import { getBalance, getStake } from "@stakecom/commune-sdk";
 
 export async function refreshStakerBalance(evmAddress: string) {
-  const stakerUser = await getStakerUser({ evmAddress });
+  const staker = await getStakerWallet(evmAddress);
+  await getComKey(staker.evmAddress, staker.mnemonicEncrypted);
 
-  if (!stakerUser?.ss58Address || !stakerUser.module) {
+  if (!staker?.ss58Address || !staker.module) {
     return;
   }
 
   const stakePromise = await getStake({
-    key: stakerUser.evmAddress,
-    module: stakerUser.module,
+    key: staker.evmAddress,
+    module: staker.module,
   });
 
-  const balancePromise = await getBalance(stakerUser.evmAddress);
+  const balancePromise = await getBalance(staker.evmAddress);
 
   try {
-    const [stake, balance] = await Promise.all([stakePromise, balancePromise]);
+    const [loadedStake, loadedBalance] = await Promise.all([
+      stakePromise,
+      balancePromise,
+    ]);
+
+    const stake = Number(loadedStake) ? String(loadedStake) : null;
+    const balance = Number(loadedBalance) ? String(loadedBalance) : null;
 
     return updateStaker({
       evmAddress,
       updateInput: {
-        stake: String(stake) || stakerUser.stake || "0",
-        balance: String(balance) || stakerUser.balance || "0",
+        stake: stake || staker.stake || "0",
+        balance: balance || staker.balance || "0",
       },
     });
   } catch (e) {

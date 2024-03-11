@@ -1,4 +1,4 @@
-import { getComKey } from "~core/events/getComKey";
+import { getComKey } from "~core/commune/getComKey";
 
 import { unstake } from "@stakecom/commune-sdk";
 

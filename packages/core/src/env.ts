@@ -9,6 +9,7 @@ const zodEnv = z.object({
     .pipe(z.boolean()),
   ENCRYPTION_SECRET: z.string().min(20),
   SIGNER_MNEMONIC: z.string().min(30),
+  SDK_SERVER_URL: z.string(),
 });
 
 export type ProcessEnv = TypeOf<typeof zodEnv>;

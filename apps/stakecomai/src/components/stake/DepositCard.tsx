@@ -11,6 +11,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { useStaker } from "~/hooks/useStaker";
 import { useWCom } from "~/hooks/useWCom";
 import { WCOM_DECIMALS } from "~/lib/constants";
 import { toAmount } from "~/lib/toAmount";
@@ -19,6 +20,7 @@ import { toMaxDecimals } from "~/lib/toMaxDecimals";
 const MIN_STAKE = 10;
 
 export function DepositCard() {
+  useStaker();
   const { balance } = useWCom();
   const [value, setValue] = useState(BigInt(toAmount("10", WCOM_DECIMALS)));
   const [inputValue, setInputValue] = useState("10");

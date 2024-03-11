@@ -1,6 +1,5 @@
 import { getComAddressSignature } from "~core/utils/getComAddressSignature";
 import { getStakerWallet } from "~core/wallet/getStakerWallet";
-import { refreshStakerBalance } from "~core/wallet/refreshStakerBalance";
 import { isAddress } from "viem";
 
 import type { Staker } from "~core/wallet/getStakerWallet";
@@ -15,7 +14,6 @@ export type StakeUser = Omit<Staker, "mnemonicEncrypted"> & {
 export async function getStakerUser({
   evmAddress,
   createIfNotExists = false,
-  forceRefresh = false,
 }: {
   evmAddress: string;
   createIfNotExists?: boolean;
@@ -39,12 +37,6 @@ export async function getStakerUser({
     evmAddress,
     ss58Address: stakerUser.ss58Address,
   });
-
-  if (isStaleData || forceRefresh) {
-    refreshStakerBalance(evmAddress).catch((e) => {
-      console.error(`Failed to refresh staker balance for ${evmAddress}`, e);
-    });
-  }
 
   return {
     ...stakerUser,

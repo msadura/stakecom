@@ -1,11 +1,12 @@
 import { Elysia, t } from "elysia";
-import {  getStakerUser, processEvents, } from "@stakecom/core";
+import {  getStakerUser, processEvents, refreshStakerBalance, } from "@stakecom/core";
 import { cron } from '@elysiajs/cron'
 
 const app = new Elysia().get("/", () => "Hello Elysia")
-.get('/wallet/:address', async ({params}) => {
-  const stakerWallet = await getStakerUser(params.address, true);
-  return stakerWallet;
+.put('/wallet/:address/refresh', async ({params}) => {
+  console.log('🔥', 'refff');
+  const updatedStaker = await refreshStakerBalance(params.address);
+  return { refreshed: !!updatedStaker };
 }, {
   params: t.Object({
       address: t.String()

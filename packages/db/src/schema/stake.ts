@@ -36,7 +36,7 @@ export const staker = createPgTable(
 );
 
 export const stakerRelations = relations(staker, ({ many }) => ({
-  posts: many(stakeEvent),
+  stakeEvents: many(stakeEvent),
 }));
 
 export const eventTypeEnum = pgEnum("event_type", [

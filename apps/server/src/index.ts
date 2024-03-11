@@ -4,9 +4,8 @@ import { cron } from '@elysiajs/cron'
 
 const app = new Elysia().get("/", () => "Hello Elysia")
 .put('/wallet/:address/refresh', async ({params}) => {
-  refreshStakerBalance(params.address);
-
-  return { success: true };
+  const updatedStaker = await refreshStakerBalance(params.address);
+  return { refreshed: !!updatedStaker };
 }, {
   params: t.Object({
       address: t.String()

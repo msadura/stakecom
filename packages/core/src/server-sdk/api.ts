@@ -3,6 +3,7 @@ import ky from "ky";
 
 const sdkServerApi = ky.create({
   prefixUrl: env.SDK_SERVER_URL,
+  timeout: 20000,
 });
 
 export const sdkServerRouter = {

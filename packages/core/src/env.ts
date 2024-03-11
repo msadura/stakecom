@@ -5,6 +5,7 @@ const zodEnv = z.object({
   USE_TESTNET: z
     .string()
     .toLowerCase()
+    .optional()
     .transform((x) => x === "true")
     .pipe(z.boolean()),
   ENCRYPTION_SECRET: z.string().min(20),

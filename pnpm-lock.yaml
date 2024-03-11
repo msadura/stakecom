@@ -24,6 +24,34 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  apps/dev:
+    dependencies:
+      '@elysiajs/cron':
+        specifier: ^0.8.0
+        version: 0.8.0(elysia@0.8.17)
+      '@stakecom/commune-sdk':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/commune-sdk
+      '@stakecom/core':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/core
+      '@stakecom/db':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/db
+    devDependencies:
+      '@stakecom/eslint-config':
+        specifier: ^0.2.0
+        version: link:../../tooling/eslint
+      '@stakecom/prettier-config':
+        specifier: ^0.1.0
+        version: link:../../tooling/prettier
+      '@stakecom/tsconfig':
+        specifier: ^0.1.0
+        version: link:../../tooling/typescript
+      bun-types:
+        specifier: latest
+        version: 1.0.30
+
   apps/server:
     dependencies:
       '@elysiajs/cron':
@@ -7270,6 +7298,13 @@ packages:
 
   /bun-types@1.0.29:
     resolution: {integrity: sha512-Z+U1ORr/2UCwxelIZxE83pyPLclviYL9UewQCNEUmGeLObY8ao+3WF3D8N1+NMv2+S+hUWsdBJam+4GoPEz35g==}
+    dependencies:
+      '@types/node': 20.11.16
+      '@types/ws': 8.5.10
+    dev: true
+
+  /bun-types@1.0.30:
+    resolution: {integrity: sha512-z3366LC0kdSpBCNFvc38+NOSiwQaokKfi66fBr+jw+yd9lrYtaoLs4ERCuq3iW/g9h6xKielQRgvE01PN/uUog==}
     dependencies:
       '@types/node': 20.11.16
       '@types/ws': 8.5.10

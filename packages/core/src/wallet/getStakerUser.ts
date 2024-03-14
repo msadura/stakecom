@@ -1,4 +1,3 @@
-import { getComAddressSignature } from "~core/utils/getComAddressSignature";
 import { getStakerWallet } from "~core/wallet/getStakerWallet";
 import { isAddress } from "viem";
 
@@ -7,7 +6,6 @@ import type { Staker } from "~core/wallet/getStakerWallet";
 export const STALE_DATA_THRESHOLD = 1000 * 60 * 5; // 5 minutes
 
 export type StakeUser = Omit<Staker, "mnemonicEncrypted"> & {
-  addressSignature: string;
   isStaleData: boolean;
 };
 
@@ -33,14 +31,8 @@ export async function getStakerUser({
     new Date(stakerUser.updatedAt).getTime() <
       Date.now() - STALE_DATA_THRESHOLD;
 
-  const addressSignature = await getComAddressSignature({
-    evmAddress,
-    ss58Address: stakerUser.ss58Address,
-  });
-
   return {
     ...stakerUser,
-    addressSignature,
     isStaleData,
   };
 }

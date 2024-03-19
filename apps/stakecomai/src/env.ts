@@ -14,7 +14,8 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
-    SDK_SERVER_URL: z.string(),
+    ENCRYPTION_SECRET: z.string().min(20),
+    SIGNER_MNEMONIC: z.string().min(30),
   },
   /**
    * Specify your client-side environment variables schema here.

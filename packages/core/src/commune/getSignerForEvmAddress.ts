@@ -1,7 +1,7 @@
-import { decryptData } from "~core/utils";
-import { getStakerWallet } from "~core/wallet";
-
 import { getSigner } from "@stakecom/commune-sdk";
+
+import { decryptData } from "../utils/dataEncryption";
+import { getStakerWallet } from "../wallet";
 
 export async function getSignerForEvmAddress(evmAddress: string) {
   const staker = await getStakerWallet(evmAddress, true);

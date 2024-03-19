@@ -1,5 +1,6 @@
 import { ComLogo } from "~/components/ComLogo";
 import { Stake } from "~/components/stake/Stake";
+import { StakerStats } from "~/components/stakerStats/StakerStats";
 import { Box } from "~/components/ui/box";
 
 export default async function HomePage() {
@@ -16,8 +17,12 @@ export default async function HomePage() {
           Stake your wCom tokens and enjoy native yield!
         </h2>
 
-        <Box className="mt-6 flex-1 justify-center self-stretch md:mt-12">
-          <Stake />
+        <Box className="mx-auto mt-6 flex w-full max-w-[400px] flex-col gap-4 self-stretch text-left md:mt-12">
+          <StakerStats />
+
+          <Box className=" flex-1 justify-center self-stretch ">
+            <Stake />
+          </Box>
         </Box>
       </div>
     </main>

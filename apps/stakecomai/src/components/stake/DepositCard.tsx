@@ -25,8 +25,6 @@ export function DepositCard() {
   const [value, setValue] = useState(BigInt(toAmount("10", WCOM_DECIMALS)));
   const [inputValue, setInputValue] = useState("10");
 
-  console.log("🔥v:", value);
-
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       try {

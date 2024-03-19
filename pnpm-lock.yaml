@@ -55,37 +55,6 @@ importers:
         specifier: latest
         version: 1.0.30
 
-  apps/server:
-    dependencies:
-      '@elysiajs/cron':
-        specifier: ^0.8.0
-        version: 0.8.0(elysia@0.8.17)
-      '@stakecom/commune-sdk':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/commune-sdk
-      '@stakecom/core':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/core
-      '@stakecom/db':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/db
-      elysia:
-        specifier: latest
-        version: 0.8.17(typescript@5.3.3)
-    devDependencies:
-      '@stakecom/eslint-config':
-        specifier: ^0.2.0
-        version: link:../../tooling/eslint
-      '@stakecom/prettier-config':
-        specifier: ^0.1.0
-        version: link:../../tooling/prettier
-      '@stakecom/tsconfig':
-        specifier: ^0.1.0
-        version: link:../../tooling/typescript
-      bun-types:
-        specifier: latest
-        version: 1.0.29
-
   apps/stakecomai:
     dependencies:
       '@radix-ui/react-dialog':
@@ -2335,15 +2304,6 @@ packages:
     dependencies:
       superjson: 2.2.1
     dev: true
-
-  /@elysiajs/cron@0.8.0(elysia@0.8.17):
-    resolution: {integrity: sha512-G/BqTttEV8N93GE0kSpwrnHvDXBdr9eIIVyYpW0hiRS+K9iZsi5nOR7venAxqNN51WIo+gz/kZNSMq+NcZi2Nw==}
-    peerDependencies:
-      elysia: '>= 0.8.0'
-    dependencies:
-      croner: 6.0.7
-      elysia: 0.8.17(typescript@5.3.3)
-    dev: false
 
   /@elysiajs/cron@0.8.0(elysia@1.0.5):
     resolution: {integrity: sha512-G/BqTttEV8N93GE0kSpwrnHvDXBdr9eIIVyYpW0hiRS+K9iZsi5nOR7venAxqNN51WIo+gz/kZNSMq+NcZi2Nw==}
@@ -7626,13 +7586,6 @@ packages:
       semver: 7.6.0
     dev: true
 
-  /bun-types@1.0.29:
-    resolution: {integrity: sha512-Z+U1ORr/2UCwxelIZxE83pyPLclviYL9UewQCNEUmGeLObY8ao+3WF3D8N1+NMv2+S+hUWsdBJam+4GoPEz35g==}
-    dependencies:
-      '@types/node': 20.11.16
-      '@types/ws': 8.5.10
-    dev: true
-
   /bun-types@1.0.30:
     resolution: {integrity: sha512-z3366LC0kdSpBCNFvc38+NOSiwQaokKfi66fBr+jw+yd9lrYtaoLs4ERCuq3iW/g9h6xKielQRgvE01PN/uUog==}
     dependencies:
@@ -8578,28 +8531,6 @@ packages:
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
-    dev: false
-
-  /elysia@0.8.17(typescript@5.3.3):
-    resolution: {integrity: sha512-hqKHKUxbvlDHnobudtna5nBoGiZ4oa0xdnhynLAJF3+6gTYHAcQ/8/IyxUx5Az5Uy0zTuNiv7m2bIFu7xeMiWg==}
-    peerDependencies:
-      '@sinclair/typebox': '>= 0.31.0'
-      openapi-types: '>= 12.0.0'
-      typescript: '>= 5.0.0'
-    peerDependenciesMeta:
-      '@sinclair/typebox':
-        optional: true
-      openapi-types:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      cookie: 0.6.0
-      eventemitter3: 5.0.1
-      fast-decode-uri-component: 1.0.1
-      fast-querystring: 1.1.2
-      memoirist: 0.1.10
-      typescript: 5.3.3
     dev: false
 
   /elysia@1.0.5(@sinclair/typebox@0.32.15)(typescript@5.3.3):
@@ -11005,10 +10936,6 @@ packages:
     resolution: {integrity: sha512-1N4qp+jE0pL5Xv4uEcwVUhIkwdUO3S/9gML90nqKA7v7FcOS5vUtatfzok9S9U1EJU8dHWlcv95WLnKmmxZI9w==}
     dependencies:
       '@babel/runtime': 7.23.9
-    dev: false
-
-  /memoirist@0.1.10:
-    resolution: {integrity: sha512-k2ARHDrSzqeQAWrgvE2NgNj7p5c1LkeFI1VizklJWDXAOTgq7m8mtl0v6W1mVawFNe3DH0hb4BdA91y3vwbqvw==}
     dev: false
 
   /memoize-one@5.2.1:

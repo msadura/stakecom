@@ -28,7 +28,7 @@ importers:
     dependencies:
       '@elysiajs/cron':
         specifier: ^0.8.0
-        version: 0.8.0(elysia@1.0.1)
+        version: 0.8.0(elysia@1.0.5)
       '@stakecom/commune-sdk':
         specifier: workspace:^0.1.0
         version: link:../../packages/commune-sdk
@@ -38,6 +38,9 @@ importers:
       '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../../packages/db
+      viem:
+        specifier: ^2.7.15
+        version: 2.7.15(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@stakecom/eslint-config':
         specifier: ^0.2.0
@@ -2342,13 +2345,13 @@ packages:
       elysia: 0.8.17(typescript@5.3.3)
     dev: false
 
-  /@elysiajs/cron@0.8.0(elysia@1.0.1):
+  /@elysiajs/cron@0.8.0(elysia@1.0.5):
     resolution: {integrity: sha512-G/BqTttEV8N93GE0kSpwrnHvDXBdr9eIIVyYpW0hiRS+K9iZsi5nOR7venAxqNN51WIo+gz/kZNSMq+NcZi2Nw==}
     peerDependencies:
       elysia: '>= 0.8.0'
     dependencies:
       croner: 6.0.7
-      elysia: 1.0.1(@sinclair/typebox@0.32.15)(typescript@5.3.3)
+      elysia: 1.0.5(@sinclair/typebox@0.32.15)(typescript@5.3.3)
     dev: false
 
   /@emotion/babel-plugin@11.11.0:
@@ -8599,8 +8602,8 @@ packages:
       typescript: 5.3.3
     dev: false
 
-  /elysia@1.0.1(@sinclair/typebox@0.32.15)(typescript@5.3.3):
-    resolution: {integrity: sha512-BjBhaG/pOj6MLHvmqsK3hvI6mTljG8QfbsxPrB8qMQF0wXlsw5UyuswBb06uKnr+HMs99Itf5W916WMIoJmVGQ==}
+  /elysia@1.0.5(@sinclair/typebox@0.32.15)(typescript@5.3.3):
+    resolution: {integrity: sha512-HFiLcdEpfPskooorkhBNo14qCxkuM4iDBkn5QRWi4U7Pwk2YKUJEVfdPSo8bA3WA9t9KZB2s1WGnKh8kx3sMSQ==}
     peerDependencies:
       '@sinclair/typebox': '>= 0.31.0'
       openapi-types: '>= 12.0.0'
@@ -13369,7 +13372,7 @@ packages:
     resolution: {integrity: sha512-XFpf3CQZ2BbFwVqKSyJHP7mbTDJxT3saRr/WfnfgWv+pbmA/J0e/LdfV/3A+jg7gNTEG06EAiDPtzN8ouXTLLw==}
     requiresBuild: true
     dependencies:
-      ws: 8.13.0
+      ws: 8.16.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -14744,6 +14747,7 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: false
 
   /ws@8.16.0:
     resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}

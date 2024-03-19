@@ -4,7 +4,7 @@ import { unstakeCom } from "~core/commune/unstakeCom";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
-import { getBalances, transfer } from "@stakecom/commune-sdk";
+import { transferAll } from "@stakecom/commune-sdk";
 
 import type { PendingAction } from "~core/events/getPendingActions";
 
@@ -43,23 +43,18 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
   // unstaked or having pending transfer
   if (result?.success || action.pendingTransfer) {
     try {
-      // get balance
-      const { balance } = await getBalances({ address: signer.address });
-      if (balance && balance > 0n) {
-        // transfer funds to bridge address, to allow user claim them directly
-        const transferRes = await transfer({
-          signer,
-          recipient: bridgeComAddress,
-          amount: balance,
-        });
+      // transfer funds to bridge address, to allow user claim them directly
+      const transferRes = await transferAll({
+        signer,
+        recipient: bridgeComAddress,
+      });
 
-        if (!transferRes?.success) {
-          console.error("Error transferring funds to bridge", transferRes);
-          return { result: null, canRetry: true, pendingTransfer: true };
-        }
-
-        return { result: transferRes };
+      if (!transferRes?.success) {
+        console.error("Error transferring funds to bridge", transferRes);
+        return { result: null, canRetry: true, pendingTransfer: true };
       }
+
+      return { result: transferRes };
     } catch (e) {
       console.error("Error transferring funds to bridge", e);
       return { result: null, canRetry: true, pendingTransfer: true };

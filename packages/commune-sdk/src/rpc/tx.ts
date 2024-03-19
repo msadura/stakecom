@@ -5,7 +5,20 @@ import type { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 import type { ISubmittableResult } from "@polkadot/types/types";
 
 import type { StakeInput, TransferInput, TxError } from "../types";
-import { getClient, getStakeByModule } from "../rpc";
+import { getBalances, getClient, getStakeByModule } from "../rpc";
+
+export async function estimateTransferFee({
+  amount,
+  recipient,
+  signer,
+}: TransferInput) {
+  const api = await getClient();
+  const fees = await api.tx.balances
+    .transfer(recipient, amount)
+    .paymentInfo(signer);
+
+  return fees.partialFee;
+}
 
 export async function transfer({ amount, recipient, signer }: TransferInput) {
   const api = await getClient();
@@ -16,6 +29,34 @@ export async function transfer({ amount, recipient, signer }: TransferInput) {
     signer,
     api,
     successMessage: "Transfer successful",
+  });
+}
+
+export async function transferAll({
+  recipient,
+  signer,
+}: {
+  recipient: string;
+  signer: KeyringPair;
+}) {
+  const api = await getClient();
+  const { balance } = await getBalances({ address: signer.address });
+
+  if (balance === 0n) {
+    return {
+      success: false,
+      msg: "No balance found to transfer",
+    };
+  }
+
+  const fee = await estimateTransferFee({ amount: balance, recipient, signer });
+  const tx = api.tx.balances.transfer(recipient, balance - fee.toBigInt());
+
+  return broadcastTx({
+    tx,
+    signer,
+    api,
+    successMessage: "Transfer all successful",
   });
 }
 
@@ -60,7 +101,7 @@ export async function unstake({
     unstakeAmount,
   );
 
-  return broadcastTx({ tx, signer, api, successMessage: "Stake successful" });
+  return broadcastTx({ tx, signer, api, successMessage: "Unstake successful" });
 }
 
 function broadcastTx({
@@ -82,7 +123,7 @@ function broadcastTx({
     errorCode?: string;
   }>((resolve, reject) => {
     tx.signAndSend(signer, ({ events = [], status, txHash }) => {
-      console.log(`Current status is ${status.type}`);
+      // console.log(`Current status is ${status.type}`);
 
       if (status.isFinalized) {
         const txError = unwrapError(events, api);

@@ -17,16 +17,16 @@ export function useStaker() {
   const { data, refetch: refetchUser } = stakerQuery;
 
   useEffect(() => {
-    if (data?.isStaleData && data?.module) {
+    if (data?.isStaleData && data?.moduleKey) {
       refetchUser().catch(console.error);
     }
-  }, [data?.isStaleData, data?.module, refetchUser]);
+  }, [data?.isStaleData, data?.moduleKey, refetchUser]);
 
   useInterval(
     () => {
       address && refetchUser().catch(console.error);
     },
-    data?.isStaleData && data?.module ? 15000 : null,
+    data?.isStaleData && data?.moduleKey ? 15000 : null,
   );
 
   return stakerQuery;

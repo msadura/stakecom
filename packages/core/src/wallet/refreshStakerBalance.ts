@@ -6,7 +6,7 @@ import { getBalances } from "@stakecom/commune-sdk";
 export async function refreshStakerBalance(evmAddress: string) {
   const staker = await getStakerWallet(evmAddress);
 
-  if (!staker?.ss58Address || !staker.module) {
+  if (!staker?.ss58Address || !staker.moduleKey) {
     return;
   }
 
@@ -14,7 +14,7 @@ export async function refreshStakerBalance(evmAddress: string) {
     const { balance, stake: allStakes } = await getBalances({
       address: staker.ss58Address,
     });
-    const stake = allStakes[staker.module];
+    const stake = allStakes[staker.moduleKey];
 
     return updateStaker({
       evmAddress,

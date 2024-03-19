@@ -21,7 +21,7 @@ export const staker = createPgTable(
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }),
     // currently staked module / validator
-    module: varchar("module", { length: 256 }),
+    moduleKey: varchar("module_key", { length: 256 }),
     // current native stake
     stake: varchar("stake", { length: 256 }),
     // initially deposited stake

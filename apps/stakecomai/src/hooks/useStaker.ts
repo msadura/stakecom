@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import { skipToken } from "@tanstack/react-query";
 import { useInterval } from "usehooks-ts";
 import { useAccount } from "wagmi";
@@ -17,13 +18,14 @@ export function useStaker() {
 
   const { data, refetch: refetchUser } = stakerQuery;
 
-  const { mutate: refreshUserBalances } = api.stake.refreshStaker.useMutation({
-    onSettled(data) {
-      if (data && isConnected) {
-        utils.stake.getStaker.setData(address, data);
-      }
-    },
-  });
+  const { mutate, isPending: isRefreshing } =
+    api.stake.refreshStaker.useMutation({
+      onSettled(data) {
+        if (data && isConnected) {
+          utils.stake.getStaker.setData(address, data);
+        }
+      },
+    });
 
   useInterval(
     () => {
@@ -32,5 +34,16 @@ export function useStaker() {
     data?.isStaleData && data?.moduleKey ? 10000 : null,
   );
 
-  return { stakerQuery, isConnected, refreshUserBalances };
+  const refreshUserBalances = useCallback(() => {
+    if (isConnected) {
+      mutate(address);
+    }
+  }, [address, isConnected, mutate]);
+
+  return {
+    stakerQuery,
+    isConnected,
+    refreshUserBalances,
+    isRefreshing,
+  };
 }

@@ -8,7 +8,7 @@ export const statsRouter = createTRPCRouter({
   getValidators: publicProcedure.query(() => {
     return statsApiRouter.getValidators();
   }),
-  getValidator: publicProcedure.input(z.string()).mutation(({ input }) => {
+  getValidator: publicProcedure.input(z.string()).query(({ input }) => {
     return statsApiRouter.getValidator(input);
   }),
 });

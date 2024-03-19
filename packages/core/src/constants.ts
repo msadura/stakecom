@@ -29,5 +29,5 @@ export const BRIDGE_ADDRESS = contracts[chainId].BRIDGE;
 export const WCOMAI_ADDRESS = contracts[chainId].WCOMAI;
 export const WCOMAI_DECIMALS = 18;
 export const COMAI_DECIMALS = 9;
-export const WCOMAI_UNIT = "WCOMAI";
+export const WCOMAI_UNIT = "wCOMAI";
 export const COMAI_UNIT = "COMAI";

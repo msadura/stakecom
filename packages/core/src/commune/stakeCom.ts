@@ -1,6 +1,7 @@
 import type { KeyringPair } from "@polkadot/keyring/types";
 
-import { stake } from "@stakecom/commune-sdk";
+import { KEEP_STAKE_BALANCE, stake } from "@stakecom/commune-sdk";
+import { toAmountValue } from "@stakecom/commune-sdk/utils";
 
 export interface StakeComInput {
   key: string;
@@ -15,7 +16,7 @@ export async function stakeCom({ module, amount, signer }: StakeComInput) {
 
   return stake({
     moduleKey: module,
-    amount,
+    amount: amount - toAmountValue(KEEP_STAKE_BALANCE),
     signer,
   });
 }

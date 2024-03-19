@@ -1,3 +1,4 @@
+import { refreshStakerBalance } from "~core/wallet";
 import { getStakerWallet } from "~core/wallet/getStakerWallet";
 import { isAddress } from "viem";
 
@@ -12,6 +13,7 @@ export type StakeUser = Omit<Staker, "mnemonicEncrypted"> & {
 export async function getStakerUser({
   evmAddress,
   createIfNotExists = false,
+  forceRefresh = false,
 }: {
   evmAddress: string;
   createIfNotExists?: boolean;
@@ -19,6 +21,10 @@ export async function getStakerUser({
 }): Promise<StakeUser> {
   if (!isAddress(evmAddress)) {
     throw new Error(`Invalid evm address: ${evmAddress}`);
+  }
+
+  if (forceRefresh) {
+    await refreshStakerBalance(evmAddress);
   }
 
   const { mnemonicEncrypted: _, ...stakerUser } = await getStakerWallet(
@@ -30,6 +36,10 @@ export async function getStakerUser({
     !stakerUser.updatedAt ||
     new Date(stakerUser.updatedAt).getTime() <
       Date.now() - STALE_DATA_THRESHOLD;
+
+  if (isStaleData) {
+    return getStakerUser({ evmAddress, forceRefresh: true });
+  }
 
   return {
     ...stakerUser,

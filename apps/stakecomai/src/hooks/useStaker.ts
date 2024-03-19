@@ -11,16 +11,10 @@ export function useStaker() {
   const { address } = useAccount();
 
   const stakerQuery = api.stake.getStaker.useQuery(
-    address ? address : skipToken,
+    address ? { evmAddress: address } : skipToken,
   );
 
   const { data, refetch: refetchUser } = stakerQuery;
-
-  const { mutate: refreshUserBalances } = api.stake.refreshStaker.useMutation({
-    onSettled() {
-      refetchUser().catch(console.error);
-    },
-  });
 
   useEffect(() => {
     if (data?.isStaleData && data?.module) {
@@ -30,7 +24,7 @@ export function useStaker() {
 
   useInterval(
     () => {
-      address && refreshUserBalances(address);
+      address && refetchUser().catch(console.error);
     },
     data?.isStaleData && data?.module ? 15000 : null,
   );

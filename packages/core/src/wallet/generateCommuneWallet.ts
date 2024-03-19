@@ -1,14 +1,17 @@
-import Keyring from "@polkadot/keyring";
 import { mnemonicGenerate } from "@polkadot/util-crypto";
+
+import { getKeyring } from "@stakecom/commune-sdk";
 
 export interface CommuneWalletSeed {
   mnemonic: string;
   ss58Address: string;
 }
 
-export function generateCommuneWallet(name?: string): CommuneWalletSeed {
+export async function generateCommuneWallet(
+  name?: string,
+): Promise<CommuneWalletSeed> {
   const mnemonic = mnemonicGenerate();
-  const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+  const keyring = await getKeyring();
   const pair = keyring.addFromUri(
     mnemonic,
     { name: name || "account" },

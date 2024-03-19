@@ -1,5 +1,5 @@
+import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { stakeCom } from "~core/commune/stakeCom";
-import { formatWCOMAmount } from "~core/utils/formatWCOMAmount";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
@@ -18,11 +18,13 @@ export async function stakeComAction(action: PendingAction): Promise<{
     return { result: null, canRetry: false };
   }
 
+  const signer = await getSignerForEvmAddress(params.evmAddress);
+
   const result = await stakeCom({
     key: params.evmAddress,
     module: params.module,
-    mnemonicEncrypted: params.mnemonicEncrypted,
-    amount: formatWCOMAmount(params.amount),
+    amount: BigInt(params.amount),
+    signer,
   });
 
   return { result };

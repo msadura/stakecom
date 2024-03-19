@@ -1,14 +1,19 @@
+import { getBalances, getSigner, stake, transfer, } from "@stakecom/commune-sdk";
 import { decryptData, encryptData, refreshStakerBalance } from "@stakecom/core";
 
 
 async function test() {
-  const mnemonic = '';
-  const mnemonicEncrypted = encryptData(mnemonic);
+  const signer = await getSigner('');
+  const signer2 = await getSigner('');
 
-  console.log('🔥m enc', mnemonicEncrypted);
-  console.log('m dec', decryptData(mnemonicEncrypted));
+  const zz = await getBalances({ address: ''});
+  console.log('balances', zz);
 
-  await refreshStakerBalance('0x464fEcdb86cA7275c74bc65Fe95E72AA549Fa7ba')
+  // const staked = await stake({ networkId: 1, amount: BigInt(5000000000), moduleKey: '5GQjs8TywAmeKJ8nXnjR7Z1dXbMw4v7GnLJXyeggD1WHWgaf', signer})
+  const transfered = await transfer({  amount: BigInt(1000000000), recipient: signer2.address, signer})
+
+  const zz2 = await getBalances({ address: ''});
+  console.log('balances2', zz2);
 }
 
 test();

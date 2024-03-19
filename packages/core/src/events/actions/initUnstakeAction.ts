@@ -1,10 +1,10 @@
 import { bridgeApiRouter } from "~core/bridge";
+import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { unstakeCom } from "~core/commune/unstakeCom";
-import { formatWCOMAmount } from "~core/utils/formatWCOMAmount";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
-import { getBalance, transfer } from "@stakecom/commune-sdk";
+import { getBalances, transfer } from "@stakecom/commune-sdk";
 
 import type { PendingAction } from "~core/events/getPendingActions";
 
@@ -28,28 +28,28 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
   }
 
   let result: CommuneTxResponse | null = null;
+  const signer = await getSignerForEvmAddress(params.evmAddress);
 
   // unstake
   if (!action.pendingTransfer) {
     result = await unstakeCom({
-      key: params.evmAddress,
       module: params.module,
       unstakeAll: params.unstakeAll,
-      mnemonicEncrypted: params.mnemonicEncrypted,
-      amount: formatWCOMAmount(params.amount),
+      signer,
+      amount: BigInt(params.amount),
     });
   }
 
-  // unstaked or having pedning transfer
+  // unstaked or having pending transfer
   if (result?.success || action.pendingTransfer) {
     try {
       // get balance
-      const balance = await getBalance(params.evmAddress);
-      if (balance) {
+      const { balance } = await getBalances({ address: signer.address });
+      if (balance && balance > 0n) {
         // transfer funds to bridge address, to allow user claim them directly
         const transferRes = await transfer({
-          from: params.evmAddress,
-          to: bridgeComAddress,
+          signer,
+          recipient: bridgeComAddress,
           amount: balance,
         });
 

@@ -28,7 +28,7 @@ export async function getStakerWallet(
   }
 
   if (createIfNotExists) {
-    const { mnemonic, ss58Address } = generateCommuneWallet(evmAddress);
+    const { mnemonic, ss58Address } = await generateCommuneWallet(evmAddress);
     const mnemonicEncrypted = encryptData(mnemonic);
 
     const newStaker = await db

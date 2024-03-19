@@ -1,26 +1,26 @@
-import { getComKey } from "~core/commune/getComKey";
+import type { KeyringPair } from "@polkadot/keyring/types";
 
 import { unstake } from "@stakecom/commune-sdk";
 
 export interface StakeComInput {
-  key: string;
   module: string;
-  amount: string;
+  amount: bigint;
   unstakeAll?: boolean;
-  mnemonicEncrypted?: string;
+  signer: KeyringPair;
 }
 
 export async function unstakeCom({
-  key,
   module,
   amount,
   unstakeAll,
-  mnemonicEncrypted,
+  signer,
 }: StakeComInput) {
-  await getComKey(key, mnemonicEncrypted);
-
   if (Number(amount) <= 0) throw new Error("Amount must be greater than 0");
   if (!module) throw new Error("Module to stake is required");
 
-  return unstake({ key, module, amount: unstakeAll ? undefined : amount });
+  return unstake({
+    signer,
+    moduleKey: module,
+    amount: unstakeAll ? 0n : amount,
+  });
 }

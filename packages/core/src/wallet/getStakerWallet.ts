@@ -11,10 +11,13 @@ export interface CommuneWalletEncryptedSeed {
   ss58Address: string;
 }
 
-export async function getStakerWallet(
-  evmAddress: string,
+export async function getStakerWallet({
+  evmAddress,
   createIfNotExists = false,
-): Promise<Staker> {
+}: {
+  evmAddress: string;
+  createIfNotExists?: boolean;
+}): Promise<Staker> {
   const existingStaker = await db.query.staker.findFirst({
     where: (staker, { eq }) => eq(staker.evmAddress, evmAddress),
   });

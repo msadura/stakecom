@@ -1,4 +1,4 @@
-export const stakeComAIV1Abi = [
+export const stakeComAIAbi = [
   {
     inputs: [
       {
@@ -102,22 +102,22 @@ export const stakeComAIV1Abi = [
   },
   {
     inputs: [],
-    name: "InvalidSignature",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "InvalidUserAddress",
-    type: "error",
-  },
-  {
-    inputs: [],
     name: "InvalidModule",
     type: "error",
   },
   {
     inputs: [],
     name: "InvalidModuleChange",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidSignature",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidUserAddress",
     type: "error",
   },
   {
@@ -201,7 +201,7 @@ export const stakeComAIV1Abi = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "amountBeforeUnstake",
+        name: "fromAmount",
         type: "uint256",
       },
       {
@@ -212,6 +212,25 @@ export const stakeComAIV1Abi = [
       },
     ],
     name: "InitUnstake",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "newModule",
+        type: "string",
+      },
+    ],
+    name: "ModuleChanged",
     type: "event",
   },
   {
@@ -265,23 +284,22 @@ export const stakeComAIV1Abi = [
     type: "event",
   },
   {
-    anonymous: false,
     inputs: [
       {
-        indexed: true,
         internalType: "address",
         name: "user",
         type: "address",
       },
       {
-        indexed: false,
         internalType: "string",
         name: "newModule",
         type: "string",
       },
     ],
-    name: "ModuleChanged",
-    type: "event",
+    name: "adminChangeModule",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [

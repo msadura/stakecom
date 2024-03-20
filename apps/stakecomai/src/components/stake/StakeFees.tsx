@@ -10,7 +10,7 @@ interface Props {
 
 export const StakeFees = ({ fees }: Props) => {
   return (
-    <Box direction="col" className="gap-0.5">
+    <Box direction="col" className="gap-1">
       <StatsRow
         label="Bridge fee"
         value={`${formatWCOMAmount(fees.bridgeFee)} COM`}

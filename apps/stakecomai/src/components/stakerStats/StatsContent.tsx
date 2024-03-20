@@ -56,7 +56,7 @@ export const StatsContent = ({ staker, hasError }: Props) => {
 
   if (hasStake) {
     return (
-      <Box direction="col" className="gap-1">
+      <Box direction="col" className="gap-1.5">
         <StatsRow
           label="APY"
           value={`${toMaxDecimals(validatorData?.apy || 0, 2) || "-"} %`}

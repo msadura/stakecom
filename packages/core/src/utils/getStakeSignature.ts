@@ -1,23 +1,37 @@
-import type { Address, HDAccount } from "viem";
+import type { HDAccount } from "viem";
 import { env } from "~core/env";
-import { encodePacked, keccak256, toBytes } from "viem";
+import { encodePacked, isAddress, keccak256, toBytes } from "viem";
 import { mnemonicToAccount } from "viem/accounts";
+
+import { isSS58Address } from "@stakecom/commune-sdk/utils";
 
 type BytesType = `0x${string}`;
 
 export async function getStakeSignature({
   evmAddress,
   ss58Address,
-  module,
+  moduleKey,
 }: {
   evmAddress: string;
   ss58Address: string;
-  module: string;
+  moduleKey: string;
 }) {
+  if (!isAddress(evmAddress)) {
+    throw new Error("Invalid Staker EVM address");
+  }
+
+  if (moduleKey && !isSS58Address(moduleKey)) {
+    throw new Error("Invalid module key");
+  }
+
+  if (ss58Address && !isSS58Address(ss58Address)) {
+    throw new Error("Invalid Staker Commune address");
+  }
+
   const signer = mnemonicToAccount(env.SIGNER_MNEMONIC);
   const packedMessage = encodePacked(
     ["address", "string", "string"],
-    [evmAddress as Address, ss58Address, module],
+    [evmAddress, ss58Address, moduleKey],
   );
   const signature = await signPackedMessage({ signer, packedMessage });
 

@@ -38,7 +38,7 @@ const config = getDefaultConfig({
 export function Providers({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={config} reconnectOnMount={true}>
       <TRPCReactProvider>
         <RainbowKitProvider
           theme={

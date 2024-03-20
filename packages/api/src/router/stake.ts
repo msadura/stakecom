@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { getStakerUser, getStakeSignature } from "@stakecom/core";
+import {
+  getStakerUser,
+  getStakerWallet,
+  getStakeSignature,
+} from "@stakecom/core";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
@@ -18,11 +22,20 @@ export const stakeRouter = createTRPCRouter({
     .input(
       z.object({
         evmAddress: z.string(),
-        ss58Address: z.string(),
-        module: z.string(),
+        moduleKey: z.string(),
       }),
     )
-    .query(({ input }) => {
-      return getStakeSignature(input);
+    .query(async ({ input }) => {
+      const { ss58Address } = await getStakerWallet({
+        evmAddress: input.evmAddress,
+        createIfNotExists: true,
+      });
+
+      return {
+        signature: await getStakeSignature({ ...input, ss58Address }),
+        evmAddress: input.evmAddress,
+        moduleKey: input.moduleKey,
+        ss58Address,
+      };
     }),
 });

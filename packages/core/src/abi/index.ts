@@ -1,1 +1,1 @@
-export * from "./stakeComAIV1";
+export * from "./stakeComAI";

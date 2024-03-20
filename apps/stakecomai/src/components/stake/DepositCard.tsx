@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { toMaxDecimals } from "~core/formatters";
 import { AlertTriangle } from "lucide-react";
 import { formatUnits } from "viem";
+import { useAccount } from "wagmi";
 
 import { ComLogo } from "~/components/ComLogo";
 import { DepositButton } from "~/components/stake/DepositButton";
@@ -15,7 +16,7 @@ import { Combobox } from "~/components/ui/combobox";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useFees } from "~/hooks/useFees";
-import { useStaker } from "~/hooks/useStaker";
+import { useStakeContract } from "~/hooks/useStakeContract";
 import { useValidators } from "~/hooks/useValidators";
 import { useWCom } from "~/hooks/useWCom";
 import { WCOM_DECIMALS } from "~/lib/constants";
@@ -25,7 +26,7 @@ const MIN_STAKE = 15;
 const DEFAULT_VALIDATOR_KEY = "vali::stakecomai";
 
 export function DepositCard() {
-  useStaker();
+  const { address } = useAccount();
   const { balance } = useWCom();
   const [value, setValue] = useState(
     BigInt(toAmount(MIN_STAKE.toString(), WCOM_DECIMALS)),
@@ -34,6 +35,7 @@ export function DepositCard() {
   const [inputValue, setInputValue] = useState(MIN_STAKE.toString());
   const { validator } = useValidators(validatorKey || DEFAULT_VALIDATOR_KEY);
   const fees = useFees({ amount: value, apy: validator?.apy });
+  useStakeContract({ moduleKey: validator?.key, evmAddress: address });
 
   const onChangeValidatorKey = useCallback((value: string) => {
     setValidatorKey(value ? value : DEFAULT_VALIDATOR_KEY);
@@ -120,7 +122,10 @@ export function DepositCard() {
                   value: "",
                   disabled: true,
                 },
-                { label: "vali::stakecomai", value: "vali::stakecomai" },
+                {
+                  label: "vali::stakecomai",
+                  value: "5GQjs8TywAmeKJ8nXnjR7Z1dXbMw4v7GnLJXyeggD1WHWgaf",
+                },
               ]}
               placeholder="Select module to stake"
               value={validatorKey}

@@ -27,10 +27,10 @@ export async function getStakerUser({
     await refreshStakerBalance(evmAddress);
   }
 
-  const { mnemonicEncrypted: _, ...stakerUser } = await getStakerWallet(
+  const { mnemonicEncrypted: _, ...stakerUser } = await getStakerWallet({
     evmAddress,
     createIfNotExists,
-  );
+  });
 
   const isStaleData =
     !stakerUser.updatedAt ||

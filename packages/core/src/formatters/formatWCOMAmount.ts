@@ -2,7 +2,7 @@ import { WCOMAI_DECIMALS, WCOMAI_UNIT } from "~core/constants";
 import { formatAmount } from "~core/formatters/formatAmount";
 
 export function formatWCOMAmount(
-  amount: string | number,
+  amount: string | number | bigint,
   options?: { maxDecimals?: number; withUnit?: boolean },
 ) {
   return formatAmount(amount, {

@@ -2,7 +2,7 @@ import { toMaxDecimals } from "~core/formatters/toMaxDecimals";
 import { formatUnits } from "viem";
 
 export function formatAmount(
-  amount: string | number,
+  amount: string | number | bigint,
   options: { maxDecimals?: number; displayUnit?: string; decimals: number },
 ) {
   let formatted = formatUnits(BigInt(amount), options.decimals);

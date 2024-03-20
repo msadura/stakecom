@@ -12,7 +12,9 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { useFees } from "~/hooks/useFees";
 import { useStaker } from "~/hooks/useStaker";
+import { useValidators } from "~/hooks/useValidators";
 import { useWCom } from "~/hooks/useWCom";
 import { WCOM_DECIMALS } from "~/lib/constants";
 import { toAmount } from "~/lib/toAmount";
@@ -24,6 +26,10 @@ export function DepositCard() {
   const { balance } = useWCom();
   const [value, setValue] = useState(BigInt(toAmount("10", WCOM_DECIMALS)));
   const [inputValue, setInputValue] = useState("10");
+  const { validator } = useValidators("vali::stakecomai");
+  const fees = useFees({ amount: value, apy: validator?.apy });
+
+  console.log("🔥 f", fees);
 
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

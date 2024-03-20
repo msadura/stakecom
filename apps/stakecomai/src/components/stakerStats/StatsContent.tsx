@@ -43,7 +43,7 @@ export const StatsContent = ({ staker, hasError }: Props) => {
     );
   }
 
-  if (staker && hasStake) {
+  if (staker && !hasStake) {
     return (
       <Box direction="col" className="gap-1">
         <p className="text-sm text-muted-foreground">

@@ -124,7 +124,7 @@ export function DepositCard() {
                 },
                 {
                   label: "vali::stakecomai",
-                  value: "5GQjs8TywAmeKJ8nXnjR7Z1dXbMw4v7GnLJXyeggD1WHWgaf",
+                  value: "vali::stakecomai",
                 },
               ]}
               placeholder="Select module to stake"

@@ -1,3 +1,4 @@
+import { error } from "console";
 import { skipToken } from "@tanstack/react-query";
 import {
   formatCOMAmount,
@@ -16,7 +17,7 @@ interface Props {
   hasError?: boolean;
 }
 
-export const StatsContent = ({ staker }: Props) => {
+export const StatsContent = ({ staker, hasError }: Props) => {
   const hasStake = !!staker?.stake !== null && !!staker?.moduleKey;
 
   const { stake, deposit, moduleKey } = staker || {};
@@ -32,6 +33,16 @@ export const StatsContent = ({ staker }: Props) => {
   const { data: validatorData } = api.stats.getValidator.useQuery(
     moduleKey ? moduleKey : skipToken,
   );
+
+  if (hasError) {
+    return (
+      <Box direction="col" className="gap-1">
+        <p className="text-warning text-sm">
+          An error occurred while fetching your stats. Please try again later.
+        </p>
+      </Box>
+    );
+  }
 
   if (staker && hasStake) {
     return (

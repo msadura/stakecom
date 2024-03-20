@@ -11,6 +11,7 @@ import { StakeFees } from "~/components/stake/StakeFees";
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import { Combobox } from "~/components/ui/combobox";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useFees } from "~/hooks/useFees";
@@ -21,6 +22,7 @@ import { WCOM_DECIMALS } from "~/lib/constants";
 import { toAmount } from "~/lib/toAmount";
 
 const MIN_STAKE = 15;
+const DEFAULT_VALIDATOR_KEY = "vali::stakecomai";
 
 export function DepositCard() {
   useStaker();
@@ -28,9 +30,14 @@ export function DepositCard() {
   const [value, setValue] = useState(
     BigInt(toAmount(MIN_STAKE.toString(), WCOM_DECIMALS)),
   );
+  const [validatorKey, setValidatorKey] = useState(DEFAULT_VALIDATOR_KEY);
   const [inputValue, setInputValue] = useState(MIN_STAKE.toString());
-  const { validator } = useValidators("vali::stakecomai");
+  const { validator } = useValidators(validatorKey || DEFAULT_VALIDATOR_KEY);
   const fees = useFees({ amount: value, apy: validator?.apy });
+
+  const onChangeValidatorKey = useCallback((value: string) => {
+    setValidatorKey(value ? value : DEFAULT_VALIDATOR_KEY);
+  }, []);
 
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +78,7 @@ export function DepositCard() {
 
   return (
     <Card>
-      <CardContent className="mb-4 justify-start py-0">
+      <CardContent className="mb-4 justify-start py-0 ">
         <div className="pt-6">
           <Box justify="between">
             <Label htmlFor="name" className="mb-1 text-muted-foreground">
@@ -103,6 +110,22 @@ export function DepositCard() {
             >
               Max
             </Button>
+          </Box>
+
+          <Box className="mt-2">
+            <Combobox
+              options={[
+                {
+                  label: "More modules coming soon...",
+                  value: "",
+                  disabled: true,
+                },
+                { label: "vali::stakecomai", value: "vali::stakecomai" },
+              ]}
+              placeholder="Select module to stake"
+              value={validatorKey}
+              onChange={onChangeValidatorKey}
+            />
           </Box>
 
           <Box className="py-3">

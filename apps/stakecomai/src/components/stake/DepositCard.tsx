@@ -32,8 +32,6 @@ export function DepositCard() {
   const { validator } = useValidators("vali::stakecomai");
   const fees = useFees({ amount: value, apy: validator?.apy });
 
-  console.log("🔥 f", fees);
-
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       try {

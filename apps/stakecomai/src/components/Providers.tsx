@@ -23,7 +23,7 @@ const { wallets } = getDefaultWallets();
 
 const config = getDefaultConfig({
   appName: "stake.com.ai",
-  projectId: "YOUR_PROJECT_ID",
+  projectId: "5a2a229ccb03eb4f9b5909cb3255f0f9",
   wallets: [
     ...wallets,
     {

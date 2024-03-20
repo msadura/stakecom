@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { toMaxDecimals } from "~core/formatters";
 import { AlertTriangle } from "lucide-react";
 import { formatUnits } from "viem";
 
@@ -15,7 +16,6 @@ import { useStaker } from "~/hooks/useStaker";
 import { useWCom } from "~/hooks/useWCom";
 import { WCOM_DECIMALS } from "~/lib/constants";
 import { toAmount } from "~/lib/toAmount";
-import { toMaxDecimals } from "~/lib/toMaxDecimals";
 
 const MIN_STAKE = 10;
 

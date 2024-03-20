@@ -1,4 +1,4 @@
-import { toMaxDecimals } from "~core/utils/toMaxDecimals";
+import { toMaxDecimals } from "~core/formatters/toMaxDecimals";
 import { formatUnits } from "viem";
 
 export function formatAmount(

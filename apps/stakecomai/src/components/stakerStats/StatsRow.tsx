@@ -5,16 +5,30 @@ interface Props {
   label: string;
   value: string;
   highlighted?: boolean;
+  valueClassName?: string;
+  labelClassName?: string;
 }
 
-export const StatsRow = ({ label, value, highlighted }: Props) => {
+export const StatsRow = ({
+  label,
+  value,
+  highlighted,
+  valueClassName,
+  labelClassName,
+}: Props) => {
   return (
     <Box justify="between" align="center">
-      <p className="text-sm font-medium leading-none">{label}</p>
+      <p className={cn("text-sm font-medium leading-none", labelClassName)}>
+        {label}
+      </p>
       <p
-        className={cn("text-sm text-muted-foreground", {
-          "font-bold": highlighted,
-        })}
+        className={cn(
+          "text-sm text-muted-foreground",
+          {
+            "font-bold": highlighted,
+          },
+          valueClassName,
+        )}
       >
         {value}
       </p>

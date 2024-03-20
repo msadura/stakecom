@@ -4,6 +4,14 @@ import { parseUnits } from "viem";
 
 import { bigIntPercent } from "~/lib/bigIntPercent";
 
+export interface StakeFeesType {
+  bridgeFee: bigint;
+  serviceFee: bigint;
+  transferFee: bigint;
+  totalFee: bigint;
+  daysToBreakEven: bigint;
+}
+
 const BRIDGE_FEE_PERCENT = 0.3;
 const MIN_BRIDGE_FEE = 1;
 const SERVICE_FEE = 0;
@@ -18,8 +26,7 @@ export function useFees({
   amount: bigint;
   decimals?: number;
   apy?: number;
-}) {
-  console.log("🔥", amount, decimals, apy);
+}): StakeFeesType {
   const bridgeFee = bigIntPercent(amount, BRIDGE_FEE_PERCENT);
   const minBridgeFee = parseUnits(MIN_BRIDGE_FEE.toString(), decimals);
   const finalBridgeFee = bridgeFee < minBridgeFee ? minBridgeFee : bridgeFee;
@@ -31,7 +38,8 @@ export function useFees({
   const daysToBreakEven = useMemo(() => {
     const yearlyEarn = bigIntPercent(estimatedStake, apy || 0);
     const dailyEarn = yearlyEarn / 365n;
-    const days = dailyEarn > 0 ? totalFee / dailyEarn : 0;
+
+    const days = dailyEarn > 0 ? totalFee / dailyEarn : 0n;
 
     return days;
   }, [apy, estimatedStake, totalFee]);

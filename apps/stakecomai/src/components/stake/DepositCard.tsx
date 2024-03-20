@@ -7,6 +7,7 @@ import { formatUnits } from "viem";
 
 import { ComLogo } from "~/components/ComLogo";
 import { DepositButton } from "~/components/stake/DepositButton";
+import { StakeFees } from "~/components/stake/StakeFees";
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
@@ -19,13 +20,15 @@ import { useWCom } from "~/hooks/useWCom";
 import { WCOM_DECIMALS } from "~/lib/constants";
 import { toAmount } from "~/lib/toAmount";
 
-const MIN_STAKE = 10;
+const MIN_STAKE = 15;
 
 export function DepositCard() {
   useStaker();
   const { balance } = useWCom();
-  const [value, setValue] = useState(BigInt(toAmount("10", WCOM_DECIMALS)));
-  const [inputValue, setInputValue] = useState("10");
+  const [value, setValue] = useState(
+    BigInt(toAmount(MIN_STAKE.toString(), WCOM_DECIMALS)),
+  );
+  const [inputValue, setInputValue] = useState(MIN_STAKE.toString());
   const { validator } = useValidators("vali::stakecomai");
   const fees = useFees({ amount: value, apy: validator?.apy });
 
@@ -70,7 +73,7 @@ export function DepositCard() {
 
   return (
     <Card>
-      <CardContent className="justify-start space-y-2 py-0">
+      <CardContent className="mb-4 justify-start py-0">
         <div className="pt-6">
           <Box justify="between">
             <Label htmlFor="name" className="mb-1 text-muted-foreground">
@@ -115,6 +118,7 @@ export function DepositCard() {
             )}
           </Box>
         </div>
+        <StakeFees fees={fees} />
       </CardContent>
       <CardFooter className="mt-0">
         <DepositButton />

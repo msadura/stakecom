@@ -1,3 +1,4 @@
+import { pullEvents } from "~core/events/pullEvents";
 import { z } from "zod";
 
 import {
@@ -18,6 +19,12 @@ export const stakeRouter = createTRPCRouter({
   refreshStaker: publicProcedure.input(z.string()).mutation(({ input }) => {
     return getStakerUser({ evmAddress: input, forceRefresh: true });
   }),
+  refreshUserEvents: publicProcedure
+    .input(z.string())
+    .mutation(async ({ input }) => {
+      await pullEvents();
+      return getStakerUser({ evmAddress: input });
+    }),
   getSignature: publicProcedure
     .input(
       z.object({

@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from "react";
 import { toMaxDecimals } from "~core/formatters";
 import { AlertTriangle } from "lucide-react";
 import { formatUnits } from "viem";
-import { useAccount } from "wagmi";
 
 import { ComLogo } from "~/components/ComLogo";
 import { DepositButton } from "~/components/stake/DepositButton";
@@ -26,8 +25,8 @@ const MIN_STAKE = 15;
 const DEFAULT_VALIDATOR_KEY = "vali::stakecomai";
 
 export function DepositCard() {
-  const { address } = useAccount();
-  const { balance } = useWCom();
+  const { balance, bridgeAllowance, approveBridge, isApproving } = useWCom();
+
   const [value, setValue] = useState(
     BigInt(toAmount(MIN_STAKE.toString(), WCOM_DECIMALS)),
   );
@@ -35,7 +34,9 @@ export function DepositCard() {
   const [inputValue, setInputValue] = useState(MIN_STAKE.toString());
   const { validator } = useValidators(validatorKey || DEFAULT_VALIDATOR_KEY);
   const fees = useFees({ amount: value, apy: validator?.apy });
-  useStakeContract({ moduleKey: validator?.key, evmAddress: address });
+  const { stakeWCOM, stakingPaused, isStaking } = useStakeContract({
+    moduleKey: validator?.key,
+  });
 
   const onChangeValidatorKey = useCallback((value: string) => {
     setValidatorKey(value ? value : DEFAULT_VALIDATOR_KEY);
@@ -144,10 +145,19 @@ export function DepositCard() {
             )}
           </Box>
         </div>
-        <StakeFees fees={fees} />
+        <StakeFees fees={fees} amount={value} />
       </CardContent>
       <CardFooter className="mt-0">
-        <DepositButton />
+        <DepositButton
+          onStake={() => stakeWCOM(value)}
+          stakingPaused={stakingPaused}
+          hasAllowance={bridgeAllowance === null || value <= bridgeAllowance}
+          disabled={
+            !!error || !value || stakingPaused || isApproving || isStaking
+          }
+          onApprove={() => approveBridge(value)}
+          isPending={isStaking || isApproving}
+        />
       </CardFooter>
     </Card>
   );

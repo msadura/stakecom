@@ -6,20 +6,28 @@ import { Box } from "~/components/ui/box";
 
 interface Props {
   fees: StakeFeesType;
+  amount: bigint;
 }
 
-export const StakeFees = ({ fees }: Props) => {
+export const StakeFees = ({ fees, amount }: Props) => {
   return (
     <Box direction="col" className="gap-1">
+      <Box className="mb-2 flex-1">
+        <StatsRow
+          highlighted
+          label="Estimated stake"
+          value={`${formatWCOMAmount(amount - fees.totalFee, { maxDecimals: 4 })} COM`}
+        />
+      </Box>
       <StatsRow
         label="Bridge fee"
-        value={`${formatWCOMAmount(fees.bridgeFee)} COM`}
+        value={`${formatWCOMAmount(fees.bridgeFee, { maxDecimals: 4 })} COM`}
       />
       <StatsRow
         label="Transfer fee"
-        value={`${formatWCOMAmount(fees.transferFee)} COM`}
+        value={`${formatWCOMAmount(fees.transferFee, { maxDecimals: 4 })} COM`}
       />
-      <StatsRow label="stake.com.ai fee" value={`FREE`} highlighted />
+      {/* <StatsRow label="stake.com.ai fee" value={`FREE`} highlighted /> */}
       <StatsRow
         label="Time to break even"
         value={`~${fees.daysToBreakEven} ${fees.daysToBreakEven === 1n ? "day" : "days"}`}

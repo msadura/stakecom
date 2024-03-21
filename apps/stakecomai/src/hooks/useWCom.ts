@@ -1,8 +1,17 @@
 "use client";
 
+import type { BaseError } from "wagmi";
+import { useCallback, useEffect } from "react";
+import { STAKE_ADDRESS } from "~core/constants";
+import { toast } from "sonner";
 import { erc20Abi, formatUnits } from "viem";
-import { useAccount, useReadContracts } from "wagmi";
+import {
+  useReadContracts,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
 
+import { useStaker } from "~/hooks/useStaker";
 import { WCOM_ADDRESS, WCOM_DECIMALS } from "~/lib/constants";
 
 const wComContract = {
@@ -11,26 +20,76 @@ const wComContract = {
 } as const;
 
 export function useWCom() {
-  const { address } = useAccount();
+  const { isConnected, evmAddress } = useStaker();
+  const {
+    writeContract,
+    isPending: isApproving,
+    data: approveHash,
+    error: approveError,
+  } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({ hash: approveHash });
 
-  const result = useReadContracts({
+  const {
+    data,
+    refetch: refreshWComData,
+    isPending,
+  } = useReadContracts({
     contracts: [
       {
         ...wComContract,
         functionName: "balanceOf",
-        args: [address || "0x"],
+        args: [evmAddress || "0x"],
+      },
+      {
+        ...wComContract,
+        functionName: "allowance",
+        args: [evmAddress || "0x", STAKE_ADDRESS],
       },
     ],
-    query: { enabled: !!address },
+    query: { enabled: isConnected },
   });
 
+  const [balanceData, allowanceData] = data || [null, null];
+
   const balance = {
-    value: result.data?.[0].result || 0n,
-    isLoaded: !!result.data?.[0],
-    formatted: result.data?.[0].result
-      ? formatUnits(result.data?.[0].result, WCOM_DECIMALS)
+    value: balanceData?.result || 0n,
+    isLoaded: !!balanceData,
+    formatted: balanceData?.result
+      ? formatUnits(balanceData.result, WCOM_DECIMALS)
       : "0",
   };
 
-  return { ...result, balance };
+  const bridgeAllowance =
+    typeof allowanceData?.result !== "undefined" ? allowanceData.result : null;
+
+  const approveBridge = useCallback(
+    async (approveAmount: bigint) => {
+      writeContract({
+        ...wComContract,
+        functionName: "approve",
+        args: [STAKE_ADDRESS, approveAmount],
+      });
+    },
+    [writeContract],
+  );
+
+  useEffect(() => {
+    if (isConfirmed) {
+      refreshWComData().catch(console.error);
+      toast.success("Approved successfully");
+    }
+
+    if (approveError) {
+      toast.error((approveError as BaseError).shortMessage);
+    }
+  }, [approveError, isConfirmed, refreshWComData]);
+
+  return {
+    isPending: isPending,
+    balance,
+    bridgeAllowance,
+    isApproving: isApproving || isConfirming,
+    approveBridge,
+  };
 }

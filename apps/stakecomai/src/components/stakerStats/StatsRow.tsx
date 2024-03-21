@@ -17,7 +17,7 @@ export const StatsRow = ({
   labelClassName,
 }: Props) => {
   return (
-    <Box justify="between" align="center">
+    <Box justify="between" align="center" className="flex-1">
       <p className={cn("text-sm font-medium leading-none", labelClassName)}>
         {label}
       </p>

@@ -3,10 +3,10 @@
 import { useCallback, useMemo, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { switchChain } from "@wagmi/core";
-import { Loader2 } from "lucide-react";
 import { useAccount, useConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 
+import { Spinner } from "~/components/Spinner";
 import { Button } from "~/components/ui/button";
 
 interface ButtonConfig {
@@ -17,7 +17,21 @@ interface ButtonConfig {
   tooltip?: string;
 }
 
-export const DepositButton = () => {
+export const DepositButton = ({
+  onStake,
+  onApprove,
+  stakingPaused,
+  hasAllowance,
+  disabled,
+  isPending,
+}: {
+  onStake: VoidFunction;
+  onApprove: VoidFunction;
+  stakingPaused?: boolean;
+  isPending?: boolean;
+  hasAllowance: boolean;
+  disabled?: boolean;
+}) => {
   const wagmiConfig = useConfig();
   const { openConnectModal } = useConnectModal();
   const { isConnected, chainId } = useAccount();
@@ -32,7 +46,7 @@ export const DepositButton = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [wagmiConfig]);
 
   const buttonConfig: ButtonConfig = useMemo(() => {
     if (!isConnected) {
@@ -51,14 +65,41 @@ export const DepositButton = () => {
       };
     }
 
+    if (stakingPaused) {
+      return {
+        label: "Deposits disabled",
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onClick: () => {},
+        variant: undefined,
+        disabled: true,
+      };
+    }
+
+    if (!hasAllowance) {
+      return {
+        label: "Approve",
+        onClick: onApprove,
+        variant: undefined,
+        disabled: false,
+      };
+    }
+
     return {
-      label: "Deposits disabled",
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClick: () => {},
+      label: "Deposit",
+      onClick: onStake,
       variant: undefined,
-      disabled: true,
+      disabled: false,
     };
-  }, [chainId, isConnected, openConnectModal, safeSwitchNetwork]);
+  }, [
+    chainId,
+    hasAllowance,
+    isConnected,
+    onApprove,
+    onStake,
+    openConnectModal,
+    safeSwitchNetwork,
+    stakingPaused,
+  ]);
 
   return (
     <Button
@@ -66,12 +107,10 @@ export const DepositButton = () => {
       variant={buttonConfig?.variant}
       className="flex-1"
       size="lg"
-      disabled={isLoading || buttonConfig?.disabled}
+      disabled={isLoading || buttonConfig?.disabled || isPending || disabled}
     >
-      {isLoading && (
-        <Loader2 className="mr-1 animate-spin" width={50} height={50} />
-      )}
       {buttonConfig?.label}
+      {(isLoading || isPending) && <Spinner className="mx-1" size={16} />}
     </Button>
   );
 };

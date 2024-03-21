@@ -59,7 +59,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               <SiteHeader />
               <Box className="flex-1 flex-col">{props.children}</Box>
               <SiteFooter />
-              <Toaster />
+              <Toaster richColors />
             </Box>
           </Providers>
         </ThemeProvider>

@@ -1,10 +1,18 @@
 "use client";
 
+import type { BaseError } from "wagmi";
+import { useCallback, useEffect } from "react";
 import { skipToken } from "@tanstack/react-query";
 import { stakeComAIAbi } from "~core/abi";
 import { STAKE_ADDRESS } from "~core/constants";
-import { useAccount, useReadContracts } from "wagmi";
+import { toast } from "sonner";
+import {
+  useReadContracts,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
 
+import { useStaker } from "~/hooks/useStaker";
 import { api } from "~/trpc/react";
 
 const stakeContract = {
@@ -12,14 +20,16 @@ const stakeContract = {
   abi: stakeComAIAbi,
 } as const;
 
-export function useStakeContract({
-  evmAddress,
-  moduleKey,
-}: {
-  evmAddress?: string;
-  moduleKey?: string;
-}) {
-  const { address } = useAccount();
+export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
+  const { isConnected, evmAddress } = useStaker();
+  const {
+    data: stakeHash,
+    isPending: isStaking,
+    writeContract,
+    error,
+  } = useWriteContract();
+  const { isLoading: isConfirmingStake, isSuccess: isConfirmedStake } =
+    useWaitForTransactionReceipt({ hash: stakeHash });
 
   const { data: signatureData } = api.stake.getSignature.useQuery(
     !!evmAddress && moduleKey
@@ -30,10 +40,17 @@ export function useStakeContract({
       : skipToken,
   );
 
-  console.log("🔥 signature data:", signatureData);
-  // TODO: stake contract call
   // TODO: unstake constact call
-  // TODO: wait for tx / listen to event and refresh
+
+  useEffect(() => {
+    if (error) {
+      toast.error((error as BaseError).shortMessage);
+    }
+
+    if (isConfirmedStake) {
+      toast.success("Stake confirmed");
+    }
+  });
 
   const { data: baseData } = useReadContracts({
     contracts: [
@@ -58,11 +75,47 @@ export function useStakeContract({
         args: [],
       },
     ],
-    query: { enabled: !!address },
+    query: { enabled: isConnected },
   });
 
   const [totalStaked, allowCustomModule, stakingPaused, defaultModule] =
     baseData || [];
 
-  return { totalStaked, allowCustomModule, stakingPaused, defaultModule };
+  const stakeWCOM = useCallback(
+    (amount: bigint) => {
+      if (
+        !moduleKey ||
+        !signatureData?.ss58Address ||
+        !signatureData?.signature
+      ) {
+        return;
+      }
+
+      const { signature, ss58Address } = signatureData;
+      writeContract({
+        ...stakeContract,
+        functionName: "stake",
+        args: [amount, ss58Address, moduleKey, signature],
+      });
+    },
+    [moduleKey, signatureData, writeContract],
+  );
+
+  useEffect(() => {
+    if (isConfirmedStake) {
+      // TODO: trigger offchain worker + refresh user + refresh wCOM
+      toast.success(
+        "Deposit confirmed. It takes a few minutes to bridge and stake.",
+      );
+    }
+  }, [isConfirmedStake]);
+
+  return {
+    totalStaked: totalStaked?.result,
+    allowCustomModule: allowCustomModule?.result || false,
+    stakingPaused: stakingPaused?.result || false,
+    defaultModule: defaultModule?.result || "",
+    stakeWCOM,
+    isStaking: isStaking || isConfirmingStake,
+  };
 }

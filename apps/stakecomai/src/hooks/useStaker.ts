@@ -45,5 +45,6 @@ export function useStaker() {
     isConnected,
     refreshUserBalances,
     isRefreshing,
+    evmAddress: address,
   };
 }

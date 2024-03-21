@@ -21,7 +21,7 @@ const stakeContract = {
 } as const;
 
 export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
-  const { isConnected, evmAddress } = useStaker();
+  const { isConnected, evmAddress, refreshUserEvents } = useStaker();
   const {
     data: stakeHash,
     isPending: isStaking,
@@ -40,7 +40,7 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
       : skipToken,
   );
 
-  // TODO: unstake constact call
+  // TODO: unstake call
 
   useEffect(() => {
     if (error) {
@@ -103,12 +103,12 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
 
   useEffect(() => {
     if (isConfirmedStake) {
-      // TODO: trigger offchain worker + refresh user + refresh wCOM
+      refreshUserEvents();
       toast.success(
         "Deposit confirmed. It takes a few minutes to bridge and stake.",
       );
     }
-  }, [isConfirmedStake]);
+  }, [isConfirmedStake, refreshUserEvents]);
 
   return {
     totalStaked: totalStaked?.result,

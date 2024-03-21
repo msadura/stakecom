@@ -27,6 +27,14 @@ export function useStaker() {
       },
     });
 
+  const { mutate: mutateUserEvents } = api.stake.refreshUserEvents.useMutation({
+    onSettled(data) {
+      if (data && isConnected) {
+        utils.stake.getStaker.setData(address, data);
+      }
+    },
+  });
+
   useInterval(
     () => {
       address && refetchUser().catch(console.error);
@@ -40,10 +48,17 @@ export function useStaker() {
     }
   }, [address, isConnected, mutate]);
 
+  const refreshUserEvents = useCallback(() => {
+    if (isConnected) {
+      mutateUserEvents(address);
+    }
+  }, [address, isConnected, mutateUserEvents]);
+
   return {
     stakerQuery,
     isConnected,
     refreshUserBalances,
+    refreshUserEvents,
     isRefreshing,
     evmAddress: address,
   };

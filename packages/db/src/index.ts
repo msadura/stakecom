@@ -11,7 +11,9 @@ export { createPgTable as tableCreator } from "./schema/_table";
 
 export * from "drizzle-orm";
 
-const client = postgres(connectionString);
+const client = postgres(connectionString, {
+  ssl: { rejectUnauthorized: false },
+});
 
 export const db = drizzle(client, { schema });
 export const connection = client;

@@ -80,7 +80,7 @@ export const DepositButton = ({
         label: "Approve",
         onClick: onApprove,
         variant: undefined,
-        disabled: false,
+        disabled,
       };
     }
 
@@ -88,12 +88,14 @@ export const DepositButton = ({
       label: "Deposit",
       onClick: onStake,
       variant: undefined,
-      disabled: false,
+      disabled: disabled || isPending,
     };
   }, [
     chainId,
+    disabled,
     hasAllowance,
     isConnected,
+    isPending,
     onApprove,
     onStake,
     openConnectModal,
@@ -107,7 +109,7 @@ export const DepositButton = ({
       variant={buttonConfig?.variant}
       className="flex-1"
       size="lg"
-      disabled={isLoading || buttonConfig?.disabled || isPending || disabled}
+      disabled={isLoading || buttonConfig?.disabled}
     >
       {buttonConfig?.label}
       {(isLoading || isPending) && <Spinner className="mx-1" size={16} />}

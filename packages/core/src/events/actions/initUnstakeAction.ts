@@ -2,6 +2,7 @@ import { bridgeApiRouter } from "~core/bridge";
 import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { unstakeCom } from "~core/commune/unstakeCom";
 import { getStakerWallet } from "~core/wallet";
+import { updateStaker } from "~core/wallet/updateStaker";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
@@ -59,6 +60,11 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
         console.error("Error transferring funds to bridge", transferRes);
         return { result: null, canRetry: true, pendingTransfer: true };
       }
+
+      await updateStaker({
+        evmAddress: params.evmAddress,
+        updateInput: { moduleKey: "" },
+      });
 
       return { result: transferRes };
     } catch (e) {

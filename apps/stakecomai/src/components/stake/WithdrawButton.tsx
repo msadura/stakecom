@@ -92,10 +92,8 @@ export const WithdrawButton = ({
         size="lg"
         disabled={isLoading || buttonConfig?.disabled}
       >
-        {(isLoading || isUnstaking) && (
-          <Loader2 className="mr-1 animate-spin" width={50} height={50} />
-        )}
         {buttonConfig?.label}
+        {(isLoading || isUnstaking) && <Spinner className="ml-1" size={16} />}
       </Button>
 
       {claimAmount > 0 && (

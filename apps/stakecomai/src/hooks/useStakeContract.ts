@@ -31,14 +31,14 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
   const { isLoading: isConfirmingStake, isSuccess: isConfirmedStake } =
     useWaitForTransactionReceipt({ hash: stakeHash });
 
-  const {
-    data: initUnstakeHash,
-    isPending: isUnstaking,
-    writeContract: writeContractUnstake,
-    error: errorUnstake,
-  } = useWriteContract();
-  const { isLoading: isConfirmingUnstake, isSuccess: isConfirmedUnstake } =
-    useWaitForTransactionReceipt({ hash: stakeHash });
+  // const {
+  //   data: initUnstakeHash,
+  //   isPending: isUnstaking,
+  //   writeContract: writeContractUnstake,
+  //   error: errorUnstake,
+  // } = useWriteContract();
+  // const { isLoading: isConfirmingUnstake, isSuccess: isConfirmedUnstake } =
+  //   useWaitForTransactionReceipt({ hash: stakeHash });
 
   const { data: signatureData } = api.stake.getSignature.useQuery(
     !!evmAddress && moduleKey
@@ -110,16 +110,16 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
     [moduleKey, signatureData, writeContractStake],
   );
 
-  const unstakeWCOM = useCallback(
-    (amount: bigint, unstakeAll) => {
-      writeContractUnstake({
-        ...stakeContract,
-        functionName: "initUnstake",
-        args: [amount, ss58Address, moduleKey, signature],
-      });
-    },
-    [moduleKey, signatureData, writeContractStake],
-  );
+  // const unstakeWCOM = useCallback(
+  //   (amount: bigint, unstakeAll) => {
+  //     writeContractUnstake({
+  //       ...stakeContract,
+  //       functionName: "initUnstake",
+  //       args: [amount, ss58Address, moduleKey, signature],
+  //     });
+  //   },
+  //   [moduleKey, signatureData, writeContractStake],
+  // );
 
   useEffect(() => {
     if (isConfirmedStake) {

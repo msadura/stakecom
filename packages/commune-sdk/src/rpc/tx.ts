@@ -35,9 +35,11 @@ export async function transfer({ amount, recipient, signer }: TransferInput) {
 export async function transferAll({
   recipient,
   signer,
+  keepBalance = 0n,
 }: {
   recipient: string;
   signer: KeyringPair;
+  keepBalance?: bigint;
 }) {
   const api = await getClient();
   const { balance } = await getBalances({ address: signer.address });
@@ -50,7 +52,10 @@ export async function transferAll({
   }
 
   const fee = await estimateTransferFee({ amount: balance, recipient, signer });
-  const tx = api.tx.balances.transfer(recipient, balance - fee.toBigInt());
+  const tx = api.tx.balances.transfer(
+    recipient,
+    balance - keepBalance - fee.toBigInt(),
+  );
 
   return broadcastTx({
     tx,
@@ -79,6 +84,7 @@ export async function unstake({
   signer,
 }: StakeInput) {
   let unstakeAmount = amount;
+  console.log("🔥 amount", amount);
   if (!amount || amount === 0n) {
     unstakeAmount = await getStakeByModule({
       networkId,
@@ -93,7 +99,7 @@ export async function unstake({
       msg: "No stake found to unstake",
     };
   }
-
+  console.log("🔥 unstake amount", unstakeAmount);
   const api = await getClient();
   const tx = api.tx.subspaceModule.removeStake(
     networkId,

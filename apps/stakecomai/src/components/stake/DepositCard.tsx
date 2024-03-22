@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { MIN_STAKE } from "~core/constants";
 import { toMaxDecimals } from "~core/formatters";
 import { AlertTriangle } from "lucide-react";
 import { formatUnits } from "viem";
@@ -21,7 +22,6 @@ import { useWCom } from "~/hooks/useWCom";
 import { WCOM_DECIMALS } from "~/lib/constants";
 import { toAmount } from "~/lib/toAmount";
 
-const MIN_STAKE = 15;
 const DEFAULT_VALIDATOR_KEY = "vali::stakecomai";
 
 export function DepositCard() {

@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { COMAI_DECIMALS } from "~core/constants";
-import { formatCOMAmount } from "~core/formatters";
+import { MIN_WITHDRAW, WCOMAI_DECIMALS } from "~core/constants";
+import { formatWCOMAmount } from "~core/formatters";
+import { COMToWCOMAmountValue } from "~core/utils/COMToWCOMAmountValue";
 import { AlertTriangle } from "lucide-react";
 import { formatUnits } from "viem";
 
@@ -20,33 +21,29 @@ import { useStakeContract } from "~/hooks/useStakeContract";
 import { useStaker } from "~/hooks/useStaker";
 import { toAmount } from "~/lib/toAmount";
 
-const MIN_WITHDRAW = 12;
-
 export function WithdrawCard() {
   const { stakerQuery } = useStaker();
   const { claimableAmount, isClaiming, claimFromBridge } = useBridge();
   const { isUnstaking, unstakeWCOM } = useStakeContract({});
-  // withdraw - COMAI decimals
+  // withdraw - wCOMAI decimals
   const [value, setValue] = useState(
-    BigInt(toAmount(MIN_WITHDRAW, COMAI_DECIMALS)),
+    BigInt(toAmount(MIN_WITHDRAW, WCOMAI_DECIMALS)),
   );
   const [inputValue, setInputValue] = useState(MIN_WITHDRAW.toString());
-  const fees = useFees({ amount: value, decimals: COMAI_DECIMALS });
+  const fees = useFees({ amount: value, decimals: WCOMAI_DECIMALS });
 
   const { data: staker } = stakerQuery;
-  const nativeBalance = BigInt(staker?.balance || "0");
-  const stakeBalance = BigInt(staker?.stake || "0");
+  const nativeBalance = COMToWCOMAmountValue(staker?.balance || "0");
+  const stakeBalance = COMToWCOMAmountValue(staker?.stake || "0");
   const comBalance = nativeBalance + stakeBalance;
   const unstakeAll =
-    comBalance - value <= toAmount(MIN_WITHDRAW, COMAI_DECIMALS);
-
-  console.log("🔥 unstake all", unstakeAll);
+    comBalance - value <= toAmount(MIN_WITHDRAW, WCOMAI_DECIMALS);
 
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       try {
         const newValue = e.target.value
-          ? toAmount(e.target.value, COMAI_DECIMALS)
+          ? toAmount(e.target.value, WCOMAI_DECIMALS)
           : BigInt(0n);
 
         setValue(newValue);
@@ -60,11 +57,11 @@ export function WithdrawCard() {
 
   const onMaxClick = useCallback(() => {
     setValue(comBalance);
-    setInputValue(formatUnits(comBalance, COMAI_DECIMALS));
+    setInputValue(formatUnits(comBalance, WCOMAI_DECIMALS));
   }, [comBalance]);
 
   const error = useMemo(() => {
-    if (value < toAmount(MIN_WITHDRAW, COMAI_DECIMALS)) {
+    if (value < toAmount(MIN_WITHDRAW, WCOMAI_DECIMALS)) {
       return "Withdraw amount too low";
     }
 
@@ -86,7 +83,7 @@ export function WithdrawCard() {
             <Label htmlFor="name" className="text-muted-foreground">
               Stake:{" "}
               <span className="font-bold text-foreground">
-                {formatCOMAmount(comBalance, { maxDecimals: 4 })}
+                {formatWCOMAmount(comBalance, { maxDecimals: 4 })}
               </span>
             </Label>
           </Box>

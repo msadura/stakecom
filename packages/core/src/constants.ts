@@ -31,3 +31,5 @@ export const WCOMAI_DECIMALS = 18;
 export const COMAI_DECIMALS = 9;
 export const WCOMAI_UNIT = "wCOMAI";
 export const COMAI_UNIT = "COMAI";
+export const MIN_STAKE = 15;
+export const MIN_WITHDRAW = 12;

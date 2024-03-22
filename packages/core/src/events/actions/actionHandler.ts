@@ -31,6 +31,11 @@ export async function actionHandler(action: PendingAction) {
       return true;
     }
 
+    if (res.skipUpdate) {
+      // do nothing, just skip
+      return false;
+    }
+
     // transfer funds step did not work, retry later
     if (res.pendingTransfer) {
       await updateEvent({

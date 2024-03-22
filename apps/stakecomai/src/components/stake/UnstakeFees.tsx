@@ -1,4 +1,4 @@
-import { formatCOMAmount } from "~core/formatters";
+import { formatWCOMAmount } from "~core/formatters";
 
 import type { StakeFeesType } from "~/hooks/useFees";
 import { StatsRow } from "~/components/stakerStats/StatsRow";
@@ -20,16 +20,16 @@ export const UnstakeFees = ({ fees, amount }: Props) => {
           valueClassName="text-primary"
           labelClassName="text-primary"
           label="Estimated claim"
-          value={`${formatCOMAmount(estimated, { maxDecimals: 4 })} wCOM`}
+          value={`${formatWCOMAmount(estimated, { maxDecimals: 4 })} wCOM`}
         />
       </Box>
       <StatsRow
         label="Bridge fee"
-        value={`${formatCOMAmount(fees.bridgeFee, { maxDecimals: 4 })} COM`}
+        value={`${formatWCOMAmount(fees.bridgeFee, { maxDecimals: 4 })} COM`}
       />
       <StatsRow
         label="Transfer fee"
-        value={`${formatCOMAmount(fees.transferFee, { maxDecimals: 4 })} COM`}
+        value={`${formatWCOMAmount(fees.transferFee, { maxDecimals: 4 })} COM`}
       />
     </Box>
   );

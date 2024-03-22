@@ -25,12 +25,18 @@ export const bridgeApiRouter = {
     return json;
   },
   refreshComDeposit: async (evmAddress: string) => {
-    const res = await bridgeApi.post("refreshComDeposit", {
-      body: JSON.stringify({ evmAddress }),
-    });
-    const json: BridgeWithdrawalSeed = await res.json();
+    try {
+      const res = await bridgeApi.post("refreshComDeposit", {
+        body: JSON.stringify({ evmAddress }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-    return json;
+      const json: BridgeWithdrawalSeed = await res.json();
+      return json;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   },
   getDepositAddress: async (destination: string) => {
     const res = await bridgeApi.get("getDepositAddress", {

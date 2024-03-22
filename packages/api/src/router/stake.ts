@@ -16,10 +16,10 @@ export const stakeRouter = createTRPCRouter({
       createIfNotExists: true,
     });
   }),
-  refreshStaker: publicProcedure.input(z.string()).mutation(({ input }) => {
+  refreshUserEvents: publicProcedure.input(z.string()).mutation(({ input }) => {
     return getStakerUser({ evmAddress: input, forceRefresh: true });
   }),
-  refreshUserEvents: publicProcedure.input(z.string()).mutation(({ input }) => {
+  refreshStaker: publicProcedure.input(z.string()).mutation(({ input }) => {
     // invoke event processing
     processEvents().catch(console.error);
 

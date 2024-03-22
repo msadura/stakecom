@@ -50,6 +50,7 @@ export async function actionHandler(action: PendingAction) {
     // something went wrong, retry
     return handleUnsuccessfulAction(action);
   } catch (e) {
+    console.log("🔥 action failed", e);
     return handleUnsuccessfulAction(action);
   }
 }

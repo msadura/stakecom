@@ -7,6 +7,7 @@ import { AlertTriangle } from "lucide-react";
 import { formatUnits } from "viem";
 
 import { ComLogo } from "~/components/ComLogo";
+import { UnstakeFees } from "~/components/stake/UnstakeFees";
 import { WithdrawButton } from "~/components/stake/WithdrawButton";
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
@@ -14,6 +15,7 @@ import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useBridge } from "~/hooks/useBridge";
+import { useFees } from "~/hooks/useFees";
 import { useStakeContract } from "~/hooks/useStakeContract";
 import { useStaker } from "~/hooks/useStaker";
 import { toAmount } from "~/lib/toAmount";
@@ -29,6 +31,7 @@ export function WithdrawCard() {
     BigInt(toAmount(MIN_WITHDRAW, COMAI_DECIMALS)),
   );
   const [inputValue, setInputValue] = useState(MIN_WITHDRAW.toString());
+  const fees = useFees({ amount: value, decimals: COMAI_DECIMALS });
 
   const { data: staker } = stakerQuery;
   const nativeBalance = BigInt(staker?.balance || "0");
@@ -74,7 +77,7 @@ export function WithdrawCard() {
 
   return (
     <Card>
-      <CardContent className="justify-start space-y-2 py-0">
+      <CardContent className="mb-4 justify-start space-y-2 py-0">
         <div className="pt-6">
           <Box justify="between">
             <Label htmlFor="name" className="mb-1 text-muted-foreground">
@@ -119,6 +122,8 @@ export function WithdrawCard() {
             )}
           </Box>
         </div>
+
+        <UnstakeFees fees={fees} amount={value} />
       </CardContent>
 
       <CardFooter className="mt-0">

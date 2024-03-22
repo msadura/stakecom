@@ -25,10 +25,19 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
   const {
     data: stakeHash,
     isPending: isStaking,
-    writeContract,
-    error,
+    writeContract: writeContractStake,
+    error: errorStake,
   } = useWriteContract();
   const { isLoading: isConfirmingStake, isSuccess: isConfirmedStake } =
+    useWaitForTransactionReceipt({ hash: stakeHash });
+
+  const {
+    data: initUnstakeHash,
+    isPending: isUnstaking,
+    writeContract: writeContractUnstake,
+    error: errorUnstake,
+  } = useWriteContract();
+  const { isLoading: isConfirmingUnstake, isSuccess: isConfirmedUnstake } =
     useWaitForTransactionReceipt({ hash: stakeHash });
 
   const { data: signatureData } = api.stake.getSignature.useQuery(
@@ -43,8 +52,8 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
   // TODO: unstake call
 
   useEffect(() => {
-    if (error) {
-      toast.error((error as BaseError).shortMessage);
+    if (errorStake) {
+      toast.error((errorStake as BaseError).shortMessage);
     }
 
     if (isConfirmedStake) {
@@ -92,13 +101,24 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
       }
 
       const { signature, ss58Address } = signatureData;
-      writeContract({
+      writeContractStake({
         ...stakeContract,
         functionName: "stake",
         args: [amount, ss58Address, moduleKey, signature],
       });
     },
-    [moduleKey, signatureData, writeContract],
+    [moduleKey, signatureData, writeContractStake],
+  );
+
+  const unstakeWCOM = useCallback(
+    (amount: bigint, unstakeAll) => {
+      writeContractUnstake({
+        ...stakeContract,
+        functionName: "initUnstake",
+        args: [amount, ss58Address, moduleKey, signature],
+      });
+    },
+    [moduleKey, signatureData, writeContractStake],
   );
 
   useEffect(() => {

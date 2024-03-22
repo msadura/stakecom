@@ -123,7 +123,7 @@ function broadcastTx({
     errorCode?: string;
   }>((resolve, reject) => {
     tx.signAndSend(signer, ({ events = [], status, txHash }) => {
-      // console.log(`Current status is ${status.type}`);
+      console.log(`Current status is ${status.type}`);
 
       if (status.isFinalized) {
         const txError = unwrapError(events, api);

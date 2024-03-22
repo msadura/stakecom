@@ -1,10 +1,9 @@
 import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { stakeCom } from "~core/commune/stakeCom";
-import { formatWCOMAmount } from "~core/formatters";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
-import { toAmountValue } from "@stakecom/commune-sdk/utils";
+import { getBalances } from "@stakecom/commune-sdk";
 
 import type { PendingAction } from "~core/events/getPendingActions";
 
@@ -22,15 +21,16 @@ export async function stakeComAction(action: PendingAction): Promise<{
   }
 
   const signer = await getSignerForEvmAddress(params.evmAddress);
-  const wComAmount = formatWCOMAmount(params.amount);
-  const comAmount = toAmountValue(wComAmount);
+  const { balance } = await getBalances({ address: signer.address });
 
   const result = await stakeCom({
     key: params.evmAddress,
     module: params.module,
-    amount: comAmount,
+    amount: balance,
     signer,
   });
+
+  console.log(`🔥 stake result for ${signer.address}`, result);
 
   return { result };
 }

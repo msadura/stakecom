@@ -1,6 +1,7 @@
 import { bridgeApiRouter } from "~core/bridge";
 import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { unstakeCom } from "~core/commune/unstakeCom";
+import { getStakerWallet } from "~core/wallet";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
@@ -22,23 +23,28 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
   }
 
   const params = getActionParams(action);
-
+  console.log("🔥 up", params);
   if (!params) {
     return { result: null, canRetry: false };
   }
 
   let result: CommuneTxResponse | null = null;
+  const wallet = await getStakerWallet({ evmAddress: params.evmAddress });
   const signer = await getSignerForEvmAddress(params.evmAddress);
 
   // unstake
   if (!action.pendingTransfer) {
     result = await unstakeCom({
-      module: params.module,
+      module: wallet.moduleKey || "",
       unstakeAll: params.unstakeAll,
       signer,
       amount: BigInt(params.amount),
     });
+
+    console.log("🔥 unstake res", result);
   }
+
+  // TODO: handle case when user has no funds to unstake
 
   // unstaked or having pending transfer
   if (result?.success || action.pendingTransfer) {
@@ -61,16 +67,16 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
     }
   }
 
+  console.log("🔥 initUnstake res", result);
+
   return { result };
 }
 
 function getActionParams(action: PendingAction) {
   const actionSchema = z.object({
     evmAddress: z.string(),
-    module: z.string().min(3),
     amount: z.string(),
     unstakeAll: z.boolean().optional(),
-    mnemonicEncrypted: z.string().min(10),
   });
 
   try {

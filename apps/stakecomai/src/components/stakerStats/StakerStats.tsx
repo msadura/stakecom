@@ -13,10 +13,15 @@ import { useStaker } from "~/hooks/useStaker";
 import { cn } from "~/lib/utils";
 
 export const StakerStats = () => {
-  const { stakerQuery, isConnected, refreshUserBalances, isRefreshing } =
-    useStaker();
+  const {
+    stakerQuery,
+    isConnected,
+    refreshUserBalances,
+    isRefreshing,
+    evmAddress,
+  } = useStaker();
   const { error, data, isFetching } = stakerQuery;
-  const { claimableAmount } = useBridge();
+  const { claimableAmount, refreshDeposit } = useBridge();
 
   if (!isConnected) {
     return null;
@@ -31,7 +36,12 @@ export const StakerStats = () => {
           <Button
             variant="outline"
             size="iconXs"
-            onClick={refreshUserBalances}
+            onClick={() => {
+              refreshUserBalances();
+              if (evmAddress) {
+                refreshDeposit(evmAddress);
+              }
+            }}
             disabled={isRefreshing || isFetching}
           >
             <RefreshCw

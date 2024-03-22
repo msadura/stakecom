@@ -80,7 +80,7 @@ export const DepositButton = ({
         label: "Approve",
         onClick: onApprove,
         variant: undefined,
-        disabled,
+        disabled: disabled || isPending,
       };
     }
 

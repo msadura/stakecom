@@ -3,10 +3,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { switchChain } from "@wagmi/core";
+import { WCOMAI_UNIT } from "~core/constants";
+import { formatWCOMAmount } from "~core/formatters";
 import { Loader2 } from "lucide-react";
 import { useAccount, useConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 
+import { Spinner } from "~/components/Spinner";
+import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
 
 interface ButtonConfig {
@@ -17,7 +21,15 @@ interface ButtonConfig {
   tooltip?: string;
 }
 
-export const WithdrawButton = () => {
+export const WithdrawButton = ({
+  claimAmount,
+  isClaiming,
+  onClaim,
+}: {
+  claimAmount: bigint;
+  isClaiming: boolean;
+  onClaim: VoidFunction;
+}) => {
   const wagmiConfig = useConfig();
   const { openConnectModal } = useConnectModal();
   const { isConnected, chainId } = useAccount();
@@ -32,7 +44,7 @@ export const WithdrawButton = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [wagmiConfig]);
 
   const buttonConfig: ButtonConfig = useMemo(() => {
     if (!isConnected) {
@@ -61,17 +73,39 @@ export const WithdrawButton = () => {
   }, [chainId, isConnected, openConnectModal, safeSwitchNetwork]);
 
   return (
-    <Button
-      onClick={buttonConfig?.onClick}
-      variant={buttonConfig?.variant}
-      className="flex-1"
-      size="lg"
-      disabled={isLoading || buttonConfig?.disabled}
-    >
-      {isLoading && (
-        <Loader2 className="mr-1 animate-spin" width={50} height={50} />
+    <Box direction="col" className="flex-1">
+      <Button
+        onClick={buttonConfig?.onClick}
+        variant={buttonConfig?.variant}
+        size="lg"
+        disabled={isLoading || buttonConfig?.disabled}
+      >
+        {isLoading && (
+          <Loader2 className="mr-1 animate-spin" width={50} height={50} />
+        )}
+        {buttonConfig?.label}
+      </Button>
+
+      {claimAmount > 0 && (
+        <Box direction="col" className="mt-5 gap-1">
+          <p className="text-sm text-muted-foreground">
+            Claim{" "}
+            <span className="text-warning">
+              {formatWCOMAmount(claimAmount, { maxDecimals: 4 })}
+            </span>{" "}
+            {WCOMAI_UNIT}
+          </p>
+          <Button
+            onClick={onClaim}
+            variant="warning"
+            size="lg"
+            disabled={isClaiming}
+          >
+            Claim wCOMAI
+            {isClaiming && <Spinner className="ml-1" size={16} />}
+          </Button>
+        </Box>
       )}
-      {buttonConfig?.label}
-    </Button>
+    </Box>
   );
 };

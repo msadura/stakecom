@@ -21,7 +21,7 @@ const MIN_WITHDRAW = 12;
 
 export function WithdrawCard() {
   const { stakerQuery } = useStaker();
-  const { claimableAmount } = useBridge();
+  const { claimableAmount, isClaiming, claimFromBridge } = useBridge();
   // withdraw - COMAI decimals
   const [value, setValue] = useState(
     BigInt(toAmount(MIN_WITHDRAW, COMAI_DECIMALS)),
@@ -32,8 +32,6 @@ export function WithdrawCard() {
   const nativeBalance = BigInt(staker?.balance || "0");
   const stakeBalance = BigInt(staker?.stake || "0");
   const comBalance = nativeBalance + stakeBalance;
-
-  console.log("🔥", claimableAmount);
 
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +75,7 @@ export function WithdrawCard() {
               Withdraw wCOM
             </Label>
             <Label htmlFor="name" className="text-muted-foreground">
-              Balance:{" "}
+              Stake:{" "}
               <span className="font-bold text-foreground">
                 {formatCOMAmount(comBalance, { maxDecimals: 4 })}
               </span>
@@ -117,7 +115,11 @@ export function WithdrawCard() {
         </div>
       </CardContent>
       <CardFooter className="mt-0">
-        <WithdrawButton />
+        <WithdrawButton
+          claimAmount={claimableAmount}
+          isClaiming={isClaiming}
+          onClaim={claimFromBridge}
+        />
       </CardFooter>
     </Card>
   );

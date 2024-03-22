@@ -15,8 +15,8 @@ export const UnstakeFees = ({ fees, amount }: Props) => {
       <Box className="mb-2 flex-1">
         <StatsRow
           highlighted
-          valueClassName="text-warning"
-          labelClassName="text-warning"
+          valueClassName="text-primary"
+          labelClassName="text-primary"
           label="Estimated claim"
           value={`${formatCOMAmount(amount - fees.totalFee, { maxDecimals: 4 })} wCOM`}
         />

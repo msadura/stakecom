@@ -114,6 +114,7 @@ export function WithdrawCard() {
           </Box>
         </div>
       </CardContent>
+
       <CardFooter className="mt-0">
         <WithdrawButton
           claimAmount={claimableAmount}

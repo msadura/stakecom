@@ -57,7 +57,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           <Providers>
             <Box className="min-h-screen flex-col">
               <SiteHeader />
-              <Box className="flex-1 flex-col">{props.children}</Box>
+              <Box className="scroll-gutter flex-1 flex-col">
+                {props.children}
+              </Box>
               <SiteFooter />
               <Toaster richColors />
             </Box>

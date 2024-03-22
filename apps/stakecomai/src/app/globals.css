@@ -71,3 +71,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.scroll-gutter {
+  padding-left: calc(100vw - 100%);
+}

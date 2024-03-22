@@ -9,7 +9,7 @@ import { api } from "~/trpc/react";
 
 export function useStaker() {
   const { address, chain } = useAccount();
-  const isConnected = address && chain?.id === 1;
+  const isConnected = !!address && chain?.id === 1;
   const utils = api.useUtils();
 
   const stakerQuery = api.stake.getStaker.useQuery(

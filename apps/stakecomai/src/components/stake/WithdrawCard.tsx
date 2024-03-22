@@ -14,6 +14,7 @@ import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useBridge } from "~/hooks/useBridge";
+import { useStakeContract } from "~/hooks/useStakeContract";
 import { useStaker } from "~/hooks/useStaker";
 import { toAmount } from "~/lib/toAmount";
 
@@ -22,6 +23,7 @@ const MIN_WITHDRAW = 12;
 export function WithdrawCard() {
   const { stakerQuery } = useStaker();
   const { claimableAmount, isClaiming, claimFromBridge } = useBridge();
+  const { isUnstaking, unstakeWCOM } = useStakeContract({});
   // withdraw - COMAI decimals
   const [value, setValue] = useState(
     BigInt(toAmount(MIN_WITHDRAW, COMAI_DECIMALS)),
@@ -32,6 +34,10 @@ export function WithdrawCard() {
   const nativeBalance = BigInt(staker?.balance || "0");
   const stakeBalance = BigInt(staker?.stake || "0");
   const comBalance = nativeBalance + stakeBalance;
+  const unstakeAll =
+    comBalance - value <= toAmount(MIN_WITHDRAW, COMAI_DECIMALS);
+
+  console.log("🔥 unstake all", unstakeAll);
 
   const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,6 +126,9 @@ export function WithdrawCard() {
           claimAmount={claimableAmount}
           isClaiming={isClaiming}
           onClaim={claimFromBridge}
+          onUnstake={() => unstakeWCOM(value, unstakeAll)}
+          disabled={!!error || isUnstaking}
+          isUnstaking={isUnstaking}
         />
       </CardFooter>
     </Card>

@@ -25,10 +25,16 @@ export const WithdrawButton = ({
   claimAmount,
   isClaiming,
   onClaim,
+  disabled,
+  onUnstake,
+  isUnstaking,
 }: {
   claimAmount: bigint;
   isClaiming: boolean;
   onClaim: VoidFunction;
+  onUnstake: VoidFunction;
+  isUnstaking: boolean;
+  disabled?: boolean;
 }) => {
   const wagmiConfig = useConfig();
   const { openConnectModal } = useConnectModal();
@@ -64,13 +70,19 @@ export const WithdrawButton = ({
     }
 
     return {
-      label: "Coming soon...",
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClick: () => {},
+      label: "Unstake",
+      onClick: onUnstake,
       variant: undefined,
-      disabled: true,
+      disabled: disabled,
     };
-  }, [chainId, isConnected, openConnectModal, safeSwitchNetwork]);
+  }, [
+    chainId,
+    disabled,
+    isConnected,
+    onUnstake,
+    openConnectModal,
+    safeSwitchNetwork,
+  ]);
 
   return (
     <Box direction="col" className="flex-1">
@@ -80,7 +92,7 @@ export const WithdrawButton = ({
         size="lg"
         disabled={isLoading || buttonConfig?.disabled}
       >
-        {isLoading && (
+        {(isLoading || isUnstaking) && (
           <Loader2 className="mr-1 animate-spin" width={50} height={50} />
         )}
         {buttonConfig?.label}

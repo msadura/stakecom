@@ -12,6 +12,7 @@ import {
   useWriteContract,
 } from "wagmi";
 
+import { useBridge } from "~/hooks/useBridge";
 import { useStaker } from "~/hooks/useStaker";
 import { api } from "~/trpc/react";
 
@@ -22,6 +23,7 @@ const stakeContract = {
 
 export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
   const { isConnected, evmAddress, refreshUserEvents } = useStaker();
+  const { refreshDeposit } = useBridge();
   const {
     data: stakeHash,
     isPending: isStaking,
@@ -31,14 +33,14 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
   const { isLoading: isConfirmingStake, isSuccess: isConfirmedStake } =
     useWaitForTransactionReceipt({ hash: stakeHash });
 
-  // const {
-  //   data: initUnstakeHash,
-  //   isPending: isUnstaking,
-  //   writeContract: writeContractUnstake,
-  //   error: errorUnstake,
-  // } = useWriteContract();
-  // const { isLoading: isConfirmingUnstake, isSuccess: isConfirmedUnstake } =
-  //   useWaitForTransactionReceipt({ hash: stakeHash });
+  const {
+    data: initUnstakeHash,
+    isPending: isUnstaking,
+    writeContract: writeContractUnstake,
+    error: errorUnstake,
+  } = useWriteContract();
+  const { isLoading: isConfirmingUnstake, isSuccess: isConfirmedUnstake } =
+    useWaitForTransactionReceipt({ hash: initUnstakeHash });
 
   const { data: signatureData } = api.stake.getSignature.useQuery(
     !!evmAddress && moduleKey
@@ -48,18 +50,6 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
         }
       : skipToken,
   );
-
-  // TODO: unstake call
-
-  useEffect(() => {
-    if (errorStake) {
-      toast.error((errorStake as BaseError).shortMessage);
-    }
-
-    if (isConfirmedStake) {
-      toast.success("Stake confirmed");
-    }
-  });
 
   const { data: baseData } = useReadContracts({
     contracts: [
@@ -110,25 +100,45 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
     [moduleKey, signatureData, writeContractStake],
   );
 
-  // const unstakeWCOM = useCallback(
-  //   (amount: bigint, unstakeAll) => {
-  //     writeContractUnstake({
-  //       ...stakeContract,
-  //       functionName: "initUnstake",
-  //       args: [amount, ss58Address, moduleKey, signature],
-  //     });
-  //   },
-  //   [moduleKey, signatureData, writeContractStake],
-  // );
+  const unstakeWCOM = useCallback(
+    (amount: bigint, unstakeAll: boolean) => {
+      writeContractUnstake({
+        ...stakeContract,
+        functionName: "initUnstake",
+        args: [amount, unstakeAll],
+      });
+    },
+    [writeContractUnstake],
+  );
 
   useEffect(() => {
+    if (errorStake) {
+      toast.error((errorStake as BaseError).shortMessage);
+    }
+
     if (isConfirmedStake) {
       refreshUserEvents();
       toast.success(
         "Deposit confirmed. It takes a few minutes to bridge and stake.",
       );
     }
-  }, [isConfirmedStake, refreshUserEvents]);
+  }, [errorStake, isConfirmedStake, refreshUserEvents]);
+
+  useEffect(() => {
+    if (errorUnstake) {
+      toast.error((errorUnstake as BaseError).shortMessage);
+    }
+
+    if (isConfirmedUnstake) {
+      if (evmAddress) {
+        refreshDeposit(evmAddress);
+      }
+
+      toast.success(
+        "Unstake initialized. Your funds should be ready to claim in a few minutes.",
+      );
+    }
+  }, [errorUnstake, evmAddress, isConfirmedUnstake, refreshDeposit]);
 
   return {
     totalStaked: totalStaked?.result,
@@ -137,5 +147,7 @@ export function useStakeContract({ moduleKey }: { moduleKey?: string }) {
     defaultModule: defaultModule?.result || "",
     stakeWCOM,
     isStaking: isStaking || isConfirmingStake,
+    unstakeWCOM,
+    isUnstaking: isUnstaking || isConfirmingUnstake,
   };
 }

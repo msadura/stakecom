@@ -10,6 +10,8 @@ interface Props {
 }
 
 export const UnstakeFees = ({ fees, amount }: Props) => {
+  const estimated = amount - fees.totalFee < 0 ? 0n : amount - fees.totalFee;
+
   return (
     <Box direction="col" className="gap-1">
       <Box className="mb-2 flex-1">
@@ -18,7 +20,7 @@ export const UnstakeFees = ({ fees, amount }: Props) => {
           valueClassName="text-primary"
           labelClassName="text-primary"
           label="Estimated claim"
-          value={`${formatCOMAmount(amount - fees.totalFee, { maxDecimals: 4 })} wCOM`}
+          value={`${formatCOMAmount(estimated, { maxDecimals: 4 })} wCOM`}
         />
       </Box>
       <StatsRow

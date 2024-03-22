@@ -14,7 +14,7 @@ export default async function HomePage() {
           </h1>
         </Box>
         <h2 className="text-center text-xl text-muted-foreground">
-          Stake your wCom tokens and enjoy native yield!
+          Stake your wCOM tokens and enjoy native yield!
         </h2>
 
         <Box className="mx-auto mt-6 flex w-full max-w-[400px] flex-col gap-4 self-stretch text-left md:mt-12">

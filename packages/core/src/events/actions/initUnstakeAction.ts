@@ -27,7 +27,7 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
   console.log("🔥 up", params);
   if (!params) {
     return { result: null, canRetry: false };
-  }
+  }git remove
 
   let result: CommuneTxResponse | null = null;
   const wallet = await getStakerWallet({ evmAddress: params.evmAddress });

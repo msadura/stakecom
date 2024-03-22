@@ -1,10 +1,10 @@
-import { pullEvents } from "~core/events/pullEvents";
 import { z } from "zod";
 
 import {
   getStakerUser,
   getStakerWallet,
   getStakeSignature,
+  processEvents,
 } from "@stakecom/core";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -19,12 +19,12 @@ export const stakeRouter = createTRPCRouter({
   refreshStaker: publicProcedure.input(z.string()).mutation(({ input }) => {
     return getStakerUser({ evmAddress: input, forceRefresh: true });
   }),
-  refreshUserEvents: publicProcedure
-    .input(z.string())
-    .mutation(async ({ input }) => {
-      await pullEvents();
-      return getStakerUser({ evmAddress: input });
-    }),
+  refreshUserEvents: publicProcedure.input(z.string()).mutation(({ input }) => {
+    // invoke event processing
+    processEvents().catch(console.error);
+
+    return getStakerUser({ evmAddress: input, forceRefresh: true });
+  }),
   getSignature: publicProcedure
     .input(
       z.object({

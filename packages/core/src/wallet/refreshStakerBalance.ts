@@ -1,3 +1,5 @@
+import type { Address } from "viem";
+import { getStakeContract } from "~core/evm";
 import { getStakerWallet } from "~core/wallet";
 import { updateStaker } from "~core/wallet/updateStaker";
 
@@ -18,13 +20,18 @@ export async function refreshStakerBalance(evmAddress: string) {
       ? allStakes[staker.moduleKey]
       : staker.stake || "0";
 
-    // TODO: load evm balances from contract
+    const stakeContract = getStakeContract();
+    const [depositBalance, _, moduleKey] = await stakeContract.read.stakers([
+      evmAddress as Address,
+    ]);
 
     return updateStaker({
       evmAddress,
       updateInput: {
         stake: stake?.toString() || staker.stake || "0",
         balance: balance?.toString() || staker.balance || "0",
+        deposit: depositBalance?.toString() || staker.deposit || "0",
+        moduleKey: moduleKey || staker.moduleKey || "",
       },
     });
   } catch (e) {

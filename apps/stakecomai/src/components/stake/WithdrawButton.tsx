@@ -5,7 +5,6 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { switchChain } from "@wagmi/core";
 import { WCOMAI_UNIT } from "~core/constants";
 import { formatWCOMAmount } from "~core/formatters";
-import { Loader2 } from "lucide-react";
 import { useAccount, useConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 

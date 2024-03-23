@@ -2,9 +2,9 @@ import { env } from "~core/env";
 import ky from "ky";
 
 const serverApi = ky.create({
-  prefixUrl: env.SERVER_URL,
+  prefixUrl: env.SDK_SERVER_URL,
   headers: {
-    authorization: `Bearer ${env.SERVER_SECRET}`,
+    authorization: `Bearer ${env.SDK_SERVER_SECRET}`,
   },
 });
 

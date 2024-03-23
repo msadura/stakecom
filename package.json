@@ -20,7 +20,8 @@
     "lint:ws": "pnpm dlx sherif@latest",
     "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck",
-    "tsc": "turbo typecheck"
+    "tsc": "turbo typecheck",
+    "pm2:server": "pm2 start --name stakecomai-server --interpreter ~/.bun/bin/bun ./apps/server/src/index.ts"
   },
   "devDependencies": {
     "@stakecom/prettier-config": "workspace:^0.1.0",

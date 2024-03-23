@@ -4,7 +4,6 @@ import { pullEvents } from "~core/events/pullEvents";
 let isProcessing = false;
 
 export async function processEvents() {
-  console.log("🔥", "test process reload");
   if (isProcessing) {
     console.log("🚧 Already processing events, skipping.");
     return;

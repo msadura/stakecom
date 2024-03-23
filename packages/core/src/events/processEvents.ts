@@ -1,8 +1,16 @@
 import { processPendingActions } from "~core/events/processPendingActions";
 import { pullEvents } from "~core/events/pullEvents";
 
+let isProcessing = false;
+
 export async function processEvents() {
+  if (isProcessing) {
+    console.log("🚧 Already processing events, skipping.");
+    return;
+  }
+
   console.log("⚙️ Processing events...");
+  isProcessing = true;
 
   try {
     await pullEvents();
@@ -15,4 +23,6 @@ export async function processEvents() {
   } catch (error) {
     console.error("Error processing pending actions", error);
   }
+
+  isProcessing = false;
 }

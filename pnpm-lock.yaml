@@ -28,7 +28,7 @@ importers:
     dependencies:
       '@elysiajs/cron':
         specifier: ^0.8.0
-        version: 0.8.0(elysia@1.0.5)
+        version: 0.8.0(elysia@1.0.7)
       '@stakecom/commune-sdk':
         specifier: workspace:^0.1.0
         version: link:../../packages/commune-sdk
@@ -54,6 +54,37 @@ importers:
       bun-types:
         specifier: latest
         version: 1.0.30
+
+  apps/server:
+    dependencies:
+      '@elysiajs/cron':
+        specifier: ^0.8.0
+        version: 0.8.0(elysia@1.0.7)
+      '@stakecom/commune-sdk':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/commune-sdk
+      '@stakecom/core':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/core
+      '@stakecom/db':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/db
+      elysia:
+        specifier: latest
+        version: 1.0.7(@sinclair/typebox@0.32.15)(typescript@5.3.3)
+    devDependencies:
+      '@stakecom/eslint-config':
+        specifier: ^0.2.0
+        version: link:../../tooling/eslint
+      '@stakecom/prettier-config':
+        specifier: ^0.1.0
+        version: link:../../tooling/prettier
+      '@stakecom/tsconfig':
+        specifier: ^0.1.0
+        version: link:../../tooling/typescript
+      bun-types:
+        specifier: latest
+        version: 1.0.35
 
   apps/stakecomai:
     dependencies:
@@ -2314,13 +2345,13 @@ packages:
       superjson: 2.2.1
     dev: true
 
-  /@elysiajs/cron@0.8.0(elysia@1.0.5):
+  /@elysiajs/cron@0.8.0(elysia@1.0.7):
     resolution: {integrity: sha512-G/BqTttEV8N93GE0kSpwrnHvDXBdr9eIIVyYpW0hiRS+K9iZsi5nOR7venAxqNN51WIo+gz/kZNSMq+NcZi2Nw==}
     peerDependencies:
       elysia: '>= 0.8.0'
     dependencies:
       croner: 6.0.7
-      elysia: 1.0.5(@sinclair/typebox@0.32.15)(typescript@5.3.3)
+      elysia: 1.0.7(@sinclair/typebox@0.32.15)(typescript@5.3.3)
     dev: false
 
   /@emotion/babel-plugin@11.11.0:
@@ -7603,6 +7634,13 @@ packages:
       '@types/ws': 8.5.10
     dev: true
 
+  /bun-types@1.0.35:
+    resolution: {integrity: sha512-JlFllUCVMZbDyGfbv9dBWXd2tRdZSzyP1EWDKcTTVRViYNYX8AEsfpMN/vu6Hk8CBhKrhbbBkKZcNjJev8QQHQ==}
+    dependencies:
+      '@types/node': 20.11.16
+      '@types/ws': 8.5.10
+    dev: true
+
   /busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
     engines: {node: '>=10.16.0'}
@@ -8543,8 +8581,8 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     dev: false
 
-  /elysia@1.0.5(@sinclair/typebox@0.32.15)(typescript@5.3.3):
-    resolution: {integrity: sha512-HFiLcdEpfPskooorkhBNo14qCxkuM4iDBkn5QRWi4U7Pwk2YKUJEVfdPSo8bA3WA9t9KZB2s1WGnKh8kx3sMSQ==}
+  /elysia@1.0.7(@sinclair/typebox@0.32.15)(typescript@5.3.3):
+    resolution: {integrity: sha512-651FhmZrpFA41bqIvKXp2AUikGkoFZIYESPr1hIWhWkyXEvrKh9+1G7TuSj4UIv1G7LXE3RevW97IXP+NUh0cQ==}
     peerDependencies:
       '@sinclair/typebox': '>= 0.31.0'
       openapi-types: '>= 12.0.0'

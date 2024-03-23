@@ -8,9 +8,12 @@ const app = new Elysia()
   .post(
     "/process",
     () => {
+      console.log("🔥", "Manual process events trigger");
+
       processEvents().catch((error) => {
         console.log("🔥 Failed to run process events on request", error);
       });
+
       return { processingStarted: true };
     },
     {

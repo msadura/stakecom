@@ -4,7 +4,7 @@ import {
   getStakerUser,
   getStakerWallet,
   getStakeSignature,
-  processEvents,
+  serverApiRouter,
 } from "@stakecom/core";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -17,11 +17,14 @@ export const stakeRouter = createTRPCRouter({
     });
   }),
   refreshUserEvents: publicProcedure.input(z.string()).mutation(({ input }) => {
+    // invoke event processing
+    serverApiRouter.triggerProcess().catch(console.error);
+
     return getStakerUser({ evmAddress: input, forceRefresh: true });
   }),
   refreshStaker: publicProcedure.input(z.string()).mutation(({ input }) => {
     // invoke event processing
-    processEvents().catch(console.error);
+    serverApiRouter.triggerProcess().catch(console.error);
 
     return getStakerUser({ evmAddress: input, forceRefresh: true });
   }),

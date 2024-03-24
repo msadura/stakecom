@@ -12,6 +12,7 @@ const zodEnv = z.object({
   SIGNER_MNEMONIC: z.string().min(30),
   SDK_SERVER_SECRET: z.string(),
   SDK_SERVER_URL: z.string().url(),
+  RPC_URL: z.string().url().optional(),
 });
 
 export type ProcessEnv = TypeOf<typeof zodEnv>;

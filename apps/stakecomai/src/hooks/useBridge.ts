@@ -3,7 +3,7 @@
 import type { BaseError } from "wagmi";
 import { useCallback, useEffect } from "react";
 import { skipToken } from "@tanstack/react-query";
-import { bridgeAbi } from "~core/bridge";
+import { bridgeAbi } from "~core/bridge/bridgeAbi";
 import { BRIDGE_ADDRESS } from "~core/constants";
 import { toast } from "sonner";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
@@ -70,7 +70,7 @@ export function useBridge() {
   return {
     withdrawalSeedQuery,
     refreshDeposit,
-    claimableAmount: BigInt(data?.amount || "0"),
+    claimableAmount: BigInt(data?.claimableAmount || "0"),
     isClaiming: isClaiming || isConfirming,
     claimFromBridge,
   };

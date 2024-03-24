@@ -32,6 +32,7 @@ export async function actionHandler(action: PendingAction) {
     }
 
     if (res.skipUpdate) {
+      console.log("🔥", "Action handler: Skip update.");
       // do nothing, just skip
       return false;
     }
@@ -40,7 +41,7 @@ export async function actionHandler(action: PendingAction) {
     if (res.pendingTransfer) {
       await updateEvent({
         id: action.id,
-        updateInput: { pendingTransfer: true },
+        updateInput: { pendingTransfer: true, retries: 0 },
       });
 
       return false;

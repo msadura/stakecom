@@ -1,6 +1,6 @@
 import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { stakeCom } from "~core/commune/stakeCom";
-import { COMAI_DECIMALS, MIN_STAKE } from "~core/constants";
+import { COMAI_DECIMALS } from "~core/constants";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
@@ -26,7 +26,7 @@ export async function stakeComAction(action: PendingAction): Promise<{
   const signer = await getSignerForEvmAddress(params.evmAddress);
   const { balance } = await getBalances({ address: signer.address });
 
-  if (balance < toAmountValue(MIN_STAKE, COMAI_DECIMALS)) {
+  if (balance < toAmountValue(10, COMAI_DECIMALS)) {
     console.log(`🔥 Not yet bridged ${signer.address}`);
     return { result: null, skipUpdate: true };
   }

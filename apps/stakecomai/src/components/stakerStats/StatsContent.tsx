@@ -77,7 +77,7 @@ export const StatsContent = ({ staker, hasError }: Props) => {
           }
         />
         <StatsRow
-          label="Initial stake"
+          label="Deposit"
           value={
             staker.deposit
               ? formatWCOMAmount(staker.deposit, {

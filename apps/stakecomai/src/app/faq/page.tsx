@@ -1,3 +1,4 @@
+import { Socials } from "~/components/Socials";
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +11,13 @@ export default async function FAQPage() {
   return (
     <Box className="mx-auto mt-6 flex w-full max-w-[600px] flex-col gap-4 self-stretch text-left md:mt-12">
       <h3 className="text-lg font-bold">FREQUENTLY ASKED QUESTIONS</h3>
+      <Box className="gap-2">
+        <p className="text-muted-foreground">
+          Can&apos;t find the answer you are looking for? Reach us and ask in
+          our socials.
+        </p>
+        <Socials />
+      </Box>
 
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">

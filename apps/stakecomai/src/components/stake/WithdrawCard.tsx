@@ -15,7 +15,6 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { useBridge } from "~/hooks/useBridge";
 import { useFees } from "~/hooks/useFees";
 import { useStakeContract } from "~/hooks/useStakeContract";
 import { useStaker } from "~/hooks/useStaker";
@@ -23,7 +22,7 @@ import { toAmount } from "~/lib/toAmount";
 
 export function WithdrawCard() {
   const { stakerQuery } = useStaker();
-  const { claimableAmount, isClaiming, claimFromBridge } = useBridge();
+
   const { isUnstaking, unstakeWCOM } = useStakeContract({});
   // withdraw - wCOMAI decimals
   const [value, setValue] = useState(
@@ -125,9 +124,6 @@ export function WithdrawCard() {
 
       <CardFooter className="mt-0">
         <WithdrawButton
-          claimAmount={claimableAmount}
-          isClaiming={isClaiming}
-          onClaim={claimFromBridge}
           onUnstake={() => unstakeWCOM(value, unstakeAll)}
           disabled={!!error || isUnstaking}
           isUnstaking={isUnstaking}

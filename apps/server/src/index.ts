@@ -35,18 +35,22 @@ const app = new Elysia()
       // run every 1minute
       pattern: "0 */1 * * * *",
       run() {
-        processEvents().catch((error) => {
-          console.log("🔥 Failed to run process events in cron", error);
-        });
+        if (process.env.NODE_ENV !== "development") {
+          processEvents().catch((error) => {
+            console.log("🔥 Failed to run process events in cron", error);
+          });
+        }
       },
     }),
   )
   .on("start", () => {
     console.log("🚀 Elysia started");
 
-    processEvents().catch((error) => {
-      console.log("🔥 Failed to run process events on start", error);
-    });
+    if (process.env.NODE_ENV !== "development") {
+      processEvents().catch((error) => {
+        console.log("🔥 Failed to run process events on start", error);
+      });
+    }
   })
   .listen(3535);
 

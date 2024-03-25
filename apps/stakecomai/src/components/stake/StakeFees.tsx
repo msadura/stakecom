@@ -24,15 +24,18 @@ export const StakeFees = ({ fees, amount }: Props) => {
         />
       </Box>
       <StatsRow
+        valueTooltip="Bridge charges 0.3% fee per transaction (min 1COM)"
         label="Bridge fee"
         value={`${formatWCOMAmount(fees.bridgeFee, { maxDecimals: 4 })} COM`}
       />
       <StatsRow
+        valueTooltip={`Fee to cover transfer gas cost`}
         label="Transfer fee"
         value={`${formatWCOMAmount(fees.transferFee, { maxDecimals: 4 })} COM`}
       />
       {/* <StatsRow label="stake.com.ai fee" value={`FREE`} highlighted /> */}
       <StatsRow
+        valueTooltip="Estimated time to cover fees and start earning"
         label="Time to break even"
         value={`~${fees.daysToBreakEven} ${fees.daysToBreakEven === 1n ? "day" : "days"}`}
       />

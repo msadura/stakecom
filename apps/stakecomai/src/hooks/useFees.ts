@@ -15,7 +15,7 @@ export interface StakeFeesType {
 const BRIDGE_FEE_PERCENT = 0.3;
 const MIN_BRIDGE_FEE = 1;
 const SERVICE_FEE = 0;
-const TRANSFER_FEE = 0.36;
+const TRANSFER_FEE = 0.33;
 
 // use WCOM decimals by default
 export function useFees({

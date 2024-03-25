@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { ModeToggle } from "~/components/mode-toggle";
-import { Socials } from "~/components/Socials";
 import { cn } from "~/lib/utils";
 
 export function MainNav() {
@@ -47,7 +46,7 @@ export function MainNav() {
           >
             FAQ
           </Link>
-          <Socials />
+
           <ConnectButton />
           <ModeToggle />
         </nav>

@@ -3,8 +3,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { switchChain } from "@wagmi/core";
-import { WCOMAI_UNIT } from "~core/constants";
-import { formatWCOMAmount } from "~core/formatters";
 import { useAccount, useConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 
@@ -21,16 +19,10 @@ interface ButtonConfig {
 }
 
 export const WithdrawButton = ({
-  claimAmount,
-  isClaiming,
-  onClaim,
   disabled,
   onUnstake,
   isUnstaking,
 }: {
-  claimAmount: bigint;
-  isClaiming: boolean;
-  onClaim: VoidFunction;
   onUnstake: VoidFunction;
   isUnstaking: boolean;
   disabled?: boolean;
@@ -94,27 +86,6 @@ export const WithdrawButton = ({
         {buttonConfig?.label}
         {(isLoading || isUnstaking) && <Spinner className="ml-1" size={16} />}
       </Button>
-
-      {claimAmount > 0 && (
-        <Box direction="col" className="mt-5 gap-1">
-          <p className="text-sm text-muted-foreground">
-            Claim{" "}
-            <span className="text-warning">
-              {formatWCOMAmount(claimAmount, { maxDecimals: 4 })}
-            </span>{" "}
-            {WCOMAI_UNIT}
-          </p>
-          <Button
-            onClick={onClaim}
-            variant="warning"
-            size="lg"
-            disabled={isClaiming}
-          >
-            Claim wCOMAI
-            {isClaiming && <Spinner className="ml-1" size={16} />}
-          </Button>
-        </Box>
-      )}
     </Box>
   );
 };

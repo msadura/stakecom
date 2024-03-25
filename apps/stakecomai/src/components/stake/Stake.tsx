@@ -6,7 +6,7 @@ export function Stake() {
   return (
     <Tabs
       defaultValue="account"
-      className="flex w-full max-w-[400px] flex-col self-stretch text-left"
+      className="flex w-full flex-col self-stretch text-left"
     >
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="account">Stake</TabsTrigger>

@@ -62,7 +62,7 @@ export const stakeEvent = createPgTable(
     status: eventStatusEnum("event_status").notNull(),
     amount: varchar("amount", { length: 256 }),
     fromAmount: varchar("from_amount", { length: 256 }),
-    module: varchar("module", { length: 256 }),
+    moduleKey: varchar("moduleKey", { length: 256 }),
     unstakeAll: boolean("unstake_all"),
     block: bigint("block", { mode: "bigint" }).notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import {
+  getStakerTransactions,
   getStakerUser,
   getStakerWallet,
   getStakeSignature,
@@ -16,6 +17,13 @@ export const stakeRouter = createTRPCRouter({
       createIfNotExists: true,
     });
   }),
+  getStakerTransactions: publicProcedure
+    .input(z.string())
+    .query(({ input }) => {
+      return getStakerTransactions({
+        evmAddress: input,
+      });
+    }),
   refreshUserEvents: publicProcedure.input(z.string()).mutation(({ input }) => {
     // invoke event processing
     serverApiRouter.triggerProcess().catch(console.error);

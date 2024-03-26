@@ -1,6 +1,10 @@
 import { getLatestBlock } from "~core/events/getLatestBlock";
 import { saveEvent } from "~core/events/saveEvent";
 import { loadStakeEvents } from "~core/evm";
+import { COMToWCOMAmountValue } from "~core/utils/COMToWCOMAmountValue";
+import { getStakerWallet } from "~core/wallet";
+
+import { getBalances } from "@stakecom/commune-sdk";
 
 import type { NewStakeEvent, StakeEventType } from "~core/events/saveEvent";
 
@@ -43,14 +47,28 @@ async function addEvent(event: ChainEvent, eventType: StakeEventType) {
     return;
   }
 
+  let amount = "amount" in args ? args.amount?.toString() || "0" : "0";
+  const unstakeAll = "unstakeAll" in args ? args.unstakeAll || false : false;
+
+  if (unstakeAll) {
+    // set amount to the real staked amount
+    const { moduleKey } = await getStakerWallet({ evmAddress: args.user });
+    const { stake } = await getBalances({ address: args.user });
+    const stakedKey = moduleKey || Object.keys(stake)[0];
+    const staked = stake[stakedKey || ""];
+    if (staked) {
+      amount = COMToWCOMAmountValue(staked.toString()).toString();
+    }
+  }
+
   const inputEvent: NewStakeEvent = {
     evmAddress: args.user,
     eventType,
     block: blockNumber,
     status: "pending",
-    amount: "amount" in args ? args.amount?.toString() || "0" : "0",
+    amount,
     fromAmount: "fromAmount" in args ? args.fromAmount?.toString() || "0" : "0",
-    module: "module" in args ? args.module || "" : "",
+    moduleKey: "module" in args ? args.module || "" : "",
     unstakeAll: "unstakeAll" in args ? args.unstakeAll || false : false,
     evmTxHash: transactionHash,
   };

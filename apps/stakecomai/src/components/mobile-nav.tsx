@@ -2,8 +2,10 @@
 
 import type { LinkProps } from "next/link";
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { Box } from "~/components/ui/box";
 import { Button } from "~/components/ui/button";
@@ -15,69 +17,94 @@ export function MobileNav() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Box justify="between" className="flex-1">
+    <Box justify="between" className="flex-1 md:hidden">
       <MobileLink href="/" className="flex items-center" onOpenChange={setOpen}>
-        LOGO
-        <span className="font-bold">stakedcom</span>
+        <Image
+          src="/stake_logo2.png"
+          alt="logo"
+          width={45}
+          height={40}
+          objectFit="contain"
+        />
+        <span className="ml-1 hidden font-bold sm:inline-block">
+          stake.com.ai
+        </span>
       </MobileLink>
-
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-          >
-            <svg
-              strokeWidth="1.5"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+      <Box center className="gap-2">
+        <ConnectButton />
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
             >
-              <path
-                d="M3 5H11"
-                stroke="currentColor"
+              <svg
                 strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>
-              <path
-                d="M3 12H16"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>
-              <path
-                d="M3 19H21"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>
-            </svg>
-            <span className="sr-only">Toggle Menu</span>
-          </Button>
-        </SheetTrigger>
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+              >
+                <path
+                  d="M3 5H11"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+                <path
+                  d="M3 12H16"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+                <path
+                  d="M3 19H21"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+              <span className="sr-only">Toggle Menu</span>
+            </Button>
+          </SheetTrigger>
 
-        <SheetContent side="right" className="pr-0">
-          <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-            <div className="flex flex-col space-y-3">
-              {/* {docsConfig.mainNav?.map(
-              (item) =>
-                item.href && (
-                  <MobileLink
-                    key={item.href}
-                    href={item.href}
-                    onOpenChange={setOpen}
-                  >
-                    {item.title}
-                  </MobileLink>
-                ),
-            )} */}
-            </div>
-            <div className="flex flex-col space-y-2">
-              {/* {docsConfig.sidebarNav.map((item, index) => (
+          <SheetContent side="right" className="pr-0">
+            <MobileLink
+              href="/"
+              className="flex items-center"
+              onOpenChange={setOpen}
+            >
+              <Image
+                src="/stake_logo2.png"
+                alt="logo"
+                width={35}
+                height={30}
+                objectFit="contain"
+              />
+              <span className="ml-1  font-bold ">stake.com.ai</span>
+            </MobileLink>
+            <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pt-2">
+              <div className="flex flex-col">
+                <MobileLink
+                  href="/"
+                  onOpenChange={setOpen}
+                  className="py-3 font-bold"
+                >
+                  STAKE
+                </MobileLink>
+                <MobileLink
+                  href="/faq"
+                  onOpenChange={setOpen}
+                  className="py-3 font-bold"
+                >
+                  FAQ
+                </MobileLink>
+              </div>
+              <div className="flex flex-col space-y-2">
+                {/* {docsConfig.sidebarNav.map((item, index) => (
               <div key={index} className="flex flex-col space-y-3 pt-6">
                 <h4 className="font-medium">{item.title}</h4>
                 {item?.items?.length &&
@@ -104,10 +131,11 @@ export function MobileNav() {
                   ))}
               </div>
             ))} */}
-            </div>
-          </ScrollArea>
-        </SheetContent>
-      </Sheet>
+              </div>
+            </ScrollArea>
+          </SheetContent>
+        </Sheet>
+      </Box>
     </Box>
   );
 }

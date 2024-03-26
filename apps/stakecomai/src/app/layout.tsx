@@ -59,7 +59,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             <Box className="min-h-screen flex-col">
               <SiteHeader />
               <Box className="scroll-gutter flex-1 flex-col">
-                <main className="container py-6 md:py-12">
+                <main className="container px-2 py-6 md:px-6 md:py-12">
                   <div className="flex flex-col items-center justify-center text-center ">
                     <Box
                       align="center"

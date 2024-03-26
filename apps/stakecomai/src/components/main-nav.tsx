@@ -12,7 +12,7 @@ export function MainNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-1 flex-wrap">
+    <div className="hidden flex-1 flex-wrap md:flex">
       <Link href="/" className="mr-6 flex max-h-[40px] items-center space-x-1">
         <Image
           src="/stake_logo2.png"

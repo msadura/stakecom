@@ -30,8 +30,8 @@ export async function refreshStakerBalance(evmAddress: string) {
       updateInput: {
         stake: stake?.toString() || "0",
         balance: balance?.toString() || "0",
-        deposit: depositBalance?.toString() || staker.deposit || "0",
-        moduleKey: moduleKey || staker.moduleKey || "",
+        deposit: depositBalance?.toString() || "0",
+        moduleKey: moduleKey || "",
       },
     });
   } catch (e) {

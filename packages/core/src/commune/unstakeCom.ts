@@ -16,7 +16,7 @@ export async function unstakeCom({
   signer,
 }: StakeComInput) {
   if (Number(amount) <= 0) throw new Error("Amount must be greater than 0");
-  if (!module) throw new Error("Module to stake is required");
+  if (!moduleKey) throw new Error("Module to stake is required");
 
   return unstake({
     signer,

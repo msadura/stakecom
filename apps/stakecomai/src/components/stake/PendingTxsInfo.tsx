@@ -9,7 +9,9 @@ interface Props {
 }
 
 export const PendingTxsInfo = ({ txs }: Props) => {
-  const pending = txs?.filter((tx) => tx.status === "pending");
+  const pending = txs?.filter(
+    (tx) => tx.status === "pending" || tx.pendingTransfer,
+  );
 
   if (!pending?.length) {
     return null;

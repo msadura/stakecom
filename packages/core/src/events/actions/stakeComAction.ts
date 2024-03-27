@@ -33,7 +33,7 @@ export async function stakeComAction(action: PendingAction): Promise<{
 
   const result = await stakeCom({
     key: params.evmAddress,
-    module: params.module,
+    moduleKey: params.moduleKey,
     amount: balance,
     signer,
   });
@@ -46,13 +46,14 @@ export async function stakeComAction(action: PendingAction): Promise<{
 function getActionParams(action: PendingAction) {
   const actionSchema = z.object({
     evmAddress: z.string(),
-    module: z.string().min(3),
+    moduleKey: z.string().min(3),
     amount: z.string(),
   });
 
   try {
     return actionSchema.parse(action);
   } catch (e) {
+    console.log("🔥 getActionParams error", e);
     return null;
   }
 }

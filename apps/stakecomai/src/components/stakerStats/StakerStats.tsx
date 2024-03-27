@@ -26,7 +26,7 @@ export const StakerStats = () => {
   const { error, data, isFetching } = stakerQuery;
   const { claimableAmount, refreshDeposit, claimFromBridge, isClaiming } =
     useBridge();
-  const { txHistory } = useTxHistory();
+  const { txHistory, refreshTxHistory } = useTxHistory();
 
   if (!isConnected) {
     return null;
@@ -43,6 +43,7 @@ export const StakerStats = () => {
             size="iconXs"
             onClick={() => {
               refreshUserBalances();
+              refreshTxHistory();
               if (evmAddress) {
                 refreshDeposit(evmAddress);
               }

@@ -4,6 +4,7 @@ import { unstakeCom } from "~core/commune/unstakeCom";
 import { MIN_WITHDRAW } from "~core/constants";
 import { wCOMToCOMAmountValue } from "~core/utils/wCOMToCOMAmountValue";
 import { getStakerWallet } from "~core/wallet";
+import { updateStaker } from "~core/wallet/updateStaker";
 import { z } from "zod";
 
 import type { CommuneTxResponse } from "@stakecom/commune-sdk/types";
@@ -52,13 +53,21 @@ export async function initUnstakeAction(action: PendingAction): Promise<{
   // unstake
   if (!action.pendingTransfer) {
     result = await unstakeCom({
-      module: wallet.moduleKey || "",
+      moduleKey: wallet.moduleKey || "",
       unstakeAll,
       signer,
       amount: unstakeParamAmount,
     });
 
     console.log(`🔥 unstake res for ${signer.address}`, result);
+
+    if (unstakeAll) {
+      // unstaked - clear module key
+      await updateStaker({
+        evmAddress: params.evmAddress,
+        updateInput: { moduleKey: "" },
+      });
+    }
   }
 
   // unstaked or having pending transfer

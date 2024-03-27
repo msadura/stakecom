@@ -3,14 +3,14 @@ import type { KeyringPair } from "@polkadot/keyring/types";
 import { unstake } from "@stakecom/commune-sdk";
 
 export interface StakeComInput {
-  module: string;
+  moduleKey: string;
   amount: bigint;
   unstakeAll?: boolean;
   signer: KeyringPair;
 }
 
 export async function unstakeCom({
-  module,
+  moduleKey,
   amount,
   unstakeAll,
   signer,
@@ -20,7 +20,7 @@ export async function unstakeCom({
 
   return unstake({
     signer,
-    moduleKey: module,
+    moduleKey,
     amount: unstakeAll ? 0n : amount,
   });
 }

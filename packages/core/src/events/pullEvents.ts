@@ -1,3 +1,4 @@
+import { getSignerForEvmAddress } from "~core/commune/getSignerForEvmAddress";
 import { getLatestBlock } from "~core/events/getLatestBlock";
 import { saveEvent } from "~core/events/saveEvent";
 import { loadStakeEvents } from "~core/evm";
@@ -53,7 +54,8 @@ async function addEvent(event: ChainEvent, eventType: StakeEventType) {
   if (unstakeAll) {
     // set amount to the real staked amount
     const { moduleKey } = await getStakerWallet({ evmAddress: args.user });
-    const { stake } = await getBalances({ address: args.user });
+    const signer = await getSignerForEvmAddress(args.user);
+    const { stake } = await getBalances({ address: signer.address });
     const stakedKey = moduleKey || Object.keys(stake)[0];
     const staked = stake[stakedKey || ""];
     if (staked) {

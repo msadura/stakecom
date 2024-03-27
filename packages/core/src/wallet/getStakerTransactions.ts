@@ -4,8 +4,8 @@ export interface StakeTransaction {
   id: number;
   evmAddress: string;
   module: string | null;
-  eventType: string;
-  status: string;
+  eventType: "stake" | "initUnstake" | "changeModule";
+  status: "pending" | "completed" | "failed";
   createdAt: Date;
   updatedAt: Date | null;
   amount: string | null;

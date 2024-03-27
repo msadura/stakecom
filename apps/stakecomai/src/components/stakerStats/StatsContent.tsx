@@ -47,8 +47,8 @@ export const StatsContent = ({ staker, hasError }: Props) => {
     return (
       <Box direction="col" className="gap-1">
         <p className="text-sm text-muted-foreground">
-          No stake found or transaction is pending. It can take a while for the
-          stake to be registered.
+          You do not have any stake yet. Deposit wCOMAI to see your staking
+          stats.
         </p>
       </Box>
     );

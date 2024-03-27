@@ -4,6 +4,7 @@ import { formatWCOMAmount } from "~core/formatters";
 import { RefreshCw } from "lucide-react";
 
 import { Spinner } from "~/components/Spinner";
+import { PendingTxsInfo } from "~/components/stake/PendingTxsInfo";
 import { StatsContent } from "~/components/stakerStats/StatsContent";
 import { StatsRow } from "~/components/stakerStats/StatsRow";
 import { Box } from "~/components/ui/box";
@@ -11,6 +12,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useBridge } from "~/hooks/useBridge";
 import { useStaker } from "~/hooks/useStaker";
+import { useTxHistory } from "~/hooks/useTxHistory";
 import { cn } from "~/lib/utils";
 
 export const StakerStats = () => {
@@ -24,6 +26,7 @@ export const StakerStats = () => {
   const { error, data, isFetching } = stakerQuery;
   const { claimableAmount, refreshDeposit, claimFromBridge, isClaiming } =
     useBridge();
+  const { txHistory } = useTxHistory();
 
   if (!isConnected) {
     return null;
@@ -58,6 +61,7 @@ export const StakerStats = () => {
       {(data || !!error) && (
         <CardContent>
           <StatsContent staker={data} hasError={!!error} />
+          <PendingTxsInfo txs={txHistory} />
           {claimableAmount > 0n && (
             <Box direction="col" className="mt-3 gap-1">
               <StatsRow

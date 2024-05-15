@@ -24,23 +24,14 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  apps/dev:
+  apps/miner-stats:
     dependencies:
-      '@elysiajs/cron':
-        specifier: ^0.8.0
-        version: 0.8.0(elysia@1.0.9)
       '@stakecom/commune-sdk':
         specifier: workspace:^0.1.0
         version: link:../../packages/commune-sdk
-      '@stakecom/core':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/core
       '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../../packages/db
-      viem:
-        specifier: ^2.7.15
-        version: 2.7.15(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@stakecom/eslint-config':
         specifier: ^0.2.0
@@ -53,7 +44,7 @@ importers:
         version: link:../../tooling/typescript
       bun-types:
         specifier: latest
-        version: 1.0.30
+        version: 1.1.8
 
   apps/server:
     dependencies:
@@ -2355,15 +2346,6 @@ packages:
     dependencies:
       croner: 6.0.7
       elysia: 1.0.7(@sinclair/typebox@0.32.15)(typescript@5.3.3)
-    dev: false
-
-  /@elysiajs/cron@0.8.0(elysia@1.0.9):
-    resolution: {integrity: sha512-G/BqTttEV8N93GE0kSpwrnHvDXBdr9eIIVyYpW0hiRS+K9iZsi5nOR7venAxqNN51WIo+gz/kZNSMq+NcZi2Nw==}
-    peerDependencies:
-      elysia: '>= 0.8.0'
-    dependencies:
-      croner: 6.0.7
-      elysia: 1.0.9(@sinclair/typebox@0.32.15)(typescript@5.3.3)
     dev: false
 
   /@emotion/babel-plugin@11.11.0:
@@ -6415,6 +6397,12 @@ packages:
     dependencies:
       undici-types: 5.26.5
 
+  /@types/node@20.12.12:
+    resolution: {integrity: sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
     dev: false
@@ -7641,17 +7629,17 @@ packages:
       semver: 7.6.0
     dev: true
 
-  /bun-types@1.0.30:
-    resolution: {integrity: sha512-z3366LC0kdSpBCNFvc38+NOSiwQaokKfi66fBr+jw+yd9lrYtaoLs4ERCuq3iW/g9h6xKielQRgvE01PN/uUog==}
+  /bun-types@1.0.35:
+    resolution: {integrity: sha512-JlFllUCVMZbDyGfbv9dBWXd2tRdZSzyP1EWDKcTTVRViYNYX8AEsfpMN/vu6Hk8CBhKrhbbBkKZcNjJev8QQHQ==}
     dependencies:
       '@types/node': 20.11.16
       '@types/ws': 8.5.10
     dev: true
 
-  /bun-types@1.0.35:
-    resolution: {integrity: sha512-JlFllUCVMZbDyGfbv9dBWXd2tRdZSzyP1EWDKcTTVRViYNYX8AEsfpMN/vu6Hk8CBhKrhbbBkKZcNjJev8QQHQ==}
+  /bun-types@1.1.8:
+    resolution: {integrity: sha512-dwhfuUKSGK8hm5Llcvb5+ejRh+4mIt8ibObJVKhZBsi0ScpXmt+AlaS1eDW6uRXCHj084Qt0kIqAJ08/7ZGC9Q==}
     dependencies:
-      '@types/node': 20.11.16
+      '@types/node': 20.12.12
       '@types/ws': 8.5.10
     dev: true
 
@@ -8597,26 +8585,6 @@ packages:
 
   /elysia@1.0.7(@sinclair/typebox@0.32.15)(typescript@5.3.3):
     resolution: {integrity: sha512-651FhmZrpFA41bqIvKXp2AUikGkoFZIYESPr1hIWhWkyXEvrKh9+1G7TuSj4UIv1G7LXE3RevW97IXP+NUh0cQ==}
-    peerDependencies:
-      '@sinclair/typebox': '>= 0.31.0'
-      openapi-types: '>= 12.0.0'
-      typescript: '>= 5.0.0'
-    peerDependenciesMeta:
-      openapi-types:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@sinclair/typebox': 0.32.15
-      cookie: 0.6.0
-      eventemitter3: 5.0.1
-      fast-decode-uri-component: 1.0.1
-      fast-querystring: 1.1.2
-      typescript: 5.3.3
-    dev: false
-
-  /elysia@1.0.9(@sinclair/typebox@0.32.15)(typescript@5.3.3):
-    resolution: {integrity: sha512-RForFlDEr8zBW2s8dGJCKbHBlOSpaWg+tZyhgQqBjUvMyVSrKYFrhbl4FWoModj/BP5/cXk1eyMlTIKOcazP2g==}
     peerDependencies:
       '@sinclair/typebox': '>= 0.31.0'
       openapi-types: '>= 12.0.0'

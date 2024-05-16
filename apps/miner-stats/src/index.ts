@@ -117,7 +117,7 @@ const s2 = await getFilteredBalance({
 });
 
 const s3 = await getFilteredBalance({
-  pattern: /^epco[0-9]$/i,
+  pattern: /^epco[0-9]+$/i,
   label: "🔥 MC contabo4 sum",
 });
 

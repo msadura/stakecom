@@ -14,16 +14,19 @@ export const getBalances = async ({
     [api.query.system.account, address],
     [api.query.subspaceModule.stakeTo, [networkId, address]],
   ]);
-
   const accountBalanceData = balanceData?.toJSON() as {
     data: { free: number };
   };
   const balance = BigInt(accountBalanceData.data.free);
 
-  const stakeData = stakeToData?.toJSON() as [string, number][];
-  const stake = getStakesDict(stakeData);
+  const stakeData = stakeToData?.toJSON() as
+    | [string, number][]
+    | Record<string, number>;
 
-  return { balance, stake };
+  const stake = getStakesDict(stakeData);
+  const stakeTotal = Object.values(stake).reduce((acc, v) => acc + v, 0n);
+
+  return { balance, stake, stakeTotal };
 };
 
 export const getStakeByModule = async ({
@@ -48,10 +51,20 @@ export const getStakeByModule = async ({
   return stake[moduleKey] || 0n;
 };
 
-function getStakesDict(stakes: [string, number][]) {
-  return stakes.reduce(
-    (acc, stake) => {
-      acc[stake[0]] = BigInt(stake[1]);
+function getStakesDict(stakes: [string, number][] | Record<string, number>) {
+  if (Array.isArray(stakes)) {
+    return stakes.reduce(
+      (acc, stake) => {
+        acc[stake[0]] = BigInt(stake[1]);
+        return acc;
+      },
+      {} as Record<string, bigint>,
+    );
+  }
+
+  return Object.entries(stakes).reduce(
+    (acc, [key, value]) => {
+      acc[key] = BigInt(value);
       return acc;
     },
     {} as Record<string, bigint>,

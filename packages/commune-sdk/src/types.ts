@@ -10,6 +10,7 @@ export interface CommuneTxResponse {
 export interface AccountBalances {
   balance: bigint;
   stake: Record<string, bigint>;
+  stakeTotal: bigint;
 }
 
 export interface GenericTxInput {

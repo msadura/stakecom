@@ -134,3 +134,5 @@ console.log("===========================");
 //   pattern: /^epic$/i,
 //   label: "🔥 Epic",
 // });
+
+process.exit();

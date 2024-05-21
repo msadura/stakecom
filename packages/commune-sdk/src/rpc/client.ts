@@ -10,6 +10,7 @@ export async function initClient(providerUrl: string | string[]) {
   const wsProvider = new WsProvider(providerUrl);
   api = await ApiPromise.create({
     provider: wsProvider,
+    noInitWarn: true,
   });
 }
 

@@ -121,7 +121,12 @@ const s3 = await getFilteredBalance({
   label: "🔥 MC contabo4 sum",
 });
 
-console.log("🔥 Market compass total:", formatCOMAmount(s1 + s2 + s3));
+const s4 = await getFilteredBalance({
+  pattern: /^kop[0-9]+$/i,
+  label: "🔥 MC contabo3 kop sum",
+});
+
+console.log("🔥 Market compass total:", formatCOMAmount(s1 + s2 + s3 + s4));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

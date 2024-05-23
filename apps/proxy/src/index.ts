@@ -34,7 +34,6 @@ app.get("*", async (c, next) => {
         headers: { "Content-Type": "application/json" },
       });
     } catch (error) {
-      console.log("🔥e", error);
       return new Response(cachedValue);
     }
   }
@@ -75,7 +74,7 @@ function basicProxy(destUrl = ""): Handler {
       try {
         const tempRes = new Response(rep.body, rep);
         const data = await tempRes.text();
-        console.log("🔥d:", data);
+
         setCachedValue(
           new URLSearchParams(c.req.query()).toString(),
           JSON.stringify(data),

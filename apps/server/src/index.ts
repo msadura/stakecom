@@ -5,6 +5,7 @@ import { processEvents } from "@stakecom/core";
 
 const app = new Elysia()
   .get("/", () => "I'm ready!")
+  .get("/j", () => ({ message: "Hello from Elysia", num: 1 }))
   .post(
     "/process",
     () => {

@@ -50,30 +50,6 @@ const getKeyBalance = async (address: string) => {
   return balance + stakeTotal;
 };
 
-const getMarketCompassMinedBalance = async () => {
-  const keys = await getKeys();
-  const filteredKeys = keys.filter((key) => key.path.startsWith("ex"));
-
-  const balances = await Promise.all(
-    filteredKeys.map(async (key) => {
-      const balance = await getKeyBalance(key.ss58_address);
-
-      // console.log("🔥", key.path, formatCOMAmount(balance));
-
-      return {
-        balance,
-        key,
-      };
-    }),
-  );
-
-  const sumBalance = balances.reduce((acc, { balance }) => acc + balance, 0n);
-
-  console.log("🔥 Market compass sum:", formatCOMAmount(sumBalance));
-
-  return sumBalance;
-};
-
 const getFilteredBalance = async ({
   pattern,
   label,
@@ -129,15 +105,5 @@ const s4 = await getFilteredBalance({
 console.log("🔥 Market compass total:", formatCOMAmount(s1 + s2 + s3 + s4));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
-
-// await getFilteredBalance({
-//   pattern: /^(epic\.miner|ep-m)/i,
-//   label: "🔥 Open router",
-// });
-
-// await getFilteredBalance({
-//   pattern: /^epic$/i,
-//   label: "🔥 Epic",
-// });
 
 process.exit();

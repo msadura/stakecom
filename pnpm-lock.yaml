@@ -253,6 +253,28 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  apps/twitterProxy:
+    dependencies:
+      hono:
+        specifier: ^4.3.10
+        version: 4.3.10
+      ky:
+        specifier: ^1.2.2
+        version: 1.2.2
+    devDependencies:
+      '@stakecom/eslint-config':
+        specifier: ^0.2.0
+        version: link:../../tooling/eslint
+      '@stakecom/prettier-config':
+        specifier: ^0.1.0
+        version: link:../../tooling/prettier
+      '@stakecom/tsconfig':
+        specifier: ^0.1.0
+        version: link:../../tooling/typescript
+      bun-types:
+        specifier: latest
+        version: 1.1.9
+
   packages/api:
     dependencies:
       '@stakecom/auth':

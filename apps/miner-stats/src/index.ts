@@ -1,4 +1,5 @@
 import { getBalances } from "@stakecom/commune-sdk";
+import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getKeys } from "./getKeys";
@@ -25,16 +26,23 @@ const getFilteredBalance = async ({
       // console.log("🔥", key.path, formatCOMAmount(balance));
 
       if (showDetails) {
+        let isRegistered = stakeTotal > 0n;
+        if (stakeTotal === 0n) {
+          try {
+            await statsApiRouter.getValidator(key.ss58_address, 17);
+            isRegistered = true;
+          } catch (e) {
+            isRegistered = false;
+          }
+        }
+
         console.log(
           "🔥",
           key.path,
           `balance: ${formatCOMAmount(balance)}`,
           `staked: ${formatCOMAmount(stakeTotal)}`,
+          isRegistered ? "✅" : "❌",
         );
-      }
-
-      if (stakeTotal === 0n) {
-        // console.log("🔴", "Key deregistered: ", key.path);
       }
 
       return {
@@ -54,23 +62,25 @@ const getFilteredBalance = async ({
 const s1 = await getFilteredBalance({
   pattern: /^epi[0-9]$/i,
   label: "🔥 EPI",
+  showDetails: true,
 });
 
 const s2 = await getFilteredBalance({
   pattern: /^ex[0-9]$/i,
   label: "🔥 EX",
+  showDetails: true,
 });
 
 const s3 = await getFilteredBalance({
   pattern: /^epco[0-9]+$/i,
   label: "🔥 EPCO",
-  showDetails: false,
+  showDetails: true,
 });
 
 const s4 = await getFilteredBalance({
   pattern: /^kop(a?)[0-9]+$/i,
   label: "🔥 KOP / KOPA",
-  showDetails: false,
+  showDetails: true,
 });
 
 const { balance } = await getBalances({

@@ -30,7 +30,7 @@ app.get("*", async (c, next) => {
   );
 
   if (cachedValue) {
-    console.log("🔥 Using cached value for key:", cacheKey);
+    console.log("🔵 Using cached value for key:", cacheKey);
 
     return c.json(cachedValue, 200);
   }
@@ -49,7 +49,7 @@ function basicProxy(url: string): Handler {
     const queryParams = new URLSearchParams(c.req.query()).toString();
     const headers = c.req.header();
 
-    console.log("🔥 FETCH QUERY:", c.req.query().query);
+    console.log("🟢 FETCH QUERY:", c.req.query().query);
 
     const requestUrl = `${url}?${queryParams}`;
 
@@ -64,7 +64,7 @@ function basicProxy(url: string): Handler {
       hooks: {
         beforeRetry: [
           ({ retryCount }) => {
-            console.log("🔥", "Request failed, retries:", retryCount);
+            console.log("🟡", "Request failed, retries:", retryCount);
           },
         ],
       },

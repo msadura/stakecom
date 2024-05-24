@@ -5,12 +5,12 @@ import { HTTPException } from "hono/http-exception";
 import ky from "ky";
 
 import type { TweetsRes, TwitterError } from "./types";
-import { getCachedValue, setCachedValue } from "./cache";
+import { getCachedValue, setCachedValue, setPendingPromise } from "./cache";
 
 const app = new Hono();
 
 const port = process.env.PORT || 3000;
-const maxAgeMs = Number(process.env.MAX_AGE_MS) || 10000;
+const maxAgeMs = Number(process.env.MAX_AGE_MS) || 20000;
 
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);
@@ -49,6 +49,8 @@ function basicProxy(url: string): Handler {
     const queryParams = new URLSearchParams(c.req.query()).toString();
     const headers = c.req.header();
 
+    console.log("🔥 FETCH QUERY:", c.req.query().query);
+
     const requestUrl = `${url}?${queryParams}`;
 
     const req = ky.get(requestUrl, {
@@ -69,6 +71,8 @@ function basicProxy(url: string): Handler {
     });
 
     try {
+      setPendingPromise(new URLSearchParams(c.req.query()).toString(), req);
+
       const res = await req;
       const tweets: TweetsRes = await res.json();
       setCachedValue(new URLSearchParams(c.req.query()).toString(), tweets);

@@ -6,6 +6,7 @@ import ky from "ky";
 
 import type { TweetsRes, TwitterError } from "./types";
 import { getCachedValue, setCachedValue, setPendingPromise } from "./cache";
+import getRandomAuthToken from "./getAuthToken";
 
 const app = new Hono();
 
@@ -50,10 +51,15 @@ function basicProxy(url: string): Handler {
     const headers = c.req.header();
 
     const requestUrl = `${url}?${queryParams}`;
+    const bearerToken = getRandomAuthToken();
+
+    const authorization = bearerToken
+      ? `Bearer ${bearerToken}`
+      : headers.authorization;
 
     const req = ky.get(requestUrl, {
       headers: {
-        Authorization: headers.authorization,
+        Authorization: authorization,
         "user-agent": "v2FullArchiveSearchPython",
       },
       retry: {

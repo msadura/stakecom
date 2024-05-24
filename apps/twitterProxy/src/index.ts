@@ -49,8 +49,6 @@ function basicProxy(url: string): Handler {
     const queryParams = new URLSearchParams(c.req.query()).toString();
     const headers = c.req.header();
 
-    console.log("🟢 FETCH QUERY:", c.req.query().query);
-
     const requestUrl = `${url}?${queryParams}`;
 
     const req = ky.get(requestUrl, {
@@ -76,6 +74,8 @@ function basicProxy(url: string): Handler {
       const res = await req;
       const tweets: TweetsRes = await res.json();
       setCachedValue(new URLSearchParams(c.req.query()).toString(), tweets);
+
+      console.log("🟢 FETCHED QUERY:", c.req.query().query);
 
       return c.json(tweets, 200);
     } catch (error: any) {

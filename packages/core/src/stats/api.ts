@@ -53,9 +53,9 @@ export const statsApiRouter = {
 
     return json;
   },
-  getValidator: async (key: string) => {
+  getValidator: async (key: string, subnet_id = 0) => {
     const res = await statsApi.get(`validators/${key}`, {
-      searchParams: { key },
+      searchParams: { subnet_id },
     });
     const json: StatsValidator & StatsValidatorStake = await res.json();
 

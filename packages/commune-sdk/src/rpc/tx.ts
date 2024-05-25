@@ -22,6 +22,7 @@ export async function estimateTransferFee({
 
 export async function transfer({ amount, recipient, signer }: TransferInput) {
   const api = await getClient();
+  console.log("🔥", api.tx);
   const tx = api.tx.balances.transfer(recipient, amount);
 
   return broadcastTx({
@@ -129,8 +130,6 @@ function broadcastTx({
     errorCode?: string;
   }>((resolve, reject) => {
     tx.signAndSend(signer, ({ events = [], status, txHash }) => {
-      console.log(`Current status is ${status.type}`);
-
       if (status.isFinalized) {
         const txError = unwrapError(events, api);
         if (txError) {

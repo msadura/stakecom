@@ -1,62 +1,20 @@
-import { Glob } from "bun";
-
 import { getBalances } from "@stakecom/commune-sdk";
+import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
-interface ComKey {
-  path: string;
-  mnemonic: string;
-  public_key: string;
-  private_key: string;
-  ss58_address: string;
-  seed_hex: string;
-  ss58_format: number;
-  crypto_type: 1;
-  derive_path: null | string;
-}
-
-const getKeys = async () => {
-  const glob = new Glob("**/*.json");
-  const current = import.meta.dir;
-
-  const fileNames: string[] = [];
-
-  // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(`${current}/keys`)) {
-    fileNames.push(file);
-  }
-
-  fileNames.sort();
-
-  // load and parse files
-  const keys = await Promise.all(
-    fileNames.map(async (fileName) => {
-      const path = `${current}/keys/${fileName}`;
-      const file = Bun.file(path);
-
-      const fileContent = (await file.json()) as { data: string };
-      const content = JSON.parse(fileContent.data) as ComKey;
-
-      return content;
-    }),
-  );
-
-  return keys;
-};
-
-await getKeys();
+import { getKeys } from "./getKeys";
 
 const getFilteredBalance = async ({
   pattern,
   label,
+  showDetails = false,
 }: {
   pattern: RegExp;
   label: string;
+  showDetails?: boolean;
 }) => {
   const keys = await getKeys();
   const filteredKeys = keys.filter((key) => pattern.test(key.path));
-
-  // console.log("🔥 FK:", filteredKeys);
 
   const balances = await Promise.all(
     filteredKeys.map(async (key) => {
@@ -66,6 +24,26 @@ const getFilteredBalance = async ({
       });
 
       // console.log("🔥", key.path, formatCOMAmount(balance));
+
+      if (showDetails) {
+        let isRegistered = stakeTotal > 0n;
+        if (stakeTotal === 0n) {
+          try {
+            await statsApiRouter.getValidator(key.ss58_address, 17);
+            isRegistered = true;
+          } catch (e) {
+            isRegistered = false;
+          }
+        }
+
+        console.log(
+          "🔥",
+          key.path,
+          `balance: ${formatCOMAmount(balance)}`,
+          `staked: ${formatCOMAmount(stakeTotal)}`,
+          isRegistered ? "✅" : "❌",
+        );
+      }
 
       return {
         balance: balance + stakeTotal,
@@ -112,25 +90,44 @@ const getFilteredBalance = async ({
 
 const s1 = await getFilteredBalance({
   pattern: /^epi[0-9]$/i,
-  label: "🔥 MC hostkey sum",
+  label: "🔥 EPI",
+  showDetails: true,
 });
 
 const s2 = await getFilteredBalance({
   pattern: /^ex[0-9]$/i,
-  label: "🔥 MC contabo5 sum",
+  label: "🔥 EX",
+  showDetails: true,
 });
 
 const s3 = await getFilteredBalance({
   pattern: /^epco[0-9]+$/i,
-  label: "🔥 MC contabo4 sum",
+  label: "🔥 EPCO",
+  showDetails: true,
 });
 
 const s4 = await getFilteredBalance({
-  pattern: /^kop[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
+  pattern: /^kop(a?)[0-9]+$/i,
+  label: "🔥 KOP / KOPA",
+  showDetails: true,
 });
 
-console.log("🔥 Market compass total:", formatCOMAmount(s1 + s2 + s3 + s4));
+const s5 = await getFilteredBalance({
+  pattern: /^jottei[0-9]+$/i,
+  label: "🔥 JOTTEI",
+  showDetails: true,
+});
+
+const { balance } = await getBalances({
+  address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
+  networkId: 17,
+});
+console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
+
+console.log(
+  "🔥 Market compass total:",
+  formatCOMAmount(s1 + s2 + s3 + s4 + s5),
+);
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

@@ -28,11 +28,14 @@ export async function getCachedValue(key: string, maxAgeMs: number) {
       return cachedValue.value;
     }
 
+    console.log("🔵🟡", "Stale cache entry", key);
+
     delete cache[key];
   }
 
   // if request is pending, wait for it to finish
   if (cachedValue?.pendingPromise) {
+    console.log("🔵", "Waiting pending promise");
     try {
       const res = await cachedValue?.pendingPromise;
       const tweets: TweetsRes = await res.json();

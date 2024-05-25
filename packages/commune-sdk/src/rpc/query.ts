@@ -9,11 +9,17 @@ export const getBalances = async ({
   networkId?: number;
 }): Promise<AccountBalances> => {
   const api = await getClient();
+  const [balanceData, stakeToData, uidsData, emissionData] =
+    await api.queryMulti([
+      [api.query.system.account, address],
+      [api.query.subspaceModule.stakeTo, [networkId, address]],
+      [api.query.subspaceModule.uids, [networkId, address]],
+      [api.query.subspaceModule.emission, [networkId]],
+    ]);
 
-  const [balanceData, stakeToData] = await api.queryMulti([
-    [api.query.system.account, address],
-    [api.query.subspaceModule.stakeTo, [networkId, address]],
-  ]);
+  const uid = uidsData?.toJSON() as number;
+  const emissions = emissionData?.toJSON() as number[];
+  const emission = emissions[uid] ?? 0;
   const accountBalanceData = balanceData?.toJSON() as {
     data: { free: number };
   };
@@ -26,7 +32,7 @@ export const getBalances = async ({
   const stake = getStakesDict(stakeData);
   const stakeTotal = Object.values(stake).reduce((acc, v) => acc + v, 0n);
 
-  return { balance, stake, stakeTotal };
+  return { balance, stake, stakeTotal, uid, emission };
 };
 
 export const getStakeByModule = async ({

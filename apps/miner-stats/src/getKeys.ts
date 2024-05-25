@@ -23,6 +23,8 @@ export const getKeys = async () => {
     fileNames.push(file);
   }
 
+  fileNames.sort();
+
   // load and parse files
   const keys = await Promise.all(
     fileNames.map(async (fileName) => {

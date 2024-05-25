@@ -64,7 +64,7 @@ const getFilteredBalance = async ({
         name,
         address,
         balance: formatCOMAmount(balance),
-        uid: String(uid),
+        uid: uid ? String(uid) : "-",
         emission: formatCOMAmount(emission),
       }))
       .concat([
@@ -91,31 +91,26 @@ const getFilteredBalance = async ({
 const s1 = await getFilteredBalance({
   pattern: /^epi[0-9]$/i,
   label: "🔥 EPI",
-  showDetails: true,
 });
 
 const s2 = await getFilteredBalance({
   pattern: /^ex[0-9]$/i,
   label: "🔥 EX",
-  showDetails: true,
 });
 
 const s3 = await getFilteredBalance({
   pattern: /^epco[0-9]+$/i,
   label: "🔥 EPCO",
-  showDetails: true,
 });
 
 const s4 = await getFilteredBalance({
   pattern: /^kop(a?)[0-9]+$/i,
   label: "🔥 KOP / KOPA",
-  showDetails: true,
 });
 
 const s5 = await getFilteredBalance({
   pattern: /^jottei[0-9]+$/i,
   label: "🔥 JOTTEI",
-  showDetails: true,
 });
 
 const { balance } = await getBalances({

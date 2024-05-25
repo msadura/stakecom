@@ -28,7 +28,9 @@ export async function getCachedValue(key: string, maxAgeMs: number) {
       return cachedValue.value;
     }
 
-    console.log("🔵🟡", "Stale cache entry", key);
+    const ageInSeconds = Math.floor(age / 1000);
+
+    console.log("🔵🟡", `Stale cache entry: ${ageInSeconds}s`, key);
 
     delete cache[key];
   }
@@ -39,8 +41,11 @@ export async function getCachedValue(key: string, maxAgeMs: number) {
     try {
       const res = await cachedValue?.pendingPromise;
       const tweets: TweetsRes = await res.json();
+
+      console.log("🔵🟢", "Resolved pending cache promise");
       return tweets;
     } catch (error: any) {
+      console.log("🔵🟡", "Failed to wait for cache promise", key, error);
       return undefined;
     }
   }

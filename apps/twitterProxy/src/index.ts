@@ -26,7 +26,7 @@ export default {
 app.get("*", async (c, next) => {
   const { req } = c;
   const queryParams = req.query();
-  const cacheKey = new URLSearchParams(queryParams).toString();
+  const cacheKey = queryParams.query!;
   const cachedValue: TweetsRes | undefined = await getCachedValue(
     cacheKey,
     maxAgeMs,
@@ -82,14 +82,16 @@ function basicProxy(url: string): Handler {
       },
     });
 
+    const cacheKey = c.req.query().query!;
+
     try {
-      setPendingPromise(new URLSearchParams(c.req.query()).toString(), req);
+      setPendingPromise(cacheKey, req);
 
       const res = await req;
       const tweets: TweetsRes = await res.json();
-      setCachedValue(new URLSearchParams(c.req.query()).toString(), tweets);
+      setCachedValue(cacheKey, tweets);
 
-      console.log("🟢 FETCHED QUERY:", c.req.query().query);
+      console.log("🟢 FETCHED QUERY:", cacheKey);
 
       return c.json(tweets, 200);
     } catch (error: any) {
@@ -99,6 +101,8 @@ function basicProxy(url: string): Handler {
         if (!errorJson) {
           return c.json({ message: "Unknown error in proxy qq" }, 500);
         }
+
+        console.log("🔴 FAILED QUERY:", cacheKey);
 
         return c.json(errorJson, errorJson.status as StatusCode);
       }

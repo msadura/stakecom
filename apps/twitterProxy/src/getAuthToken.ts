@@ -13,7 +13,5 @@ export function getAuthToken(): string {
   // pick items in a round-robin fashion
   lastIndex = lastIndex === maxIndex ? 0 : lastIndex + 1;
 
-  console.log("🔥", "Using auth token number:", lastIndex);
-
   return keys[lastIndex]!;
 }

@@ -16,6 +16,8 @@ const maxAgeMs = Number(process.env.MAX_AGE_MS) || 30000;
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export default {
   port,
   fetch: app.fetch,
@@ -64,9 +66,14 @@ function basicProxy(url: string): Handler {
       },
       retry: {
         limit: 10,
-        delay: () => getRandomNumber(500, 3000),
+        delay: () => getRandomNumber(1000, 5000),
       },
       hooks: {
+        beforeRequest: [
+          async () => {
+            await sleep(getRandomNumber(100, 5000));
+          },
+        ],
         beforeRetry: [
           ({ retryCount }) => {
             console.log("🟡", "Request failed, retries:", retryCount);

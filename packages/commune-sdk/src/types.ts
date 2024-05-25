@@ -11,6 +11,8 @@ export interface AccountBalances {
   balance: bigint;
   stake: Record<string, bigint>;
   stakeTotal: bigint;
+  emission: number;
+  uid: number;
 }
 
 export interface GenericTxInput {

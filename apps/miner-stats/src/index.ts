@@ -26,6 +26,8 @@ const getKeys = async () => {
     fileNames.push(file);
   }
 
+  fileNames.sort();
+
   // load and parse files
   const keys = await Promise.all(
     fileNames.map(async (fileName) => {
@@ -44,12 +46,6 @@ const getKeys = async () => {
 
 await getKeys();
 
-const getKeyBalance = async (address: string) => {
-  const { balance, stakeTotal } = await getBalances({ address, networkId: 17 });
-
-  return balance + stakeTotal;
-};
-
 const getFilteredBalance = async ({
   pattern,
   label,
@@ -64,20 +60,52 @@ const getFilteredBalance = async ({
 
   const balances = await Promise.all(
     filteredKeys.map(async (key) => {
-      const balance = await getKeyBalance(key.ss58_address);
+      const { balance, stakeTotal, emission, uid } = await getBalances({
+        address: key.ss58_address,
+        networkId: 17,
+      });
 
       // console.log("🔥", key.path, formatCOMAmount(balance));
 
       return {
-        balance,
+        balance: balance + stakeTotal,
+        name: key.path,
+        address: key.ss58_address,
         key,
+        emission,
+        uid,
       };
     }),
   );
 
   const sumBalance = balances.reduce((acc, { balance }) => acc + balance, 0n);
 
-  console.log(`${label}:`, formatCOMAmount(sumBalance));
+  console.table(
+    balances
+      .map(({ name, balance, address, uid, emission }) => ({
+        name,
+        address,
+        balance: formatCOMAmount(balance),
+        uid: String(uid),
+        emission: formatCOMAmount(emission),
+      }))
+      .concat([
+        {
+          name: "---------",
+          address: "------------------------------------------------",
+          uid: "---------",
+          balance: "-------------",
+          emission: "-------------",
+        },
+        {
+          name: "",
+          address: "",
+          uid: `${balances.filter(({ uid }) => typeof uid === "number").length} / ${balances.length}`,
+          balance: formatCOMAmount(sumBalance),
+          emission: `${balances.filter(({ emission }) => emission).length} / ${balances.length}`,
+        },
+      ]),
+  );
 
   return sumBalance;
 };

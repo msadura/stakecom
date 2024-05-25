@@ -83,13 +83,22 @@ const s4 = await getFilteredBalance({
   showDetails: true,
 });
 
+const s5 = await getFilteredBalance({
+  pattern: /^jottei[0-9]+$/i,
+  label: "🔥 JOTTEI",
+  showDetails: true,
+});
+
 const { balance } = await getBalances({
   address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
   networkId: 17,
 });
 console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 
-console.log("🔥 Market compass total:", formatCOMAmount(s1 + s2 + s3 + s4));
+console.log(
+  "🔥 Market compass total:",
+  formatCOMAmount(s1 + s2 + s3 + s4 + s5),
+);
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

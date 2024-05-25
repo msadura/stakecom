@@ -41,6 +41,7 @@ export const getKeys = async () => {
 
 export const getFilteredKeys = async (pattern: RegExp) => {
   const keys = await getKeys();
+  keys.sort((a, b) => a.path.localeCompare(b.path));
 
   return keys.filter((key) => pattern.test(key.path));
 };

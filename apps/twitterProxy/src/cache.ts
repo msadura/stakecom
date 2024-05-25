@@ -1,6 +1,7 @@
 import type { ResponsePromise } from "ky";
 
 import type { TweetsRes } from "./types";
+import { sleep } from "./sleep";
 
 const cache: Record<
   string,
@@ -39,11 +40,12 @@ export async function getCachedValue(key: string, maxAgeMs: number) {
   if (cachedValue?.pendingPromise) {
     console.log("🔵", "Waiting pending promise");
     try {
-      const res = await cachedValue?.pendingPromise;
-      const tweets: TweetsRes = await res.json();
+      await cachedValue?.pendingPromise;
+      await sleep(100);
 
       console.log("🔵🟢", "Resolved pending cache promise");
-      return tweets;
+
+      return getCachedValue(key, maxAgeMs);
     } catch (error: any) {
       console.log("🔵🟡", "Failed to wait for cache promise", key, error);
       return undefined;

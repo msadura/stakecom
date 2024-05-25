@@ -7,6 +7,7 @@ import ky from "ky";
 import type { TweetsRes, TwitterError } from "./types";
 import { getCachedValue, setCachedValue, setPendingPromise } from "./cache";
 import { getAuthToken } from "./getAuthToken";
+import { sleep } from "./sleep";
 
 const app = new Hono();
 
@@ -15,8 +16,6 @@ const maxAgeMs = Number(process.env.MAX_AGE_MS) || 60_000;
 
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default {
   port,

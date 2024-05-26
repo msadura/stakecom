@@ -22,7 +22,7 @@ export async function estimateTransferFee({
 
 export async function transfer({ amount, recipient, signer }: TransferInput) {
   const api = await getClient();
-  console.log("🔥", api.tx);
+
   const tx = api.tx.balances.transfer(recipient, amount);
 
   return broadcastTx({

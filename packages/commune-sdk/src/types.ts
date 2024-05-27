@@ -28,6 +28,14 @@ export interface TransferInput extends GenericTxInput {
   recipient: string;
 }
 
+export interface RegisterInput extends GenericTxInput {
+  networkId?: number;
+  metadata?: string;
+  stake?: bigint;
+  name: string;
+  address: string;
+}
+
 export interface TxError {
   code: string;
   reason?: string;

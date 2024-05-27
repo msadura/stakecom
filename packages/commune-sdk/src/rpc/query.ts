@@ -57,3 +57,24 @@ function getStakesDict(stakes: [string, number][]) {
     {} as Record<string, bigint>,
   );
 }
+
+export const getBurn = async (networkId = 0) => {
+  const api = await getClient();
+  const burn = await api.query.subspaceModule.burn(networkId);
+
+  return BigInt(burn.toString());
+};
+
+export const getSubnetName = async (networkId = 0) => {
+  const api = await getClient();
+  const name = await api.query.subspaceModule.subnetNames(networkId);
+
+  return name.toHuman() as string;
+};
+
+export const getMinStake = async (networkId = 0) => {
+  const api = await getClient();
+  const minStake = await api.query.subspaceModule.minStake(networkId);
+
+  return BigInt(minStake.toString());
+};

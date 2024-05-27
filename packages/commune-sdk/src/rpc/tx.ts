@@ -3,9 +3,23 @@ import type { SubmittableExtrinsic } from "@polkadot/api/types";
 import type { KeyringPair } from "@polkadot/keyring/types";
 import type { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 import type { ISubmittableResult } from "@polkadot/types/types";
+import { toAmountValue } from "~com-sdk/utils";
+import { z } from "zod";
 
-import type { StakeInput, TransferInput, TxError } from "../types";
-import { getBalances, getClient, getStakeByModule } from "../rpc";
+import type {
+  RegisterInput,
+  StakeInput,
+  TransferInput,
+  TxError,
+} from "../types";
+import {
+  getBalances,
+  getBurn,
+  getClient,
+  getMinStake,
+  getStakeByModule,
+  getSubnetName,
+} from "../rpc";
 
 export async function estimateTransferFee({
   amount,
@@ -109,6 +123,37 @@ export async function unstake({
   );
 
   return broadcastTx({ tx, signer, api, successMessage: "Unstake successful" });
+}
+
+export async function register({
+  networkId = 0,
+  stake = 0n,
+  signer,
+  name,
+  address,
+}: RegisterInput) {
+  const api = await getClient();
+  const subnetName = await getSubnetName(networkId);
+  const burn = await getBurn(networkId);
+  const minStake = await getMinStake(networkId);
+
+  // 0.1 extra for tx to succeed
+  const minStakeWithFees = burn + minStake + toAmountValue(0.1);
+  const stakeAmount = stake > minStakeWithFees ? stake : minStakeWithFees;
+  const tx = api.tx.subspaceModule.register(
+    subnetName,
+    name,
+    address,
+    stakeAmount,
+    signer.address,
+  );
+
+  return broadcastTx({
+    tx,
+    signer,
+    api,
+    successMessage: `Module ${name} registered on subnet ${subnetName}`,
+  });
 }
 
 function broadcastTx({

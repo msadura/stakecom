@@ -94,7 +94,7 @@ const s2 = await getFilteredBalance({
 });
 
 const s3 = await getFilteredBalance({
-  pattern: /^epco[0-9]+$/i,
+  pattern: /^epco[0-9]$/i,
   label: "🔥 EPCO",
 });
 
@@ -108,13 +108,21 @@ const s6 = await getFilteredBalance({
   label: "🔥 DIXIE",
 });
 
+const s7 = await getFilteredBalance({
+  pattern: /^hodor[0-9]+$/i,
+  label: "🔥 HODOR",
+});
+
 const { balance } = await getBalances({
   address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
   networkId: 17,
 });
 console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 
-console.log("🔥 Market compass total:", formatCOMAmount(s2 + s3 + s4 + s6));
+console.log(
+  "🔥 Market compass total:",
+  formatCOMAmount(s2 + s3 + s4 + s6 + s7),
+);
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

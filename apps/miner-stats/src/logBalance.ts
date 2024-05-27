@@ -11,10 +11,12 @@ export async function logBalance({
   showDetails?: boolean;
   key: ComKey;
 }) {
-  const { balance, stakeTotal } = await getBalances({
+  const balances = await getBalances({
     address: key.ss58_address,
     networkId: 17,
   });
+
+  const { balance, stakeTotal } = balances;
 
   // console.log("🔥", key.path, formatCOMAmount(balance));
 
@@ -39,7 +41,7 @@ export async function logBalance({
   }
 
   return {
-    balance: balance + stakeTotal,
+    balances,
     key,
   };
 }

@@ -115,11 +115,6 @@ const unstakeAndTransferFilteredKeys = async ({
   return sumBalance;
 };
 
-const s1 = await unstakeAndTransferFilteredKeys({
-  pattern: /^epi[0-9]$/i,
-  label: "🔥 MC hostkey sum",
-});
-
 const s2 = await unstakeAndTransferFilteredKeys({
   pattern: /^ex[0-9]$/i,
   label: "🔥 MC contabo5 sum",
@@ -135,19 +130,19 @@ const s4 = await unstakeAndTransferFilteredKeys({
   label: "🔥 MC contabo3 kop sum",
 });
 
-const s5 = await unstakeAndTransferFilteredKeys({
-  pattern: /^jottei[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
 const s6 = await unstakeAndTransferFilteredKeys({
   pattern: /^dixie[0-9]+$/i,
   label: "🔥 MC contabo3 kop sum",
 });
 
+const s7 = await unstakeAndTransferFilteredKeys({
+  pattern: /^hodor[0-9]+$/i,
+  label: "🔥 MC contabo3 kop sum",
+});
+
 console.log(
   "🔥 Market compass total:",
-  formatCOMAmount(s1 + s2 + s3 + s4 + s5 + s6),
+  formatCOMAmount(s2 + s3 + s4 + s6 + s7),
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");

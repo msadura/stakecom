@@ -38,7 +38,7 @@ app.get("*", async (c, next) => {
       : 0;
 
     console.log(
-      `🔵 age: [${ageInSeconds.toFixed(2)}s] Using cached value for key:`,
+      `🔵 AGE: [${ageInSeconds.toFixed(2)}s] Using cached value for key:`,
       cacheKey,
     );
 
@@ -84,7 +84,7 @@ function basicProxy(url: string): Handler {
         ],
         beforeRetry: [
           ({ retryCount }) => {
-            console.log("🟡", "Request failed, retries:", retryCount);
+            console.log("🟡", "FAIL, retries:", retryCount);
           },
         ],
       },
@@ -100,7 +100,7 @@ function basicProxy(url: string): Handler {
       setCachedValue(cacheKey, tweets);
 
       const requestTimeSec = (Date.now() - startTime) / 1000;
-      console.log(`🟢 [${requestTimeSec.toFixed(2)}s] FETCHED QUERY`, cacheKey);
+      console.log(`🟢 [${requestTimeSec.toFixed(2)}s] FETCHED:`, cacheKey);
 
       return c.json(tweets, 200);
     } catch (error: any) {

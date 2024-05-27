@@ -33,7 +33,7 @@ export interface TransferInput extends GenericTxInput {
 
 export interface RegisterInput extends GenericTxInput {
   networkId?: number;
-  metadata?: string;
+  metadata?: string | null;
   stake?: bigint;
   name: string;
   address: string;

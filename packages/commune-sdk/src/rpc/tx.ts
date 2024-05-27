@@ -127,7 +127,7 @@ export async function unstake({
 export async function register({
   networkId = 0,
   stake = 0n,
-  metadata = "",
+  metadata = null,
   signer,
   name,
   address,

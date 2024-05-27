@@ -88,11 +88,6 @@ const getFilteredBalance = async ({
   return sumBalance;
 };
 
-const s1 = await getFilteredBalance({
-  pattern: /^epi[0-9]$/i,
-  label: "🔥 EPI",
-});
-
 const s2 = await getFilteredBalance({
   pattern: /^ex[0-9]$/i,
   label: "🔥 EX",
@@ -108,11 +103,6 @@ const s4 = await getFilteredBalance({
   label: "🔥 KOP / KOPA",
 });
 
-const s5 = await getFilteredBalance({
-  pattern: /^jottei[0-9]+$/i,
-  label: "🔥 JOTTEI",
-});
-
 const s6 = await getFilteredBalance({
   pattern: /^dixie[0-9]+$/i,
   label: "🔥 DIXIE",
@@ -124,10 +114,7 @@ const { balance } = await getBalances({
 });
 console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 
-console.log(
-  "🔥 Market compass total:",
-  formatCOMAmount(s1 + s2 + s3 + s4 + s5 + s6),
-);
+console.log("🔥 Market compass total:", formatCOMAmount(s2 + s3 + s4 + s6));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

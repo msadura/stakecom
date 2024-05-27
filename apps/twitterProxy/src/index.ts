@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import ky from "ky";
 
+import type { CacheValue } from "./cache";
 import type { TweetsRes, TwitterError } from "./types";
 import { getCachedValue, setCachedValue, setPendingPromise } from "./cache";
 import { getAuthToken } from "./getAuthToken";
@@ -26,15 +27,22 @@ app.get("*", async (c, next) => {
   const { req } = c;
   const queryParams = req.query();
   const cacheKey = queryParams.query!;
-  const cachedValue: TweetsRes | undefined = await getCachedValue(
+  const cachedValue: CacheValue | undefined = await getCachedValue(
     cacheKey,
     maxAgeMs,
   );
 
   if (cachedValue) {
-    console.log("🔵 Using cached value for key:", cacheKey);
+    const ageInSeconds = cachedValue?.age
+      ? Math.floor(cachedValue.age / 1000)
+      : 0;
 
-    return c.json(cachedValue, 200);
+    console.log(
+      `🔵 age: [${ageInSeconds.toFixed(2)}s] Using cached value for key:`,
+      cacheKey,
+    );
+
+    return c.json(cachedValue.value, 200);
   }
 
   return next();
@@ -48,6 +56,7 @@ function basicProxy(url: string): Handler {
       throw new HTTPException(400, { message: "destUrl is required" });
     }
 
+    const startTime = Date.now();
     const queryParams = new URLSearchParams(c.req.query()).toString();
     const headers = c.req.header();
 
@@ -90,7 +99,8 @@ function basicProxy(url: string): Handler {
       const tweets: TweetsRes = await res.json();
       setCachedValue(cacheKey, tweets);
 
-      console.log("🟢 FETCHED QUERY:", cacheKey);
+      const requestTimeSec = (Date.now() - startTime) / 1000;
+      console.log(`🟢 [${requestTimeSec.toFixed(2)}s] FETCHED QUERY`, cacheKey);
 
       return c.json(tweets, 200);
     } catch (error: any) {

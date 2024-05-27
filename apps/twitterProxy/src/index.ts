@@ -74,12 +74,12 @@ function basicProxy(url: string): Handler {
       },
       retry: {
         limit: 10,
-        delay: () => getRandomNumber(1000, 4000),
+        delay: () => getRandomNumber(500, 2000),
       },
       hooks: {
         beforeRequest: [
           async () => {
-            await sleep(getRandomNumber(500, 3000));
+            await sleep(getRandomNumber(100, 1000));
           },
         ],
         beforeRetry: [

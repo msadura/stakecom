@@ -69,11 +69,11 @@ const getFilteredBalance = async ({
       }))
       .concat([
         {
-          name: "---------",
-          address: "------------------------------------------------",
-          uid: "---------",
-          balance: "-------------",
-          emission: "-------------",
+          name: "--",
+          address: "--",
+          uid: "--",
+          balance: "--",
+          emission: "--",
         },
         {
           name: "",

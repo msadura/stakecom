@@ -15,7 +15,18 @@ export async function initClient(providerUrl: string | string[]) {
 }
 
 export async function getClient(
-  providerUrl: string | string[] = "wss://commune.api.onfinality.io/public-ws",
+  providerUrl: string | string[] = [
+    "wss://commune-api-node-1.communeai.net",
+    "wss://commune-api-node-2.communeai.net",
+    "wss://commune-api-node-3.communeai.net",
+    "wss://commune-api-node-4.communeai.net",
+    "wss://commune-api-node-5.communeai.net",
+    "wss://commune-api-node-6.communeai.net",
+    "wss://commune-api-node-7.communeai.net",
+    "wss://commune-api-node-8.communeai.net",
+    "wss://commune-api-node-9.communeai.net",
+    "wss://commune-api-node-10.communeai.net",
+  ],
   reinit = false,
 ) {
   if (api && !reinit) {

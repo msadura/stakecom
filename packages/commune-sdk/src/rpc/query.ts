@@ -51,23 +51,13 @@ export const getStakeByModule = async ({
     address,
   );
 
-  const stakeData = stakeToData?.toJSON() as [string, number][];
+  const stakeData = stakeToData?.toJSON();
   const stake = getStakesDict(stakeData);
 
   return stake[moduleKey] || 0n;
 };
 
-function getStakesDict(stakes: [string, number][] | Record<string, number>) {
-  if (Array.isArray(stakes)) {
-    return stakes.reduce(
-      (acc, stake) => {
-        acc[stake[0]] = BigInt(stake[1]);
-        return acc;
-      },
-      {} as Record<string, bigint>,
-    );
-  }
-
+function getStakesDict(stakes: Record<string, any>) {
   return Object.entries(stakes).reduce(
     (acc, [key, value]) => {
       acc[key] = BigInt(value);

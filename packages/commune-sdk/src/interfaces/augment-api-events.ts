@@ -1,4 +1,5 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+/* eslint-disable */
 
 // import type lookup before we augment - in some environments
 // this is required to allow for ambient/previous definitions
@@ -6,6 +7,7 @@ import "@polkadot/api-base/types/events";
 
 import type { ApiTypes, AugmentedEvent } from "@polkadot/api-base/types";
 import type {
+  bool,
   Bytes,
   Null,
   Option,
@@ -384,6 +386,7 @@ declare module "@polkadot/api-base/types/events" {
       [key: string]: AugmentedEvent<ApiType>;
     };
     subspaceModule: {
+      ApplicationCreated: AugmentedEvent<ApiType, [u64]>;
       BulkBalancesSet: AugmentedEvent<ApiType, [u16, u16]>;
       BulkModulesRegistered: AugmentedEvent<ApiType, [u16, u16]>;
       CustomProposalAccepted: AugmentedEvent<ApiType, [u64]>;
@@ -400,20 +403,25 @@ declare module "@polkadot/api-base/types/events" {
       MaxNameLengthSet: AugmentedEvent<ApiType, [u16]>;
       MaxRegistrationsPerBlockSet: AugmentedEvent<ApiType, [u16]>;
       MinAllowedWeightSet: AugmentedEvent<ApiType, [u16, u16]>;
+      MinNameLenghtSet: AugmentedEvent<ApiType, [u16]>;
       ModuleDeregistered: AugmentedEvent<ApiType, [u16, u16, AccountId32]>;
       ModuleRegistered: AugmentedEvent<ApiType, [u16, u16, AccountId32]>;
       ModuleUpdated: AugmentedEvent<ApiType, [u16, AccountId32]>;
       NetworkAdded: AugmentedEvent<ApiType, [u16, Bytes]>;
       NetworkRemoved: AugmentedEvent<ApiType, [u16]>;
+      ProposalCreated: AugmentedEvent<ApiType, [u64]>;
+      ProposalVoted: AugmentedEvent<ApiType, [u64, AccountId32, bool]>;
+      ProposalVoteUnregistered: AugmentedEvent<ApiType, [u64, AccountId32]>;
       RegistrationBurnChanged: AugmentedEvent<ApiType, [u64]>;
       StakeAdded: AugmentedEvent<ApiType, [AccountId32, AccountId32, u64]>;
       StakeRemoved: AugmentedEvent<ApiType, [AccountId32, AccountId32, u64]>;
       SubnetParamsUpdated: AugmentedEvent<ApiType, [u16]>;
       SubnetProposalAccepted: AugmentedEvent<ApiType, [u64, u16]>;
       target_registrations_intervalSet: AugmentedEvent<ApiType, [u16]>;
-      TxRateLimitSet: AugmentedEvent<ApiType, [u64]>;
       UnitEmissionSet: AugmentedEvent<ApiType, [u64]>;
       WeightsSet: AugmentedEvent<ApiType, [u16, u16]>;
+      WhitelistModuleAdded: AugmentedEvent<ApiType, [AccountId32]>;
+      WhitelistModuleRemoved: AugmentedEvent<ApiType, [AccountId32]>;
       /**
        * Generic event
        **/

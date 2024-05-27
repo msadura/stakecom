@@ -16,6 +16,7 @@ import type {
   Bytes,
   Compact,
   Option,
+  u8,
   U8aFixed,
   u16,
   u32,
@@ -37,6 +38,7 @@ import type {
   EthereumTransactionTransactionV2,
   NodeSubspaceRuntimeOriginCaller,
   PalletMultisigTimepoint,
+  PalletSubspaceVotingVoteMode,
   SpConsensusGrandpaEquivocationProof,
   SpCoreVoid,
   SpWeightsWeightV2Weight,
@@ -538,25 +540,79 @@ declare module "@polkadot/api-base/types/submittable" {
         [Bytes]
       >;
       /**
+       * See [`Pallet::add_custom_subnet_proposal`].
+       **/
+      addCustomSubnetProposal: AugmentedSubmittable<
+        (
+          netuid: u16 | AnyNumber | Uint8Array,
+          data: Bytes | string | Uint8Array,
+        ) => SubmittableExtrinsic<ApiType>,
+        [u16, Bytes]
+      >;
+      /**
+       * See [`Pallet::add_dao_application`].
+       **/
+      addDaoApplication: AugmentedSubmittable<
+        (
+          applicationKey: AccountId32 | string | Uint8Array,
+          data: Bytes | string | Uint8Array,
+        ) => SubmittableExtrinsic<ApiType>,
+        [AccountId32, Bytes]
+      >;
+      /**
        * See [`Pallet::add_global_proposal`].
        **/
       addGlobalProposal: AugmentedSubmittable<
         (
           burnRate: u16 | AnyNumber | Uint8Array,
           maxNameLength: u16 | AnyNumber | Uint8Array,
+          minNameLength: u16 | AnyNumber | Uint8Array,
           maxAllowedSubnets: u16 | AnyNumber | Uint8Array,
           maxAllowedModules: u16 | AnyNumber | Uint8Array,
-          maxProposals: u64 | AnyNumber | Uint8Array,
           maxRegistrationsPerBlock: u16 | AnyNumber | Uint8Array,
+          maxAllowedWeights: u16 | AnyNumber | Uint8Array,
+          maxBurn: u64 | AnyNumber | Uint8Array,
           minBurn: u64 | AnyNumber | Uint8Array,
           minStake: u64 | AnyNumber | Uint8Array,
+          floorDelegationFee: Percent | AnyNumber | Uint8Array,
+          floorFounderShare: u8 | AnyNumber | Uint8Array,
           minWeightStake: u64 | AnyNumber | Uint8Array,
+          targetRegistrationsPerInterval: u16 | AnyNumber | Uint8Array,
+          targetRegistrationsInterval: u16 | AnyNumber | Uint8Array,
+          adjustmentAlpha: u64 | AnyNumber | Uint8Array,
           unitEmission: u64 | AnyNumber | Uint8Array,
-          txRateLimit: u64 | AnyNumber | Uint8Array,
-          voteThreshold: u16 | AnyNumber | Uint8Array,
-          voteMode: Bytes | string | Uint8Array,
+          curator: AccountId32 | string | Uint8Array,
+          subnetStakeThreshold: Percent | AnyNumber | Uint8Array,
+          proposalCost: u64 | AnyNumber | Uint8Array,
+          proposalExpiration: u32 | AnyNumber | Uint8Array,
+          proposalParticipationThreshold: Percent | AnyNumber | Uint8Array,
+          generalSubnetApplicationCost: u64 | AnyNumber | Uint8Array,
         ) => SubmittableExtrinsic<ApiType>,
-        [u16, u16, u16, u16, u64, u16, u64, u64, u64, u64, u64, u16, Bytes]
+        [
+          u16,
+          u16,
+          u16,
+          u16,
+          u16,
+          u16,
+          u16,
+          u64,
+          u64,
+          u64,
+          Percent,
+          u8,
+          u64,
+          u16,
+          u16,
+          u64,
+          u64,
+          AccountId32,
+          Percent,
+          u64,
+          u32,
+          Percent,
+          u64,
+        ]
       >;
       /**
        * See [`Pallet::add_profit_shares`].
@@ -597,39 +653,67 @@ declare module "@polkadot/api-base/types/submittable" {
         (
           netuid: u16 | AnyNumber | Uint8Array,
           founder: AccountId32 | string | Uint8Array,
+          name: Bytes | string | Uint8Array,
           founderShare: u16 | AnyNumber | Uint8Array,
           immunityPeriod: u16 | AnyNumber | Uint8Array,
           incentiveRatio: u16 | AnyNumber | Uint8Array,
           maxAllowedUids: u16 | AnyNumber | Uint8Array,
           maxAllowedWeights: u16 | AnyNumber | Uint8Array,
-          maxStake: u64 | AnyNumber | Uint8Array,
-          maxWeightAge: u64 | AnyNumber | Uint8Array,
           minAllowedWeights: u16 | AnyNumber | Uint8Array,
+          maxStake: u64 | AnyNumber | Uint8Array,
           minStake: u64 | AnyNumber | Uint8Array,
-          name: Bytes | string | Uint8Array,
+          maxWeightAge: u64 | AnyNumber | Uint8Array,
           tempo: u16 | AnyNumber | Uint8Array,
           trustRatio: u16 | AnyNumber | Uint8Array,
-          voteMode: Bytes | string | Uint8Array,
-          voteThreshold: u16 | AnyNumber | Uint8Array,
+          maximumSetWeightCallsPerEpoch: u16 | AnyNumber | Uint8Array,
+          voteMode:
+            | PalletSubspaceVotingVoteMode
+            | "Authority"
+            | "Vote"
+            | number
+            | Uint8Array,
+          bondsMa: u64 | AnyNumber | Uint8Array,
         ) => SubmittableExtrinsic<ApiType>,
         [
           u16,
           AccountId32,
-          u16,
-          u16,
-          u16,
-          u16,
-          u16,
-          u64,
-          u64,
-          u16,
-          u64,
           Bytes,
           u16,
           u16,
-          Bytes,
           u16,
+          u16,
+          u16,
+          u16,
+          u64,
+          u64,
+          u64,
+          u16,
+          u16,
+          u16,
+          PalletSubspaceVotingVoteMode,
+          u64,
         ]
+      >;
+      /**
+       * See [`Pallet::add_to_whitelist`].
+       **/
+      addToWhitelist: AugmentedSubmittable<
+        (
+          moduleKey: AccountId32 | string | Uint8Array,
+          recommendedWeight: u8 | AnyNumber | Uint8Array,
+        ) => SubmittableExtrinsic<ApiType>,
+        [AccountId32, u8]
+      >;
+      /**
+       * See [`Pallet::add_transfer_dao_treasury_proposal`].
+       **/
+      addTransferDaoTreasuryProposal: AugmentedSubmittable<
+        (
+          data: Bytes | string | Uint8Array,
+          value: u64 | AnyNumber | Uint8Array,
+          dest: AccountId32 | string | Uint8Array,
+        ) => SubmittableExtrinsic<ApiType>,
+        [Bytes, u64, AccountId32]
       >;
       /**
        * See [`Pallet::deregister`].
@@ -637,6 +721,13 @@ declare module "@polkadot/api-base/types/submittable" {
       deregister: AugmentedSubmittable<
         (netuid: u16 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
         [u16]
+      >;
+      /**
+       * See [`Pallet::refuse_dao_application`].
+       **/
+      refuseDaoApplication: AugmentedSubmittable<
+        (id: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+        [u64]
       >;
       /**
        * See [`Pallet::register`].
@@ -648,8 +739,18 @@ declare module "@polkadot/api-base/types/submittable" {
           address: Bytes | string | Uint8Array,
           stake: u64 | AnyNumber | Uint8Array,
           moduleKey: AccountId32 | string | Uint8Array,
+          metadata: Option<Bytes> | null | Uint8Array | Bytes | string,
         ) => SubmittableExtrinsic<ApiType>,
-        [Bytes, Bytes, Bytes, u64, AccountId32]
+        [Bytes, Bytes, Bytes, u64, AccountId32, Option<Bytes>]
+      >;
+      /**
+       * See [`Pallet::remove_from_whitelist`].
+       **/
+      removeFromWhitelist: AugmentedSubmittable<
+        (
+          moduleKey: AccountId32 | string | Uint8Array,
+        ) => SubmittableExtrinsic<ApiType>,
+        [AccountId32]
       >;
       /**
        * See [`Pallet::remove_stake`].
@@ -712,53 +813,10 @@ declare module "@polkadot/api-base/types/submittable" {
        * See [`Pallet::unvote_proposal`].
        **/
       unvoteProposal: AugmentedSubmittable<
-        () => SubmittableExtrinsic<ApiType>,
-        []
-      >;
-      /**
-       * See [`Pallet::update_global`].
-       **/
-      updateGlobal: AugmentedSubmittable<
         (
-          burnRate: u16 | AnyNumber | Uint8Array,
-          maxAllowedModules: u16 | AnyNumber | Uint8Array,
-          maxAllowedSubnets: u16 | AnyNumber | Uint8Array,
-          maxNameLength: u16 | AnyNumber | Uint8Array,
-          maxProposals: u64 | AnyNumber | Uint8Array,
-          maxRegistrationsPerBlock: u16 | AnyNumber | Uint8Array,
-          minBurn: u64 | AnyNumber | Uint8Array,
-          maxBurn: u64 | AnyNumber | Uint8Array,
-          minStake: u64 | AnyNumber | Uint8Array,
-          minWeightStake: u64 | AnyNumber | Uint8Array,
-          txRateLimit: u64 | AnyNumber | Uint8Array,
-          unitEmission: u64 | AnyNumber | Uint8Array,
-          voteMode: Bytes | string | Uint8Array,
-          voteThreshold: u16 | AnyNumber | Uint8Array,
-          adjustmentAlpha: u64 | AnyNumber | Uint8Array,
-          floorDelegationFee: Percent | AnyNumber | Uint8Array,
-          targetRegistrationsPerInterval: u16 | AnyNumber | Uint8Array,
-          targetRegistrationsInterval: u16 | AnyNumber | Uint8Array,
+          proposalId: u64 | AnyNumber | Uint8Array,
         ) => SubmittableExtrinsic<ApiType>,
-        [
-          u16,
-          u16,
-          u16,
-          u16,
-          u64,
-          u16,
-          u64,
-          u64,
-          u64,
-          u64,
-          u64,
-          u64,
-          Bytes,
-          u16,
-          u64,
-          Percent,
-          u16,
-          u16,
-        ]
+        [u64]
       >;
       /**
        * See [`Pallet::update_module`].
@@ -774,8 +832,9 @@ declare module "@polkadot/api-base/types/submittable" {
             | Uint8Array
             | Percent
             | AnyNumber,
+          metadata: Option<Bytes> | null | Uint8Array | Bytes | string,
         ) => SubmittableExtrinsic<ApiType>,
-        [u16, Bytes, Bytes, Option<Percent>]
+        [u16, Bytes, Bytes, Option<Percent>, Option<Bytes>]
       >;
       /**
        * See [`Pallet::update_subnet`].
@@ -796,8 +855,14 @@ declare module "@polkadot/api-base/types/submittable" {
           name: Bytes | string | Uint8Array,
           tempo: u16 | AnyNumber | Uint8Array,
           trustRatio: u16 | AnyNumber | Uint8Array,
-          voteMode: Bytes | string | Uint8Array,
-          voteThreshold: u16 | AnyNumber | Uint8Array,
+          maximumSetWeightCallsPerEpoch: u16 | AnyNumber | Uint8Array,
+          voteMode:
+            | PalletSubspaceVotingVoteMode
+            | "Authority"
+            | "Vote"
+            | number
+            | Uint8Array,
+          bondsMa: u64 | AnyNumber | Uint8Array,
         ) => SubmittableExtrinsic<ApiType>,
         [
           u16,
@@ -814,8 +879,9 @@ declare module "@polkadot/api-base/types/submittable" {
           Bytes,
           u16,
           u16,
-          Bytes,
           u16,
+          PalletSubspaceVotingVoteMode,
+          u64,
         ]
       >;
       /**
@@ -824,8 +890,9 @@ declare module "@polkadot/api-base/types/submittable" {
       voteProposal: AugmentedSubmittable<
         (
           proposalId: u64 | AnyNumber | Uint8Array,
+          agree: bool | boolean | Uint8Array,
         ) => SubmittableExtrinsic<ApiType>,
-        [u64]
+        [u64, bool]
       >;
       /**
        * Generic tx

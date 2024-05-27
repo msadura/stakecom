@@ -28,6 +28,10 @@ export async function getStakeSignature({
     throw new Error("Invalid Staker Commune address");
   }
 
+  if (!env.SIGNER_MNEMONIC) {
+    throw new Error("SIGNER_MNEMONIC is not set");
+  }
+
   const signer = mnemonicToAccount(env.SIGNER_MNEMONIC);
   const packedMessage = encodePacked(
     ["address", "string", "string"],

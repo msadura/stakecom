@@ -3,8 +3,6 @@ import type { SubmittableExtrinsic } from "@polkadot/api/types";
 import type { KeyringPair } from "@polkadot/keyring/types";
 import type { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 import type { ISubmittableResult } from "@polkadot/types/types";
-import { toAmountValue } from "~com-sdk/utils";
-import { z } from "zod";
 
 import type {
   RegisterInput,
@@ -20,6 +18,7 @@ import {
   getStakeByModule,
   getSubnetName,
 } from "../rpc";
+import { toAmountValue } from "../utils";
 
 export async function estimateTransferFee({
   amount,
@@ -128,6 +127,7 @@ export async function unstake({
 export async function register({
   networkId = 0,
   stake = 0n,
+  metadata = "",
   signer,
   name,
   address,
@@ -146,6 +146,7 @@ export async function register({
     address,
     stakeAmount,
     signer.address,
+    metadata,
   );
 
   return broadcastTx({

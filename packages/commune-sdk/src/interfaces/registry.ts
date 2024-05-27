@@ -1,4 +1,5 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
+/* eslint-disable */
 
 // import type lookup before we augment - in some environments
 // this is required to allow for ambient/previous definitions
@@ -87,9 +88,13 @@ import type {
   PalletSubspaceError,
   PalletSubspaceEvent,
   PalletSubspaceGlobalParams,
-  PalletSubspaceProposal,
   PalletSubspaceSubnetParams,
-  PalletSubspaceVoterInfo,
+  PalletSubspaceVotingApplicationStatus,
+  PalletSubspaceVotingCuratorApplication,
+  PalletSubspaceVotingProposal,
+  PalletSubspaceVotingProposalData,
+  PalletSubspaceVotingProposalStatus,
+  PalletSubspaceVotingVoteMode,
   PalletSudoCall,
   PalletSudoError,
   PalletSudoEvent,
@@ -208,9 +213,13 @@ declare module "@polkadot/types/types/registry" {
     PalletSubspaceError: PalletSubspaceError;
     PalletSubspaceEvent: PalletSubspaceEvent;
     PalletSubspaceGlobalParams: PalletSubspaceGlobalParams;
-    PalletSubspaceProposal: PalletSubspaceProposal;
     PalletSubspaceSubnetParams: PalletSubspaceSubnetParams;
-    PalletSubspaceVoterInfo: PalletSubspaceVoterInfo;
+    PalletSubspaceVotingApplicationStatus: PalletSubspaceVotingApplicationStatus;
+    PalletSubspaceVotingCuratorApplication: PalletSubspaceVotingCuratorApplication;
+    PalletSubspaceVotingProposal: PalletSubspaceVotingProposal;
+    PalletSubspaceVotingProposalData: PalletSubspaceVotingProposalData;
+    PalletSubspaceVotingProposalStatus: PalletSubspaceVotingProposalStatus;
+    PalletSubspaceVotingVoteMode: PalletSubspaceVotingVoteMode;
     PalletSudoCall: PalletSudoCall;
     PalletSudoError: PalletSudoError;
     PalletSudoEvent: PalletSudoEvent;

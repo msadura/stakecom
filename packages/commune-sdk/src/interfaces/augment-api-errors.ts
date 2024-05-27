@@ -1,4 +1,5 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+/* eslint-disable */
 
 // import type lookup before we augment - in some environments
 // this is required to allow for ambient/previous definitions
@@ -220,9 +221,15 @@ declare module "@polkadot/api-base/types/errors" {
       [key: string]: AugmentedError<ApiType>;
     };
     subspaceModule: {
-      AlreadyControlled: AugmentedError<ApiType>;
-      AlreadyController: AugmentedError<ApiType>;
       AlreadyRegistered: AugmentedError<ApiType>;
+      AlreadyVoted: AugmentedError<ApiType>;
+      AlreadyWhitelisted: AugmentedError<ApiType>;
+      ApplicationNotFound: AugmentedError<ApiType>;
+      ApplicationNotPending: AugmentedError<ApiType>;
+      ApplicationTooLarge: AugmentedError<ApiType>;
+      ApplicationTooSmall: AugmentedError<ApiType>;
+      ArithmeticError: AugmentedError<ApiType>;
+      BalanceCouldNotBeRemoved: AugmentedError<ApiType>;
       BalanceNotAdded: AugmentedError<ApiType>;
       BalanceNotRemoved: AugmentedError<ApiType>;
       BalanceSetError: AugmentedError<ApiType>;
@@ -230,9 +237,15 @@ declare module "@polkadot/api-base/types/errors" {
       CouldNotConvertToBalance: AugmentedError<ApiType>;
       DifferentLengths: AugmentedError<ApiType>;
       DuplicateUids: AugmentedError<ApiType>;
+      EmptyKeys: AugmentedError<ApiType>;
+      InsufficientDaoTreasuryFunds: AugmentedError<ApiType>;
+      InsufficientStake: AugmentedError<ApiType>;
+      InvalidApplication: AugmentedError<ApiType>;
       InvalidBurnRate: AugmentedError<ApiType>;
-      InvalidGlobalParams: AugmentedError<ApiType>;
-      InvalidIpAddress: AugmentedError<ApiType>;
+      InvalidFounderShare: AugmentedError<ApiType>;
+      InvalidGeneralSubnetApplicationCost: AugmentedError<ApiType>;
+      InvalidImmunityPeriod: AugmentedError<ApiType>;
+      InvalidIncentiveRatio: AugmentedError<ApiType>;
       InvalidIpType: AugmentedError<ApiType>;
       InvalidMaxAllowedModules: AugmentedError<ApiType>;
       InvalidMaxAllowedSubnets: AugmentedError<ApiType>;
@@ -240,54 +253,94 @@ declare module "@polkadot/api-base/types/errors" {
       InvalidMaxAllowedWeights: AugmentedError<ApiType>;
       InvalidMaxBurn: AugmentedError<ApiType>;
       InvalidMaxNameLength: AugmentedError<ApiType>;
-      InvalidMaxProposals: AugmentedError<ApiType>;
       InvalidMaxRegistrationsPerBlock: AugmentedError<ApiType>;
       InvalidMaxStake: AugmentedError<ApiType>;
       InvalidMaxWeightAge: AugmentedError<ApiType>;
       InvalidMinAllowedWeights: AugmentedError<ApiType>;
       InvalidMinBurn: AugmentedError<ApiType>;
       InvalidMinDelegationFee: AugmentedError<ApiType>;
+      InvalidMinNameLenght: AugmentedError<ApiType>;
       InvalidMinStake: AugmentedError<ApiType>;
+      /**
+       * The module address is invalid.
+       **/
+      InvalidModuleAddress: AugmentedError<ApiType>;
+      InvalidModuleMetadata: AugmentedError<ApiType>;
+      /**
+       * The module name is invalid. It has to be a UTF-8 encoded string.
+       **/
+      InvalidModuleName: AugmentedError<ApiType>;
+      InvalidProposalCost: AugmentedError<ApiType>;
+      InvalidProposalCustomData: AugmentedError<ApiType>;
       InvalidProposalData: AugmentedError<ApiType>;
-      InvalidProposalId: AugmentedError<ApiType>;
+      InvalidProposalExpiration: AugmentedError<ApiType>;
+      InvalidProposalParticipationThreshold: AugmentedError<ApiType>;
+      InvalidProposalStatus: AugmentedError<ApiType>;
+      InvalidRecommendedWeight: AugmentedError<ApiType>;
+      InvalidShares: AugmentedError<ApiType>;
+      InvalidSubnetName: AugmentedError<ApiType>;
+      InvalidSubnetStakeThreshold: AugmentedError<ApiType>;
       InvalidTargetRegistrationsInterval: AugmentedError<ApiType>;
+      InvalidTargetRegistrationsPerInterval: AugmentedError<ApiType>;
       InvalidTempo: AugmentedError<ApiType>;
       InvalidTrustRatio: AugmentedError<ApiType>;
-      InvalidTxRateLimit: AugmentedError<ApiType>;
       InvalidUid: AugmentedError<ApiType>;
+      InvalidUidsLength: AugmentedError<ApiType>;
       InvalidUnitEmission: AugmentedError<ApiType>;
       InvalidVoteMode: AugmentedError<ApiType>;
       InvalidVoteThreshold: AugmentedError<ApiType>;
       KeyAlreadyRegistered: AugmentedError<ApiType>;
-      KeyNameMismatch: AugmentedError<ApiType>;
       MaxAllowedModules: AugmentedError<ApiType>;
       MaxAllowedUidsExceeded: AugmentedError<ApiType>;
       MaxAllowedUIdsNotAllowed: AugmentedError<ApiType>;
+      MaximumSetWeightsPerEpochReached: AugmentedError<ApiType>;
+      MissingSubnetName: AugmentedError<ApiType>;
+      /**
+       * The address is too long.
+       **/
       ModuleAddressTooLong: AugmentedError<ApiType>;
+      ModuleMetadataTooLong: AugmentedError<ApiType>;
+      /**
+       * A module with this name already exists in the subnet.
+       **/
       ModuleNameAlreadyExists: AugmentedError<ApiType>;
+      /**
+       * The module name does not exist in the subnet.
+       **/
       ModuleNameDoesNotExist: AugmentedError<ApiType>;
+      /**
+       * The module name is too long.
+       **/
       ModuleNameTooLong: AugmentedError<ApiType>;
+      ModuleNameTooShort: AugmentedError<ApiType>;
       NameAlreadyRegistered: AugmentedError<ApiType>;
-      NetworkAlreadyRegistered: AugmentedError<ApiType>;
+      NetuidDoesNotExist: AugmentedError<ApiType>;
       NetworkDoesNotExist: AugmentedError<ApiType>;
       NetworkExist: AugmentedError<ApiType>;
-      NetworkRegistrationFailed: AugmentedError<ApiType>;
       NoSelfWeight: AugmentedError<ApiType>;
-      NotAuthorityMode: AugmentedError<ApiType>;
+      NotCurator: AugmentedError<ApiType>;
+      NotEnoughBalanceToPropose: AugmentedError<ApiType>;
       NotEnoughBalanceToRegister: AugmentedError<ApiType>;
       NotEnoughBalanceToStake: AugmentedError<ApiType>;
       NotEnoughBalanceToTransfer: AugmentedError<ApiType>;
+      NotEnoughStakePerWeight: AugmentedError<ApiType>;
       NotEnoughStakeToRegister: AugmentedError<ApiType>;
-      NotEnoughStaketoSetWeights: AugmentedError<ApiType>;
+      NotEnoughStakeToSetWeights: AugmentedError<ApiType>;
       NotEnoughStakeToStartNetwork: AugmentedError<ApiType>;
-      NotEnoughStaketoWithdraw: AugmentedError<ApiType>;
-      NotEnoughtStakePerWeight: AugmentedError<ApiType>;
-      NotEnoughVotesToAccept: AugmentedError<ApiType>;
+      NotEnoughStakeToWithdraw: AugmentedError<ApiType>;
+      NotEnoughtBalnceToApply: AugmentedError<ApiType>;
       NotFounder: AugmentedError<ApiType>;
       NotRegistered: AugmentedError<ApiType>;
       NotSettingEnoughWeights: AugmentedError<ApiType>;
-      ProposalDataTooLarge: AugmentedError<ApiType>;
-      ProposalDoesNotExist: AugmentedError<ApiType>;
+      NotVoteMode: AugmentedError<ApiType>;
+      NotWhitelisted: AugmentedError<ApiType>;
+      ProfitSharesNotAdded: AugmentedError<ApiType>;
+      ProposalCustomDataTooLarge: AugmentedError<ApiType>;
+      ProposalCustomDataTooSmall: AugmentedError<ApiType>;
+      /**
+       * A module with this name already exists in the subnet.
+       **/
+      ProposalNotFound: AugmentedError<ApiType>;
       SettingWeightsTooFast: AugmentedError<ApiType>;
       StakeAlreadyAdded: AugmentedError<ApiType>;
       StakeNotAdded: AugmentedError<ApiType>;
@@ -295,18 +348,14 @@ declare module "@polkadot/api-base/types/errors" {
       StillRegistered: AugmentedError<ApiType>;
       StorageValueOutOfRange: AugmentedError<ApiType>;
       SubnetNameAlreadyExists: AugmentedError<ApiType>;
-      SubnetNameNotExists: AugmentedError<ApiType>;
+      SubnetNameTooLong: AugmentedError<ApiType>;
+      SubnetNameTooShort: AugmentedError<ApiType>;
       TempoHasNotSet: AugmentedError<ApiType>;
       TooFewVotesForNewProposal: AugmentedError<ApiType>;
+      TooManyKeys: AugmentedError<ApiType>;
       TooManyRegistrationsPerBlock: AugmentedError<ApiType>;
       TooManyUids: AugmentedError<ApiType>;
-      TooMuchUpdateProposals: AugmentedError<ApiType>;
-      TxRateLimitExceeded: AugmentedError<ApiType>;
-      UpdateProposalAlreadyVoted: AugmentedError<ApiType>;
-      UpdateProposalVoteNotAvailable: AugmentedError<ApiType>;
-      VoterIsNotRegistered: AugmentedError<ApiType>;
-      VoterIsRegistered: AugmentedError<ApiType>;
-      VotingPowerIsZero: AugmentedError<ApiType>;
+      VoteNotFound: AugmentedError<ApiType>;
       WeightVecNotEqualSize: AugmentedError<ApiType>;
       /**
        * Generic error

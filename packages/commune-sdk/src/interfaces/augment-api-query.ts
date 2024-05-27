@@ -1,4 +1,5 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+/* eslint-disable */
 
 // import type lookup before we augment - in some environments
 // this is required to allow for ambient/previous definitions
@@ -11,8 +12,11 @@ import type {
 } from "@polkadot/api-base/types";
 import type {
   bool,
+  BTreeMap,
+  BTreeSet,
   Bytes,
   Option,
+  u8,
   U8aFixed,
   u16,
   u32,
@@ -47,8 +51,9 @@ import type {
   PalletGrandpaStoredPendingChange,
   PalletGrandpaStoredState,
   PalletMultisigMultisig,
-  PalletSubspaceProposal,
-  PalletSubspaceVoterInfo,
+  PalletSubspaceVotingCuratorApplication,
+  PalletSubspaceVotingProposal,
+  PalletSubspaceVotingVoteMode,
   PalletTransactionPaymentReleases,
   SpConsensusAuraSr25519AppSr25519Public,
   SpRuntimeDigest,
@@ -383,6 +388,12 @@ declare module "@polkadot/api-base/types/storage" {
       [key: string]: QueryableStorageEntry<ApiType>;
     };
     subspaceModule: {
+      active: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<bool>>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
       address: AugmentedQuery<
         ApiType,
         (
@@ -394,19 +405,51 @@ declare module "@polkadot/api-base/types/storage" {
         QueryableStorageEntry<ApiType, [u16, u16]>;
       adjustmentAlpha: AugmentedQuery<ApiType, () => Observable<u64>, []> &
         QueryableStorageEntry<ApiType, []>;
-      burn: AugmentedQuery<ApiType, () => Observable<u64>, []> &
-        QueryableStorageEntry<ApiType, []>;
-      burnRate: AugmentedQuery<ApiType, () => Observable<u16>, []> &
-        QueryableStorageEntry<ApiType, []>;
-      controller2Keys: AugmentedQuery<
+      bonds: AugmentedQuery<
         ApiType,
         (
-          arg1: AccountId32 | string | Uint8Array,
-          arg2: Vec<AccountId32> | (AccountId32 | string | Uint8Array)[],
-        ) => Observable<Option<u16>>,
-        [AccountId32, Vec<AccountId32>]
+          arg1: u16 | AnyNumber | Uint8Array,
+          arg2: u16 | AnyNumber | Uint8Array,
+        ) => Observable<Vec<ITuple<[u16, u16]>>>,
+        [u16, u16]
       > &
-        QueryableStorageEntry<ApiType, [AccountId32, Vec<AccountId32>]>;
+        QueryableStorageEntry<ApiType, [u16, u16]>;
+      bondsMovingAverage: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<u64>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      burn: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<u64>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      burnRate: AugmentedQuery<ApiType, () => Observable<u16>, []> &
+        QueryableStorageEntry<ApiType, []>;
+      consensus: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<u16>>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      curator: AugmentedQuery<ApiType, () => Observable<AccountId32>, []> &
+        QueryableStorageEntry<ApiType, []>;
+      curatorApplications: AugmentedQuery<
+        ApiType,
+        (
+          arg: u64 | AnyNumber | Uint8Array,
+        ) => Observable<Option<PalletSubspaceVotingCuratorApplication>>,
+        [u64]
+      > &
+        QueryableStorageEntry<ApiType, [u64]>;
+      daoTreasuryDistribution: AugmentedQuery<
+        ApiType,
+        () => Observable<Percent>,
+        []
+      > &
+        QueryableStorageEntry<ApiType, []>;
       delegationFee: AugmentedQuery<
         ApiType,
         (
@@ -434,6 +477,8 @@ declare module "@polkadot/api-base/types/storage" {
         []
       > &
         QueryableStorageEntry<ApiType, []>;
+      floorFounderShare: AugmentedQuery<ApiType, () => Observable<u8>, []> &
+        QueryableStorageEntry<ApiType, []>;
       founder: AugmentedQuery<
         ApiType,
         (arg: u16 | AnyNumber | Uint8Array) => Observable<AccountId32>,
@@ -446,7 +491,13 @@ declare module "@polkadot/api-base/types/storage" {
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
-      globalVoteThreshold: AugmentedQuery<ApiType, () => Observable<u16>, []> &
+      generalSubnetApplicationCost: AugmentedQuery<
+        ApiType,
+        () => Observable<u64>,
+        []
+      > &
+        QueryableStorageEntry<ApiType, []>;
+      globalDaoTreasury: AugmentedQuery<ApiType, () => Observable<u64>, []> &
         QueryableStorageEntry<ApiType, []>;
       immunityPeriod: AugmentedQuery<
         ApiType,
@@ -466,15 +517,8 @@ declare module "@polkadot/api-base/types/storage" {
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
-      key2Controller: AugmentedQuery<
-        ApiType,
-        (
-          arg1: AccountId32 | string | Uint8Array,
-          arg2: AccountId32 | string | Uint8Array,
-        ) => Observable<Option<u16>>,
-        [AccountId32, AccountId32]
-      > &
-        QueryableStorageEntry<ApiType, [AccountId32, AccountId32]>;
+      kappa: AugmentedQuery<ApiType, () => Observable<u16>, []> &
+        QueryableStorageEntry<ApiType, []>;
       keys: AugmentedQuery<
         ApiType,
         (
@@ -484,31 +528,15 @@ declare module "@polkadot/api-base/types/storage" {
         [u16, u16]
       > &
         QueryableStorageEntry<ApiType, [u16, u16]>;
-      lastTxBlock: AugmentedQuery<
-        ApiType,
-        (arg: AccountId32 | string | Uint8Array) => Observable<u64>,
-        [AccountId32]
-      > &
-        QueryableStorageEntry<ApiType, [AccountId32]>;
       lastUpdate: AugmentedQuery<
         ApiType,
         (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<u64>>,
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
-      loanFrom: AugmentedQuery<
+      legitWhitelist: AugmentedQuery<
         ApiType,
-        (
-          arg: AccountId32 | string | Uint8Array,
-        ) => Observable<Vec<ITuple<[AccountId32, u64]>>>,
-        [AccountId32]
-      > &
-        QueryableStorageEntry<ApiType, [AccountId32]>;
-      loanTo: AugmentedQuery<
-        ApiType,
-        (
-          arg: AccountId32 | string | Uint8Array,
-        ) => Observable<Vec<ITuple<[AccountId32, u64]>>>,
+        (arg: AccountId32 | string | Uint8Array) => Observable<u8>,
         [AccountId32]
       > &
         QueryableStorageEntry<ApiType, [AccountId32]>;
@@ -519,6 +547,12 @@ declare module "@polkadot/api-base/types/storage" {
       maxAllowedUids: AugmentedQuery<
         ApiType,
         (arg: u16 | AnyNumber | Uint8Array) => Observable<u16>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      maxAllowedValidators: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Option<u16>>,
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
@@ -536,9 +570,13 @@ declare module "@polkadot/api-base/types/storage" {
         QueryableStorageEntry<ApiType, []>;
       maxBurn: AugmentedQuery<ApiType, () => Observable<u64>, []> &
         QueryableStorageEntry<ApiType, []>;
+      maximumSetWeightCallsPerEpoch: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<u16>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
       maxNameLength: AugmentedQuery<ApiType, () => Observable<u16>, []> &
-        QueryableStorageEntry<ApiType, []>;
-      maxProposals: AugmentedQuery<ApiType, () => Observable<u64>, []> &
         QueryableStorageEntry<ApiType, []>;
       maxRegistrationsPerBlock: AugmentedQuery<
         ApiType,
@@ -558,6 +596,15 @@ declare module "@polkadot/api-base/types/storage" {
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
+      metadata: AugmentedQuery<
+        ApiType,
+        (
+          arg1: u16 | AnyNumber | Uint8Array,
+          arg2: AccountId32 | string | Uint8Array,
+        ) => Observable<Option<Bytes>>,
+        [u16, AccountId32]
+      > &
+        QueryableStorageEntry<ApiType, [u16, AccountId32]>;
       minAllowedWeights: AugmentedQuery<
         ApiType,
         (arg: u16 | AnyNumber | Uint8Array) => Observable<u16>,
@@ -565,6 +612,8 @@ declare module "@polkadot/api-base/types/storage" {
       > &
         QueryableStorageEntry<ApiType, [u16]>;
       minBurn: AugmentedQuery<ApiType, () => Observable<u64>, []> &
+        QueryableStorageEntry<ApiType, []>;
+      minNameLength: AugmentedQuery<ApiType, () => Observable<u16>, []> &
         QueryableStorageEntry<ApiType, []>;
       minStake: AugmentedQuery<
         ApiType,
@@ -607,17 +656,33 @@ declare module "@polkadot/api-base/types/storage" {
         QueryableStorageEntry<ApiType, [AccountId32]>;
       profitShareUnit: AugmentedQuery<ApiType, () => Observable<u16>, []> &
         QueryableStorageEntry<ApiType, []>;
+      proposalCost: AugmentedQuery<ApiType, () => Observable<u64>, []> &
+        QueryableStorageEntry<ApiType, []>;
+      proposalExpiration: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+        QueryableStorageEntry<ApiType, []>;
+      proposalParticipationThreshold: AugmentedQuery<
+        ApiType,
+        () => Observable<Percent>,
+        []
+      > &
+        QueryableStorageEntry<ApiType, []>;
       proposals: AugmentedQuery<
         ApiType,
         (
           arg: u64 | AnyNumber | Uint8Array,
-        ) => Observable<PalletSubspaceProposal>,
+        ) => Observable<Option<PalletSubspaceVotingProposal>>,
         [u64]
       > &
         QueryableStorageEntry<ApiType, [u64]>;
-      quadraticVoting: AugmentedQuery<
+      pruningScores: AugmentedQuery<
         ApiType,
-        (arg: u16 | AnyNumber | Uint8Array) => Observable<bool>,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<u16>>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      rank: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<u16>>,
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
@@ -638,7 +703,13 @@ declare module "@polkadot/api-base/types/storage" {
         QueryableStorageEntry<ApiType, []>;
       registrationsThisInterval: AugmentedQuery<
         ApiType,
-        () => Observable<u16>,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<u16>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      removedSubnets: AugmentedQuery<
+        ApiType,
+        () => Observable<BTreeSet<u16>>,
         []
       > &
         QueryableStorageEntry<ApiType, []>;
@@ -648,6 +719,15 @@ declare module "@polkadot/api-base/types/storage" {
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
+      setWeightCallsPerEpoch: AugmentedQuery<
+        ApiType,
+        (
+          arg1: u16 | AnyNumber | Uint8Array,
+          arg2: AccountId32 | string | Uint8Array,
+        ) => Observable<u16>,
+        [u16, AccountId32]
+      > &
+        QueryableStorageEntry<ApiType, [u16, AccountId32]>;
       stake: AugmentedQuery<
         ApiType,
         (
@@ -662,7 +742,7 @@ declare module "@polkadot/api-base/types/storage" {
         (
           arg1: u16 | AnyNumber | Uint8Array,
           arg2: AccountId32 | string | Uint8Array,
-        ) => Observable<Vec<ITuple<[AccountId32, u64]>>>,
+        ) => Observable<BTreeMap<AccountId32, u64>>,
         [u16, AccountId32]
       > &
         QueryableStorageEntry<ApiType, [u16, AccountId32]>;
@@ -671,7 +751,7 @@ declare module "@polkadot/api-base/types/storage" {
         (
           arg1: u16 | AnyNumber | Uint8Array,
           arg2: AccountId32 | string | Uint8Array,
-        ) => Observable<Vec<ITuple<[AccountId32, u64]>>>,
+        ) => Observable<BTreeMap<AccountId32, u64>>,
         [u16, AccountId32]
       > &
         QueryableStorageEntry<ApiType, [u16, AccountId32]>;
@@ -687,6 +767,12 @@ declare module "@polkadot/api-base/types/storage" {
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
+      subnetStakeThreshold: AugmentedQuery<
+        ApiType,
+        () => Observable<Percent>,
+        []
+      > &
+        QueryableStorageEntry<ApiType, []>;
       targetRegistrationsInterval: AugmentedQuery<
         ApiType,
         () => Observable<u16>,
@@ -725,8 +811,6 @@ declare module "@polkadot/api-base/types/storage" {
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
-      txRateLimit: AugmentedQuery<ApiType, () => Observable<u64>, []> &
-        QueryableStorageEntry<ApiType, []>;
       uids: AugmentedQuery<
         ApiType,
         (
@@ -738,25 +822,23 @@ declare module "@polkadot/api-base/types/storage" {
         QueryableStorageEntry<ApiType, [u16, AccountId32]>;
       unitEmission: AugmentedQuery<ApiType, () => Observable<u64>, []> &
         QueryableStorageEntry<ApiType, []>;
-      voteModeGlobal: AugmentedQuery<ApiType, () => Observable<Bytes>, []> &
-        QueryableStorageEntry<ApiType, []>;
-      voteModeSubnet: AugmentedQuery<
+      validatorPermits: AugmentedQuery<
         ApiType,
-        (arg: u16 | AnyNumber | Uint8Array) => Observable<Bytes>,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<bool>>,
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;
-      voter2Info: AugmentedQuery<
+      validatorTrust: AugmentedQuery<
+        ApiType,
+        (arg: u16 | AnyNumber | Uint8Array) => Observable<Vec<u16>>,
+        [u16]
+      > &
+        QueryableStorageEntry<ApiType, [u16]>;
+      voteModeSubnet: AugmentedQuery<
         ApiType,
         (
-          arg: AccountId32 | string | Uint8Array,
-        ) => Observable<PalletSubspaceVoterInfo>,
-        [AccountId32]
-      > &
-        QueryableStorageEntry<ApiType, [AccountId32]>;
-      voteThresholdSubnet: AugmentedQuery<
-        ApiType,
-        (arg: u16 | AnyNumber | Uint8Array) => Observable<u16>,
+          arg: u16 | AnyNumber | Uint8Array,
+        ) => Observable<PalletSubspaceVotingVoteMode>,
         [u16]
       > &
         QueryableStorageEntry<ApiType, [u16]>;

@@ -1,4 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
+/* eslint-disable */
+
+/* eslint-disable sort-keys */
 
 export default {
   /**
@@ -385,6 +388,8 @@ export default {
       WeightsSet: "(u16,u16)",
       ModuleRegistered: "(u16,u16,AccountId32)",
       ModuleDeregistered: "(u16,u16,AccountId32)",
+      WhitelistModuleAdded: "AccountId32",
+      WhitelistModuleRemoved: "AccountId32",
       BulkModulesRegistered: "(u16,u16)",
       BulkBalancesSet: "(u16,u16)",
       MaxAllowedUidsSet: "(u16,u16)",
@@ -392,32 +397,36 @@ export default {
       ImmunityPeriodSet: "(u16,u16)",
       ModuleUpdated: "(u16,AccountId32)",
       DelegateAdded: "(AccountId32,AccountId32,u16)",
-      TxRateLimitSet: "u64",
       UnitEmissionSet: "u64",
       MaxNameLengthSet: "u16",
+      MinNameLenghtSet: "u16",
       MaxAllowedSubnetsSet: "u16",
       MaxAllowedModulesSet: "u16",
       MaxRegistrationsPerBlockSet: "u16",
       target_registrations_intervalSet: "u16",
+      RegistrationBurnChanged: "u64",
+      ProposalCreated: "u64",
+      ApplicationCreated: "u64",
+      ProposalVoted: "(u64,AccountId32,bool)",
+      ProposalVoteUnregistered: "(u64,AccountId32)",
       GlobalParamsUpdated: "PalletSubspaceGlobalParams",
       SubnetParamsUpdated: "u16",
       GlobalProposalAccepted: "u64",
       CustomProposalAccepted: "u64",
       SubnetProposalAccepted: "(u64,u16)",
-      RegistrationBurnChanged: "u64",
     },
   },
   /**
-   * Lookup47: pallet_subspace::pallet::GlobalParams
+   * Lookup48: pallet_subspace::pallet::GlobalParams<T>
    **/
   PalletSubspaceGlobalParams: {
     burnRate: "u16",
     maxNameLength: "u16",
+    minNameLength: "u16",
     maxAllowedSubnets: "u16",
     maxAllowedModules: "u16",
     maxRegistrationsPerBlock: "u16",
     maxAllowedWeights: "u16",
-    maxProposals: "u64",
     minBurn: "u64",
     maxBurn: "u64",
     minStake: "u64",
@@ -427,12 +436,16 @@ export default {
     targetRegistrationsInterval: "u16",
     adjustmentAlpha: "u64",
     unitEmission: "u64",
-    txRateLimit: "u64",
-    voteThreshold: "u16",
-    voteMode: "Bytes",
+    curator: "AccountId32",
+    subnetStakeThreshold: "Percent",
+    proposalCost: "u64",
+    proposalExpiration: "u32",
+    proposalParticipationThreshold: "Percent",
+    generalSubnetApplicationCost: "u64",
+    floorFounderShare: "u8",
   },
   /**
-   * Lookup49: pallet_ethereum::pallet::Event
+   * Lookup50: pallet_ethereum::pallet::Event
    **/
   PalletEthereumEvent: {
     _enum: {
@@ -446,7 +459,7 @@ export default {
     },
   },
   /**
-   * Lookup52: evm_core::error::ExitReason
+   * Lookup53: evm_core::error::ExitReason
    **/
   EvmCoreErrorExitReason: {
     _enum: {
@@ -457,13 +470,13 @@ export default {
     },
   },
   /**
-   * Lookup53: evm_core::error::ExitSucceed
+   * Lookup54: evm_core::error::ExitSucceed
    **/
   EvmCoreErrorExitSucceed: {
     _enum: ["Stopped", "Returned", "Suicided"],
   },
   /**
-   * Lookup54: evm_core::error::ExitError
+   * Lookup55: evm_core::error::ExitError
    **/
   EvmCoreErrorExitError: {
     _enum: {
@@ -486,13 +499,13 @@ export default {
     },
   },
   /**
-   * Lookup58: evm_core::error::ExitRevert
+   * Lookup59: evm_core::error::ExitRevert
    **/
   EvmCoreErrorExitRevert: {
     _enum: ["Reverted"],
   },
   /**
-   * Lookup59: evm_core::error::ExitFatal
+   * Lookup60: evm_core::error::ExitFatal
    **/
   EvmCoreErrorExitFatal: {
     _enum: {
@@ -503,7 +516,7 @@ export default {
     },
   },
   /**
-   * Lookup60: pallet_evm::pallet::Event<T>
+   * Lookup61: pallet_evm::pallet::Event<T>
    **/
   PalletEvmEvent: {
     _enum: {
@@ -525,7 +538,7 @@ export default {
     },
   },
   /**
-   * Lookup61: ethereum::log::Log
+   * Lookup62: ethereum::log::Log
    **/
   EthereumLog: {
     address: "H160",
@@ -533,7 +546,7 @@ export default {
     data: "Bytes",
   },
   /**
-   * Lookup63: pallet_base_fee::pallet::Event
+   * Lookup64: pallet_base_fee::pallet::Event
    **/
   PalletBaseFeeEvent: {
     _enum: {
@@ -547,7 +560,7 @@ export default {
     },
   },
   /**
-   * Lookup67: frame_system::Phase
+   * Lookup68: frame_system::Phase
    **/
   FrameSystemPhase: {
     _enum: {
@@ -557,7 +570,7 @@ export default {
     },
   },
   /**
-   * Lookup70: frame_system::LastRuntimeUpgradeInfo
+   * Lookup71: frame_system::LastRuntimeUpgradeInfo
    **/
   FrameSystemLastRuntimeUpgradeInfo: {
     specVersion: "Compact<u32>",
@@ -1067,6 +1080,7 @@ export default {
         name: "Bytes",
         address: "Bytes",
         delegationFee: "Option<Percent>",
+        metadata: "Option<Bytes>",
       },
       register: {
         network: "Bytes",
@@ -1074,6 +1088,7 @@ export default {
         address: "Bytes",
         stake: "u64",
         moduleKey: "AccountId32",
+        metadata: "Option<Bytes>",
       },
       deregister: {
         netuid: "u16",
@@ -1085,40 +1100,12 @@ export default {
         keys_: "Vec<AccountId32>",
         shares: "Vec<u16>",
       },
-      update_global: {
-        burnRate: "u16",
-        maxAllowedModules: "u16",
-        maxAllowedSubnets: "u16",
-        maxNameLength: "u16",
-        maxProposals: "u64",
-        maxRegistrationsPerBlock: "u16",
-        minBurn: "u64",
-        maxBurn: "u64",
-        minStake: "u64",
-        minWeightStake: "u64",
-        txRateLimit: "u64",
-        unitEmission: "u64",
-        voteMode: "Bytes",
-        voteThreshold: "u16",
-        adjustmentAlpha: "u64",
-        floorDelegationFee: "Percent",
-        targetRegistrationsPerInterval: "u16",
-        targetRegistrationsInterval: "u16",
+      add_to_whitelist: {
+        moduleKey: "AccountId32",
+        recommendedWeight: "u8",
       },
-      add_global_proposal: {
-        burnRate: "u16",
-        maxNameLength: "u16",
-        maxAllowedSubnets: "u16",
-        maxAllowedModules: "u16",
-        maxProposals: "u64",
-        maxRegistrationsPerBlock: "u16",
-        minBurn: "u64",
-        minStake: "u64",
-        minWeightStake: "u64",
-        unitEmission: "u64",
-        txRateLimit: "u64",
-        voteThreshold: "u16",
-        voteMode: "Bytes",
+      remove_from_whitelist: {
+        moduleKey: "AccountId32",
       },
       update_subnet: {
         netuid: "u16",
@@ -1135,38 +1122,90 @@ export default {
         name: "Bytes",
         tempo: "u16",
         trustRatio: "u16",
-        voteMode: "Bytes",
-        voteThreshold: "u16",
+        maximumSetWeightCallsPerEpoch: "u16",
+        voteMode: "PalletSubspaceVotingVoteMode",
+        bondsMa: "u64",
+      },
+      add_global_proposal: {
+        burnRate: "u16",
+        maxNameLength: "u16",
+        minNameLength: "u16",
+        maxAllowedSubnets: "u16",
+        maxAllowedModules: "u16",
+        maxRegistrationsPerBlock: "u16",
+        maxAllowedWeights: "u16",
+        maxBurn: "u64",
+        minBurn: "u64",
+        minStake: "u64",
+        floorDelegationFee: "Percent",
+        floorFounderShare: "u8",
+        minWeightStake: "u64",
+        targetRegistrationsPerInterval: "u16",
+        targetRegistrationsInterval: "u16",
+        adjustmentAlpha: "u64",
+        unitEmission: "u64",
+        curator: "AccountId32",
+        subnetStakeThreshold: "Percent",
+        proposalCost: "u64",
+        proposalExpiration: "u32",
+        proposalParticipationThreshold: "Percent",
+        generalSubnetApplicationCost: "u64",
       },
       add_subnet_proposal: {
         netuid: "u16",
         founder: "AccountId32",
+        name: "Bytes",
         founderShare: "u16",
         immunityPeriod: "u16",
         incentiveRatio: "u16",
         maxAllowedUids: "u16",
         maxAllowedWeights: "u16",
-        maxStake: "u64",
-        maxWeightAge: "u64",
         minAllowedWeights: "u16",
+        maxStake: "u64",
         minStake: "u64",
-        name: "Bytes",
+        maxWeightAge: "u64",
         tempo: "u16",
         trustRatio: "u16",
-        voteMode: "Bytes",
-        voteThreshold: "u16",
+        maximumSetWeightCallsPerEpoch: "u16",
+        voteMode: "PalletSubspaceVotingVoteMode",
+        bondsMa: "u64",
       },
       add_custom_proposal: {
         data: "Bytes",
       },
+      add_dao_application: {
+        applicationKey: "AccountId32",
+        data: "Bytes",
+      },
+      refuse_dao_application: {
+        id: "u64",
+      },
+      add_custom_subnet_proposal: {
+        netuid: "u16",
+        data: "Bytes",
+      },
+      add_transfer_dao_treasury_proposal: {
+        data: "Bytes",
+        value: "u64",
+        dest: "AccountId32",
+      },
       vote_proposal: {
         proposalId: "u64",
+        agree: "bool",
       },
-      unvote_proposal: "Null",
+      unvote_proposal: {
+        proposalId: "u64",
+      },
     },
   },
   /**
-   * Lookup146: pallet_ethereum::pallet::Call<T>
+   * Lookup147: pallet_subspace::voting::VoteMode
+   **/
+  PalletSubspaceVotingVoteMode: {
+    _enum: ["Authority", "Vote"],
+  },
+  /**
+   * Lookup148: pallet_ethereum::pallet::Call<T>
    **/
   PalletEthereumCall: {
     _enum: {
@@ -1176,7 +1215,7 @@ export default {
     },
   },
   /**
-   * Lookup147: ethereum::transaction::TransactionV2
+   * Lookup149: ethereum::transaction::TransactionV2
    **/
   EthereumTransactionTransactionV2: {
     _enum: {
@@ -1186,7 +1225,7 @@ export default {
     },
   },
   /**
-   * Lookup148: ethereum::transaction::LegacyTransaction
+   * Lookup150: ethereum::transaction::LegacyTransaction
    **/
   EthereumTransactionLegacyTransaction: {
     nonce: "U256",
@@ -1198,7 +1237,7 @@ export default {
     signature: "EthereumTransactionTransactionSignature",
   },
   /**
-   * Lookup149: ethereum::transaction::TransactionAction
+   * Lookup151: ethereum::transaction::TransactionAction
    **/
   EthereumTransactionTransactionAction: {
     _enum: {
@@ -1207,7 +1246,7 @@ export default {
     },
   },
   /**
-   * Lookup150: ethereum::transaction::TransactionSignature
+   * Lookup152: ethereum::transaction::TransactionSignature
    **/
   EthereumTransactionTransactionSignature: {
     v: "u64",
@@ -1215,7 +1254,7 @@ export default {
     s: "H256",
   },
   /**
-   * Lookup152: ethereum::transaction::EIP2930Transaction
+   * Lookup154: ethereum::transaction::EIP2930Transaction
    **/
   EthereumTransactionEip2930Transaction: {
     chainId: "u64",
@@ -1231,14 +1270,14 @@ export default {
     s: "H256",
   },
   /**
-   * Lookup154: ethereum::transaction::AccessListItem
+   * Lookup156: ethereum::transaction::AccessListItem
    **/
   EthereumTransactionAccessListItem: {
     address: "H160",
     storageKeys: "Vec<H256>",
   },
   /**
-   * Lookup155: ethereum::transaction::EIP1559Transaction
+   * Lookup157: ethereum::transaction::EIP1559Transaction
    **/
   EthereumTransactionEip1559Transaction: {
     chainId: "u64",
@@ -1255,7 +1294,7 @@ export default {
     s: "H256",
   },
   /**
-   * Lookup156: pallet_evm::pallet::Call<T>
+   * Lookup158: pallet_evm::pallet::Call<T>
    **/
   PalletEvmCall: {
     _enum: {
@@ -1298,7 +1337,7 @@ export default {
     },
   },
   /**
-   * Lookup160: pallet_base_fee::pallet::Call<T>
+   * Lookup162: pallet_base_fee::pallet::Call<T>
    **/
   PalletBaseFeeCall: {
     _enum: {
@@ -1311,13 +1350,13 @@ export default {
     },
   },
   /**
-   * Lookup161: pallet_sudo::pallet::Error<T>
+   * Lookup163: pallet_sudo::pallet::Error<T>
    **/
   PalletSudoError: {
     _enum: ["RequireSudo"],
   },
   /**
-   * Lookup163: pallet_multisig::Multisig<BlockNumber, Balance, sp_core::crypto::AccountId32, MaxApprovals>
+   * Lookup165: pallet_multisig::Multisig<BlockNumber, Balance, sp_core::crypto::AccountId32, MaxApprovals>
    **/
   PalletMultisigMultisig: {
     when: "PalletMultisigTimepoint",
@@ -1326,7 +1365,7 @@ export default {
     approvals: "Vec<AccountId32>",
   },
   /**
-   * Lookup165: pallet_multisig::pallet::Error<T>
+   * Lookup167: pallet_multisig::pallet::Error<T>
    **/
   PalletMultisigError: {
     _enum: [
@@ -1347,34 +1386,51 @@ export default {
     ],
   },
   /**
-   * Lookup166: pallet_utility::pallet::Error<T>
+   * Lookup168: pallet_utility::pallet::Error<T>
    **/
   PalletUtilityError: {
     _enum: ["TooManyCalls"],
   },
   /**
-   * Lookup167: pallet_subspace::pallet::VoterInfo
+   * Lookup180: pallet_subspace::voting::Proposal<T>
    **/
-  PalletSubspaceVoterInfo: {
-    proposalId: "u64",
-    votes: "u64",
-    participantIndex: "u16",
+  PalletSubspaceVotingProposal: {
+    id: "u64",
+    proposer: "AccountId32",
+    expirationBlock: "u64",
+    data: "PalletSubspaceVotingProposalData",
+    status: "PalletSubspaceVotingProposalStatus",
+    votesFor: "BTreeSet<AccountId32>",
+    votesAgainst: "BTreeSet<AccountId32>",
+    proposalCost: "u64",
+    creationBlock: "u64",
+    finalizationBlock: "Option<u64>",
   },
   /**
-   * Lookup177: pallet_subspace::pallet::Proposal<T>
+   * Lookup181: pallet_subspace::voting::ProposalData<T>
    **/
-  PalletSubspaceProposal: {
-    subnetParams: "PalletSubspaceSubnetParams",
-    globalParams: "PalletSubspaceGlobalParams",
-    netuid: "u16",
-    votes: "u64",
-    participants: "Vec<AccountId32>",
-    accepted: "bool",
-    data: "Bytes",
-    mode: "Bytes",
+  PalletSubspaceVotingProposalData: {
+    _enum: {
+      Custom: "Bytes",
+      GlobalParams: "PalletSubspaceGlobalParams",
+      SubnetParams: {
+        netuid: "u16",
+        params: "PalletSubspaceSubnetParams",
+      },
+      SubnetCustom: {
+        netuid: "u16",
+        data: "Bytes",
+      },
+      Expired: "Null",
+      TransferDaoTreasury: {
+        data: "Bytes",
+        value: "u64",
+        dest: "AccountId32",
+      },
+    },
   },
   /**
-   * Lookup178: pallet_subspace::pallet::SubnetParams<T>
+   * Lookup182: pallet_subspace::pallet::SubnetParams<T>
    **/
   PalletSubspaceSubnetParams: {
     founder: "AccountId32",
@@ -1390,28 +1446,50 @@ export default {
     name: "Bytes",
     tempo: "u16",
     trustRatio: "u16",
-    voteThreshold: "u16",
-    voteMode: "Bytes",
+    maximumSetWeightCallsPerEpoch: "u16",
+    voteMode: "PalletSubspaceVotingVoteMode",
+    bondsMa: "u64",
   },
   /**
-   * Lookup179: pallet_subspace::pallet::Error<T>
+   * Lookup183: pallet_subspace::voting::ProposalStatus
+   **/
+  PalletSubspaceVotingProposalStatus: {
+    _enum: ["Pending", "Accepted", "Refused", "Expired"],
+  },
+  /**
+   * Lookup185: pallet_subspace::voting::CuratorApplication<T>
+   **/
+  PalletSubspaceVotingCuratorApplication: {
+    id: "u64",
+    userId: "AccountId32",
+    payingFor: "AccountId32",
+    data: "Bytes",
+    status: "PalletSubspaceVotingApplicationStatus",
+    applicationCost: "u64",
+  },
+  /**
+   * Lookup186: pallet_subspace::voting::ApplicationStatus
+   **/
+  PalletSubspaceVotingApplicationStatus: {
+    _enum: ["Pending", "Accepted", "Refused"],
+  },
+  /**
+   * Lookup187: pallet_subspace::pallet::Error<T>
    **/
   PalletSubspaceError: {
     _enum: [
-      "ModuleNameAlreadyExists",
       "NetworkDoesNotExist",
       "TooFewVotesForNewProposal",
-      "ModuleAddressTooLong",
       "NetworkExist",
       "InvalidIpType",
-      "InvalidIpAddress",
       "NotRegistered",
-      "NotEnoughStaketoWithdraw",
+      "NotEnoughStakeToWithdraw",
       "NotEnoughBalanceToStake",
       "BalanceWithdrawalError",
       "WeightVecNotEqualSize",
       "DuplicateUids",
       "InvalidUid",
+      "InvalidUidsLength",
       "NotSettingEnoughWeights",
       "TooManyRegistrationsPerBlock",
       "AlreadyRegistered",
@@ -1425,71 +1503,100 @@ export default {
       "BalanceSetError",
       "MaxAllowedUidsExceeded",
       "TooManyUids",
-      "TxRateLimitExceeded",
       "InvalidMaxAllowedUids",
+      "NetuidDoesNotExist",
       "SubnetNameAlreadyExists",
+      "MissingSubnetName",
+      "SubnetNameTooShort",
+      "SubnetNameTooLong",
+      "InvalidSubnetName",
       "BalanceNotAdded",
       "StakeNotRemoved",
-      "SubnetNameNotExists",
-      "ModuleNameTooLong",
       "KeyAlreadyRegistered",
-      "ModuleNameDoesNotExist",
-      "KeyNameMismatch",
+      "EmptyKeys",
+      "TooManyKeys",
+      "NotCurator",
+      "ApplicationNotFound",
+      "AlreadyWhitelisted",
+      "NotWhitelisted",
+      "InvalidShares",
+      "ProfitSharesNotAdded",
       "NotFounder",
       "NameAlreadyRegistered",
-      "NotEnoughStaketoSetWeights",
+      "NotEnoughStakeToSetWeights",
       "NotEnoughStakeToStartNetwork",
-      "NetworkRegistrationFailed",
-      "NetworkAlreadyRegistered",
-      "NotEnoughtStakePerWeight",
+      "NotEnoughStakePerWeight",
       "NoSelfWeight",
       "DifferentLengths",
       "NotEnoughBalanceToRegister",
       "StakeNotAdded",
       "BalanceNotRemoved",
+      "BalanceCouldNotBeRemoved",
       "NotEnoughStakeToRegister",
       "StillRegistered",
       "MaxAllowedModules",
-      "TooMuchUpdateProposals",
-      "InvalidProposalId",
-      "UpdateProposalAlreadyVoted",
-      "UpdateProposalVoteNotAvailable",
-      "NotEnoughVotesToAccept",
       "NotEnoughBalanceToTransfer",
-      "NotAuthorityMode",
+      "NotVoteMode",
       "InvalidTrustRatio",
       "InvalidMinAllowedWeights",
       "InvalidMaxAllowedWeights",
       "InvalidMinStake",
       "InvalidMinDelegationFee",
-      "InvalidGlobalParams",
+      "InvalidSubnetStakeThreshold",
+      "InvalidModuleMetadata",
+      "ModuleMetadataTooLong",
       "InvalidMaxNameLength",
+      "InvalidMinNameLenght",
       "InvalidMaxAllowedSubnets",
       "InvalidMaxAllowedModules",
       "InvalidMaxRegistrationsPerBlock",
       "InvalidTargetRegistrationsInterval",
       "InvalidVoteThreshold",
-      "InvalidMaxProposals",
       "InvalidUnitEmission",
-      "InvalidTxRateLimit",
       "InvalidBurnRate",
       "InvalidMinBurn",
       "InvalidMaxBurn",
-      "ProposalDoesNotExist",
-      "VotingPowerIsZero",
+      "InvalidTargetRegistrationsPerInterval",
+      "ModuleNameTooLong",
+      "ModuleNameTooShort",
+      "InvalidModuleName",
+      "ModuleAddressTooLong",
+      "InvalidModuleAddress",
+      "ModuleNameDoesNotExist",
+      "ModuleNameAlreadyExists",
+      "ProposalNotFound",
+      "InvalidProposalStatus",
       "InvalidProposalData",
-      "ProposalDataTooLarge",
-      "VoterIsNotRegistered",
-      "VoterIsRegistered",
+      "AlreadyVoted",
       "InvalidVoteMode",
+      "InvalidImmunityPeriod",
+      "InvalidFounderShare",
+      "InvalidIncentiveRatio",
+      "InvalidProposalCost",
+      "InvalidGeneralSubnetApplicationCost",
+      "InvalidProposalExpiration",
+      "InvalidProposalParticipationThreshold",
+      "InsufficientStake",
+      "VoteNotFound",
+      "InvalidProposalCustomData",
+      "ProposalCustomDataTooSmall",
+      "ProposalCustomDataTooLarge",
+      "ApplicationTooSmall",
+      "ApplicationTooLarge",
+      "ApplicationNotPending",
+      "InvalidApplication",
+      "NotEnoughBalanceToPropose",
+      "NotEnoughtBalnceToApply",
       "InvalidMaxWeightAge",
+      "InvalidRecommendedWeight",
       "InvalidMaxStake",
-      "AlreadyControlled",
-      "AlreadyController",
+      "ArithmeticError",
+      "MaximumSetWeightsPerEpochReached",
+      "InsufficientDaoTreasuryFunds",
     ],
   },
   /**
-   * Lookup182: fp_rpc::TransactionStatus
+   * Lookup190: fp_rpc::TransactionStatus
    **/
   FpRpcTransactionStatus: {
     transactionHash: "H256",
@@ -1501,11 +1608,11 @@ export default {
     logsBloom: "EthbloomBloom",
   },
   /**
-   * Lookup185: ethbloom::Bloom
+   * Lookup193: ethbloom::Bloom
    **/
   EthbloomBloom: "[u8;256]",
   /**
-   * Lookup187: ethereum::receipt::ReceiptV3
+   * Lookup195: ethereum::receipt::ReceiptV3
    **/
   EthereumReceiptReceiptV3: {
     _enum: {
@@ -1515,7 +1622,7 @@ export default {
     },
   },
   /**
-   * Lookup188: ethereum::receipt::EIP658ReceiptData
+   * Lookup196: ethereum::receipt::EIP658ReceiptData
    **/
   EthereumReceiptEip658ReceiptData: {
     statusCode: "u8",
@@ -1524,7 +1631,7 @@ export default {
     logs: "Vec<EthereumLog>",
   },
   /**
-   * Lookup189: ethereum::block::Block<ethereum::transaction::TransactionV2>
+   * Lookup197: ethereum::block::Block<ethereum::transaction::TransactionV2>
    **/
   EthereumBlock: {
     header: "EthereumHeader",
@@ -1532,7 +1639,7 @@ export default {
     ommers: "Vec<EthereumHeader>",
   },
   /**
-   * Lookup190: ethereum::header::Header
+   * Lookup198: ethereum::header::Header
    **/
   EthereumHeader: {
     parentHash: "H256",
@@ -1552,17 +1659,17 @@ export default {
     nonce: "EthereumTypesHashH64",
   },
   /**
-   * Lookup191: ethereum_types::hash::H64
+   * Lookup199: ethereum_types::hash::H64
    **/
   EthereumTypesHashH64: "[u8;8]",
   /**
-   * Lookup196: pallet_ethereum::pallet::Error<T>
+   * Lookup204: pallet_ethereum::pallet::Error<T>
    **/
   PalletEthereumError: {
     _enum: ["InvalidSignature", "PreLogExists"],
   },
   /**
-   * Lookup197: pallet_evm::CodeMetadata
+   * Lookup205: pallet_evm::CodeMetadata
    **/
   PalletEvmCodeMetadata: {
     _alias: {
@@ -1573,7 +1680,7 @@ export default {
     hash_: "H256",
   },
   /**
-   * Lookup199: pallet_evm::pallet::Error<T>
+   * Lookup207: pallet_evm::pallet::Error<T>
    **/
   PalletEvmError: {
     _enum: [
@@ -1591,7 +1698,7 @@ export default {
     ],
   },
   /**
-   * Lookup201: sp_runtime::MultiSignature
+   * Lookup209: sp_runtime::MultiSignature
    **/
   SpRuntimeMultiSignature: {
     _enum: {
@@ -1601,43 +1708,43 @@ export default {
     },
   },
   /**
-   * Lookup202: sp_core::sr25519::Signature
+   * Lookup210: sp_core::sr25519::Signature
    **/
   SpCoreSr25519Signature: "[u8;64]",
   /**
-   * Lookup203: sp_core::ecdsa::Signature
+   * Lookup211: sp_core::ecdsa::Signature
    **/
   SpCoreEcdsaSignature: "[u8;65]",
   /**
-   * Lookup206: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
+   * Lookup214: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
    **/
   FrameSystemExtensionsCheckNonZeroSender: "Null",
   /**
-   * Lookup207: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
+   * Lookup215: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
    **/
   FrameSystemExtensionsCheckSpecVersion: "Null",
   /**
-   * Lookup208: frame_system::extensions::check_tx_version::CheckTxVersion<T>
+   * Lookup216: frame_system::extensions::check_tx_version::CheckTxVersion<T>
    **/
   FrameSystemExtensionsCheckTxVersion: "Null",
   /**
-   * Lookup209: frame_system::extensions::check_genesis::CheckGenesis<T>
+   * Lookup217: frame_system::extensions::check_genesis::CheckGenesis<T>
    **/
   FrameSystemExtensionsCheckGenesis: "Null",
   /**
-   * Lookup212: frame_system::extensions::check_nonce::CheckNonce<T>
+   * Lookup220: frame_system::extensions::check_nonce::CheckNonce<T>
    **/
   FrameSystemExtensionsCheckNonce: "Compact<u32>",
   /**
-   * Lookup213: frame_system::extensions::check_weight::CheckWeight<T>
+   * Lookup221: frame_system::extensions::check_weight::CheckWeight<T>
    **/
   FrameSystemExtensionsCheckWeight: "Null",
   /**
-   * Lookup214: pallet_transaction_payment::ChargeTransactionPayment<T>
+   * Lookup222: pallet_transaction_payment::ChargeTransactionPayment<T>
    **/
   PalletTransactionPaymentChargeTransactionPayment: "Compact<u64>",
   /**
-   * Lookup216: node_subspace_runtime::Runtime
+   * Lookup224: node_subspace_runtime::Runtime
    **/
   NodeSubspaceRuntimeRuntime: "Null",
 };

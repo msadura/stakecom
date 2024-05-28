@@ -1,8 +1,10 @@
-import { getBalances } from "@stakecom/commune-sdk";
+import { getBalances, getEmission } from "@stakecom/commune-sdk";
 import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getKeys } from "./getKeys";
+
+const emission = await getEmission({ networkId: 17 });
 
 const getFilteredBalance = async ({
   pattern,
@@ -18,7 +20,7 @@ const getFilteredBalance = async ({
 
   const balances = await Promise.all(
     filteredKeys.map(async (key) => {
-      const { balance, stakeTotal, emission, uid } = await getBalances({
+      const { balance, stakeTotal, uid } = await getBalances({
         address: key.ss58_address,
         networkId: 17,
       });
@@ -50,7 +52,7 @@ const getFilteredBalance = async ({
         name: key.path,
         address: key.ss58_address,
         key,
-        emission,
+        emission: emission[uid] ?? 0,
         uid,
       };
     }),

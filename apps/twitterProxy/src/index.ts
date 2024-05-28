@@ -13,7 +13,7 @@ import { sleep } from "./sleep";
 const app = new Hono();
 
 const port = process.env.PORT || 3000;
-const maxAgeMs = Number(process.env.MAX_AGE_MS) || 180_000;
+const maxAgeMs = Number(process.env.MAX_AGE_MS) || 600_000;
 
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);

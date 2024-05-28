@@ -2,6 +2,7 @@ import { getBalances, getEmission } from "@stakecom/commune-sdk";
 import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
+import { ellipsize } from "./ellipsize";
 import { getKeys } from "./getKeys";
 
 const emission = await getEmission({ networkId: 17 });
@@ -64,7 +65,7 @@ const getFilteredBalance = async ({
     balances
       .map(({ name, balance, address, uid, emission }) => ({
         name,
-        address,
+        address: ellipsize(address),
         balance: formatCOMAmount(balance),
         uid: uid ? String(uid) : "-",
         emission: formatCOMAmount(emission),
@@ -115,6 +116,11 @@ const s7 = await getFilteredBalance({
   label: "🔥 HODOR",
 });
 
+const s8 = await getFilteredBalance({
+  pattern: /^lotar[0-9]+$/i,
+  label: "🔥 LOTAR",
+});
+
 const { balance } = await getBalances({
   address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
   networkId: 17,
@@ -123,7 +129,7 @@ console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 
 console.log(
   "🔥 Market compass total:",
-  formatCOMAmount(s2 + s3 + s4 + s6 + s7),
+  formatCOMAmount(s2 + s3 + s4 + s6 + s7 + s8),
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");

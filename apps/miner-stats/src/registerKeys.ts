@@ -115,4 +115,9 @@ await registerKeys({
   ipTemplate: "154.38.176.110:700x",
 });
 
+await registerKeys({
+  pattern: /^lotar[1-9]$/i,
+  ipTemplate: "154.38.176.110:877x",
+});
+
 process.exit(0);

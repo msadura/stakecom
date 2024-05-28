@@ -4,6 +4,17 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getKeys } from "./getKeys";
 
+const servers = [
+  { pattern: /^synthia_[0-9]+$/i, label: "🔥 Synthia" },
+  { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
+  { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
+  { pattern: /^ex[0-9]$/i, label: "🔥 EX" },
+  { pattern: /^epco[0-9]$/i, label: "🔥 EPCO" },
+  { pattern: /^kop(a?)[0-9]+$/i, label: "🔥 KOP / KOPA" },
+  { pattern: /^dixie[0-9]+$/i, label: "🔥 DIXIE" },
+  { pattern: /^hodor[0-9]+$/i, label: "🔥 HODOR" },
+];
+
 const emission = await getEmission({ networkId: 17 });
 
 const getFilteredBalance = async ({
@@ -17,6 +28,8 @@ const getFilteredBalance = async ({
 }) => {
   const keys = await getKeys();
   const filteredKeys = keys.filter((key) => pattern.test(key.path));
+
+  if (filteredKeys.length === 0) return 0n;
 
   const balances = await Promise.all(
     filteredKeys.map(async (key) => {
@@ -90,41 +103,15 @@ const getFilteredBalance = async ({
   return sumBalance;
 };
 
-const s2 = await getFilteredBalance({
-  pattern: /^ex[0-9]$/i,
-  label: "🔥 EX",
-});
-
-const s3 = await getFilteredBalance({
-  pattern: /^epco[0-9]$/i,
-  label: "🔥 EPCO",
-});
-
-const s4 = await getFilteredBalance({
-  pattern: /^kop(a?)[0-9]+$/i,
-  label: "🔥 KOP / KOPA",
-});
-
-const s6 = await getFilteredBalance({
-  pattern: /^dixie[0-9]+$/i,
-  label: "🔥 DIXIE",
-});
-
-const s7 = await getFilteredBalance({
-  pattern: /^hodor[0-9]+$/i,
-  label: "🔥 HODOR",
-});
-
+const sGroups = await Promise.all(servers.map(getFilteredBalance));
+const sGroupsTotal = sGroups.reduce((acc, value) => acc + value, 0n);
 const { balance } = await getBalances({
   address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
   networkId: 17,
 });
-console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 
-console.log(
-  "🔥 Market compass total:",
-  formatCOMAmount(s2 + s3 + s4 + s6 + s7),
-);
+console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
+console.log("🔥 Market compass total:", formatCOMAmount(sGroupsTotal));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

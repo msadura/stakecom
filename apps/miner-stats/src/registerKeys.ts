@@ -110,9 +110,9 @@ await registerKeys({
   ipTemplate: "154.38.169.84:545x",
 });
 
-// await registerKeys({
-//   pattern: /^epco[1-9]$/i,
-//   ipTemplate: "154.38.176.110:700x",
-// });
+await registerKeys({
+  pattern: /^epco[1-9]$/i,
+  ipTemplate: "154.38.176.110:700x",
+});
 
 process.exit(0);

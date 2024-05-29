@@ -11,7 +11,8 @@ const servers = [
   { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
   { pattern: /^ex[0-9]$/i, label: "🔥 EX" },
   { pattern: /^epco[0-9]$/i, label: "🔥 EPCO" },
-  { pattern: /^kop(a?)[0-9]+$/i, label: "🔥 KOP / KOPA" },
+  { pattern: /^kop3+$/i, label: "🔥 KOP / KOPA" },
+  { pattern: /^bakudo[0-9]+$/i, label: "🔥 BAKUDO" },
   { pattern: /^dixie[0-9]+$/i, label: "🔥 DIXIE" },
   { pattern: /^hodor[0-9]+$/i, label: "🔥 HODOR" },
   { pattern: /^lotar[0-9]+$/i, label: "🔥 LOTAR" },
@@ -21,7 +22,6 @@ const emission = await getEmission({ networkId: 17 });
 
 const getFilteredBalance = async ({
   pattern,
-  label,
   showDetails = false,
 }: {
   pattern: RegExp;

@@ -120,4 +120,9 @@ await registerKeys({
   ipTemplate: "154.38.176.110:877x",
 });
 
+await registerKeys({
+  pattern: /^bakudo[1-9]$/i,
+  ipTemplate: "154.38.176.110:732x",
+});
+
 process.exit(0);

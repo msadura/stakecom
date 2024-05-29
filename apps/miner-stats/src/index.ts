@@ -2,6 +2,7 @@ import { getBalances, getEmission } from "@stakecom/commune-sdk";
 import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
+import { ellipsize } from "./ellipsize";
 import { getKeys } from "./getKeys";
 
 const servers = [
@@ -13,6 +14,7 @@ const servers = [
   { pattern: /^kop(a?)[0-9]+$/i, label: "🔥 KOP / KOPA" },
   { pattern: /^dixie[0-9]+$/i, label: "🔥 DIXIE" },
   { pattern: /^hodor[0-9]+$/i, label: "🔥 HODOR" },
+  { pattern: /^lotar[0-9]+$/i, label: "🔥 LOTAR" },
 ];
 
 const emission = await getEmission({ networkId: 17 });
@@ -77,7 +79,7 @@ const getFilteredBalance = async ({
     balances
       .map(({ name, balance, address, uid, emission }) => ({
         name,
-        address,
+        address: ellipsize(address),
         balance: formatCOMAmount(balance),
         uid: uid ? String(uid) : "-",
         emission: formatCOMAmount(emission),

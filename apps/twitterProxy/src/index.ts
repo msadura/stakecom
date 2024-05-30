@@ -51,7 +51,7 @@ app.get("*", async (c, next) => {
 
 app.get("/titter", basicProxy("https://api.twitter.com/2/tweets/search/all"));
 
-const proxyHandler = async (c: Context, url: string) => {
+const proxyHandler = async (c: Context, url: string, startTime: number) => {
   if (!url) {
     throw new HTTPException(400, { message: "destUrl is required" });
   }
@@ -78,7 +78,6 @@ const proxyHandler = async (c: Context, url: string) => {
     return c.json(cachedValue.value, 200);
   }
 
-  const startTime = Date.now();
   const queryParams = new URLSearchParams(c.req.query()).toString();
   const headers = c.req.header();
 
@@ -139,7 +138,7 @@ const proxyHandler = async (c: Context, url: string) => {
 };
 
 function basicProxy(url: string): Handler {
-  return async (c) => queuedRequest(() => proxyHandler(c, url));
+  return async (c) => queuedRequest(() => proxyHandler(c, url, Date.now()));
 }
 
 function getRandomNumber(min: number, max: number) {

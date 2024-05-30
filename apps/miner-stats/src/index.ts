@@ -2,7 +2,6 @@ import { getBalances, getEmission } from "@stakecom/commune-sdk";
 import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
-import { ellipsize } from "./ellipsize";
 import { getKeys } from "./getKeys";
 
 const servers = [
@@ -77,7 +76,7 @@ const getFilteredBalance = async ({
 
   console.table(
     balances
-      .map(({ name, balance, address, uid, emission }) => ({
+      .map(({ name, balance, uid, emission }) => ({
         name,
         // address: ellipsize(address),
         balance: formatCOMAmount(balance, { maxDecimals: 2 }),

@@ -1,4 +1,4 @@
-import type { Handler } from "hono";
+import type { Context, Handler } from "hono";
 import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
@@ -8,6 +8,7 @@ import type { CacheValue } from "./cache";
 import type { TweetsRes, TwitterError } from "./types";
 import { getCachedValue, setCachedValue, setPendingPromise } from "./cache";
 import { getAuthToken } from "./getAuthToken";
+import { queuedRequest } from "./requestQueue";
 import { sleep } from "./sleep";
 
 const app = new Hono();
@@ -50,73 +51,95 @@ app.get("*", async (c, next) => {
 
 app.get("/titter", basicProxy("https://api.twitter.com/2/tweets/search/all"));
 
-function basicProxy(url: string): Handler {
-  return async (c) => {
-    if (!url) {
-      throw new HTTPException(400, { message: "destUrl is required" });
-    }
+const proxyHandler = async (c: Context, url: string) => {
+  if (!url) {
+    throw new HTTPException(400, { message: "destUrl is required" });
+  }
 
-    const startTime = Date.now();
-    const queryParams = new URLSearchParams(c.req.query()).toString();
-    const headers = c.req.header();
+  const cacheKey = c.req.query().query!;
 
-    const requestUrl = `${url}?${queryParams}`;
-    const bearerToken = getAuthToken();
+  await sleep(10);
+  // get value from cache
+  const cachedValue: CacheValue | undefined = await getCachedValue(
+    cacheKey,
+    maxAgeMs,
+  );
 
-    const authorization = bearerToken
-      ? `Bearer ${bearerToken}`
-      : headers.authorization;
+  if (cachedValue) {
+    const ageInSeconds = cachedValue?.age
+      ? Math.floor(cachedValue.age / 1000)
+      : 0;
 
-    const req = ky.get(requestUrl, {
-      headers: {
-        Authorization: authorization,
-        "user-agent": "v2FullArchiveSearchPython",
-      },
-      retry: {
-        limit: 10,
-        delay: () => getRandomNumber(500, 2000),
-      },
-      hooks: {
-        beforeRequest: [
-          async () => {
-            await sleep(getRandomNumber(100, 1000));
-          },
-        ],
-        beforeRetry: [
-          ({ retryCount }) => {
-            console.log("🟡", "FAIL, retries:", retryCount);
-          },
-        ],
-      },
-    });
+    console.log(
+      `🔵 AGE: [${ageInSeconds.toFixed(2)}s] Using cached value for key:`,
+      cacheKey,
+    );
 
-    const cacheKey = c.req.query().query!;
+    return c.json(cachedValue.value, 200);
+  }
 
-    try {
-      setPendingPromise(cacheKey, req);
+  const startTime = Date.now();
+  const queryParams = new URLSearchParams(c.req.query()).toString();
+  const headers = c.req.header();
 
-      const res = await req;
-      const tweets: TweetsRes = await res.json();
-      setCachedValue(cacheKey, tweets);
+  const requestUrl = `${url}?${queryParams}`;
+  const bearerToken = getAuthToken();
 
-      const requestTimeSec = (Date.now() - startTime) / 1000;
-      console.log(`🟢 [${requestTimeSec.toFixed(2)}s] FETCHED:`, cacheKey);
+  const authorization = bearerToken
+    ? `Bearer ${bearerToken}`
+    : headers.authorization;
 
-      return c.json(tweets, 200);
-    } catch (error: any) {
-      if (error.name === "HTTPError") {
-        const errorJson: TwitterError = await error.response.json();
+  const req = ky.get(requestUrl, {
+    headers: {
+      Authorization: authorization,
+      "user-agent": "v2FullArchiveSearchPython",
+    },
+    retry: {
+      limit: 10,
+      delay: () => getRandomNumber(500, 1000),
+    },
+    hooks: {
+      beforeRequest: [
+        async () => {
+          await sleep(getRandomNumber(100, 1000));
+        },
+      ],
+      beforeRetry: [
+        ({ retryCount }) => {
+          console.log("🟡", "FAIL, retries:", retryCount);
+        },
+      ],
+    },
+  });
 
-        if (!errorJson) {
-          return c.json({ message: "Unknown error in proxy qq" }, 500);
-        }
+  try {
+    setPendingPromise(cacheKey, req);
 
-        console.log("🔴 FAILED QUERY:", cacheKey);
+    const res = await req;
+    const tweets: TweetsRes = await res.json();
+    setCachedValue(cacheKey, tweets);
 
-        return c.json(errorJson, errorJson.status as StatusCode);
+    const requestTimeSec = (Date.now() - startTime) / 1000;
+    console.log(`🟢 [${requestTimeSec.toFixed(2)}s] FETCHED:`, cacheKey);
+
+    return c.json(tweets, 200);
+  } catch (error: any) {
+    if (error.name === "HTTPError") {
+      const errorJson: TwitterError = await error.response.json();
+
+      if (!errorJson) {
+        return c.json({ message: "Unknown error in proxy qq" }, 500);
       }
+
+      console.log("🔴 FAILED QUERY:", cacheKey);
+
+      return c.json(errorJson, errorJson.status as StatusCode);
     }
-  };
+  }
+};
+
+function basicProxy(url: string): Handler {
+  return async (c) => queuedRequest(() => proxyHandler(c, url));
 }
 
 function getRandomNumber(min: number, max: number) {

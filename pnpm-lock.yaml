@@ -261,6 +261,9 @@ importers:
       ky:
         specifier: ^1.2.2
         version: 1.2.2
+      p-queue:
+        specifier: ^8.0.1
+        version: 8.0.1
     devDependencies:
       '@stakecom/eslint-config':
         specifier: ^0.2.0
@@ -12020,6 +12023,19 @@ packages:
     dependencies:
       aggregate-error: 3.1.0
     dev: true
+
+  /p-queue@8.0.1:
+    resolution: {integrity: sha512-NXzu9aQJTAzbBqOt2hwsR63ea7yvxJc0PwN/zobNAudYfb1B7R08SzB4TsLeSbUCuG467NhnoT0oO6w1qRO+BA==}
+    engines: {node: '>=18'}
+    dependencies:
+      eventemitter3: 5.0.1
+      p-timeout: 6.1.2
+    dev: false
+
+  /p-timeout@6.1.2:
+    resolution: {integrity: sha512-UbD77BuZ9Bc9aABo74gfXhNvzC9Tx7SxtHSh1fxvx3jTLLYvmVhiQZZrJzqqU0jKbN32kb5VOKiLEQI/3bIjgQ==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}

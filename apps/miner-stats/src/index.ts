@@ -79,15 +79,15 @@ const getFilteredBalance = async ({
     balances
       .map(({ name, balance, address, uid, emission }) => ({
         name,
-        address: ellipsize(address),
-        balance: formatCOMAmount(balance, { maxDecimals: 3 }),
+        // address: ellipsize(address),
+        balance: formatCOMAmount(balance, { maxDecimals: 2 }),
         uid: uid ? String(uid) : "-",
-        emission: formatCOMAmount(emission, { maxDecimals: 3 }),
+        emission: formatCOMAmount(emission, { maxDecimals: 2 }),
       }))
       .concat([
         {
           name: "--",
-          address: "--",
+          // address: "--",
           uid: "--",
           balance: "--",
           emission: "--",

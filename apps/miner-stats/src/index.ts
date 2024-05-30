@@ -96,7 +96,7 @@ const getFilteredBalance = async ({
           name: "",
           address: "",
           uid: `${balances.filter(({ uid }) => typeof uid === "number").length} / ${balances.length}`,
-          balance: formatCOMAmount(sumBalance),
+          balance: formatCOMAmount(sumBalance, { maxDecimals: 3 }),
           emission: `${balances.filter(({ emission }) => emission).length} / ${balances.length}`,
         },
       ]),

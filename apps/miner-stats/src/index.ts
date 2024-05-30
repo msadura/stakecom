@@ -10,7 +10,6 @@ const servers = [
   { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
   { pattern: /^ex[0-9]$/i, label: "🔥 EX" },
   { pattern: /^epco[0-9]$/i, label: "🔥 EPCO" },
-  { pattern: /^kop3+$/i, label: "🔥 KOP / KOPA" },
   { pattern: /^bakudo[0-9]+$/i, label: "🔥 BAKUDO" },
   { pattern: /^dixie[0-9]+$/i, label: "🔥 DIXIE" },
   { pattern: /^hodor[0-9]+$/i, label: "🔥 HODOR" },

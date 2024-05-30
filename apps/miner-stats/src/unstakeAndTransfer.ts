@@ -125,11 +125,6 @@ const s3 = await unstakeAndTransferFilteredKeys({
   label: "🔥 MC contabo4 sum",
 });
 
-const s4 = await unstakeAndTransferFilteredKeys({
-  pattern: /^kop3+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
 const s6 = await unstakeAndTransferFilteredKeys({
   pattern: /^dixie[0-9]+$/i,
   label: "🔥 MC contabo3 kop sum",
@@ -152,7 +147,7 @@ const s9 = await unstakeAndTransferFilteredKeys({
 
 console.log(
   "🔥 Market compass total:",
-  formatCOMAmount(s2 + s3 + s4 + s6 + s7 + s8 + s9),
+  formatCOMAmount(s2 + s3 + s6 + s7 + s8 + s9),
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");

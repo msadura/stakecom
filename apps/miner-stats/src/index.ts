@@ -12,7 +12,6 @@ const servers = [
   { pattern: /^epco[0-9]$/i, label: "🔥 EPCO" },
   { pattern: /^bakudo[0-9]+$/i, label: "🔥 BAKUDO" },
   { pattern: /^dixie[0-9]+$/i, label: "🔥 DIXIE" },
-  { pattern: /^hodor[0-9]+$/i, label: "🔥 HODOR" },
   { pattern: /^lotar[0-9]+$/i, label: "🔥 LOTAR" },
   { pattern: /^fisk[0-9]+$/i, label: "🔥 FISK" },
 ];

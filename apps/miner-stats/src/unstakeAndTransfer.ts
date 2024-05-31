@@ -145,9 +145,14 @@ const s9 = await unstakeAndTransferFilteredKeys({
   label: "🔥 MC contabo3 kop sum",
 });
 
+const s10 = await unstakeAndTransferFilteredKeys({
+  pattern: /^fisk[0-9]+$/i,
+  label: "🔥 MC contabo3 kop sum",
+});
+
 console.log(
   "🔥 Market compass total:",
-  formatCOMAmount(s2 + s3 + s6 + s7 + s8 + s9),
+  formatCOMAmount(s2 + s3 + s6 + s7 + s8 + s9 + s10),
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");

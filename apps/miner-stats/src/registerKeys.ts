@@ -95,10 +95,10 @@ export const registerKeys = async ({
   }
 };
 
-await registerKeys({
-  pattern: /^hodor[1-9]+$/i,
-  ipTemplate: "66.94.112.167:454x",
-});
+// await registerKeys({
+//   pattern: /^hodor[1-9]+$/i,
+//   ipTemplate: "66.94.112.167:454x",
+// });
 
 await registerKeys({
   pattern: /^ex[1-9]+$/i,

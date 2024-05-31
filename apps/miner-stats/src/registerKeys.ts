@@ -72,6 +72,7 @@ export const registerKeys = async ({
         console.log("✅", `${path} - funds transfered`);
       } catch (err) {
         console.error("❌", `${path} - funds error`, err);
+        throw err;
       }
     }
 

@@ -125,4 +125,9 @@ await registerKeys({
   ipTemplate: "154.38.176.110:732x",
 });
 
+await registerKeys({
+  pattern: /^fisk[1-9]$/i,
+  ipTemplate: "86.48.6.108:971x",
+});
+
 process.exit(0);

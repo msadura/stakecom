@@ -55,8 +55,8 @@ export const registerKeys = async ({
     }
 
     // not enough balance, feed first
-    if (balance < burn + toAmountValue("1")) {
-      const feedAmount = burn + toAmountValue("1") - balance;
+    if (balance < burn + toAmountValue("2")) {
+      const feedAmount = burn + toAmountValue("5") - balance;
       console.log(
         "🔥",
         `Feeding ${path} with ${formatCOMAmount(feedAmount)} COM`,
@@ -92,6 +92,8 @@ export const registerKeys = async ({
       console.log("✅", `${path} - registered`);
     } else {
       console.error("❌", `${path} - error`, res.msg);
+      console.log("❌", res);
+      throw new Error(res.errorCode);
     }
   }
 };
@@ -129,6 +131,11 @@ await registerKeys({
 await registerKeys({
   pattern: /^fisk[1-9]$/i,
   ipTemplate: "86.48.6.108:971x",
+});
+
+await registerKeys({
+  pattern: /^udar[1-9]$/i,
+  ipTemplate: "86.48.6.108:871x",
 });
 
 process.exit(0);

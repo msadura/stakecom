@@ -36,7 +36,7 @@ export async function estimateTransferFee({
 export async function transfer({ amount, recipient, signer }: TransferInput) {
   const api = await getClient();
 
-  const tx = api.tx.balances.forceTransfer(signer.address, recipient, amount);
+  const tx = api.tx.balances.transferKeepAlive(recipient, amount);
 
   return broadcastTx({
     tx,

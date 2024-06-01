@@ -55,8 +55,8 @@ export const registerKeys = async ({
     }
 
     // not enough balance, feed first
-    if (balance < burn + toAmountValue("2")) {
-      const feedAmount = burn + toAmountValue("5") - balance;
+    if (balance < burn + toAmountValue("1")) {
+      const feedAmount = burn + toAmountValue("1") - balance;
       console.log(
         "🔥",
         `Feeding ${path} with ${formatCOMAmount(feedAmount)} COM`,

@@ -14,7 +14,7 @@ import { sleep } from "./sleep";
 const app = new Hono();
 
 const port = process.env.PORT || 3000;
-const maxAgeMs = Number(process.env.MAX_AGE_MS) || 600_000;
+const maxAgeMs = Number(process.env.MAX_AGE_MS) || 120_000;
 
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);
@@ -100,7 +100,7 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     hooks: {
       beforeRequest: [
         async () => {
-          await sleep(getRandomNumber(10, 200));
+          await sleep(getRandomNumber(10, 100));
         },
       ],
       beforeRetry: [

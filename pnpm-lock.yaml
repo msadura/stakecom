@@ -35,6 +35,9 @@ importers:
       '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../../packages/db
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
     devDependencies:
       '@stakecom/eslint-config':
         specifier: ^0.2.0
@@ -45,6 +48,9 @@ importers:
       '@stakecom/tsconfig':
         specifier: ^0.1.0
         version: link:../../tooling/typescript
+      '@types/lodash':
+        specifier: ^4.14.202
+        version: 4.14.202
       bun-types:
         specifier: latest
         version: 1.1.8

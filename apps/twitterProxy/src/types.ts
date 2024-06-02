@@ -1,5 +1,11 @@
+export interface Tweet {
+  edit_history_tweet_ids: string[];
+  id: string;
+  text: string;
+}
+
 export interface TweetsRes {
-  data: [];
+  data: Tweet[];
   meta: {
     newest_id: string;
     oldest_id: string;

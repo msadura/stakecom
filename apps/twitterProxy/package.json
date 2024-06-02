@@ -8,12 +8,14 @@
   "dependencies": {
     "hono": "^4.3.10",
     "ky": "^1.2.2",
+    "lodash": "^4.17.21",
     "p-queue": "^8.0.1"
   },
   "devDependencies": {
     "@stakecom/eslint-config": "^0.2.0",
     "@stakecom/prettier-config": "^0.1.0",
     "@stakecom/tsconfig": "^0.1.0",
+    "@types/lodash": "^4.14.202",
     "bun-types": "latest"
   },
   "module": "src/index.js",

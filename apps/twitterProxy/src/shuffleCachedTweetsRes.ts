@@ -9,7 +9,8 @@ export function shuffleCachedTweetsRes(cachedRes: TweetsRes) {
 
   const tweets = shuffledData.map(mapTweet);
   const { newestId, oldestId } = getNewestAndOldestId(tweets);
-  const nextToken = shuffle(meta.next_token.split("")).join("");
+  const nextTokenRaw = meta.next_token || "";
+  const nextToken = shuffle(nextTokenRaw.split("")).join("");
 
   return {
     data: tweets,

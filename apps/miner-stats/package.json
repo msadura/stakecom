@@ -8,12 +8,14 @@
   "dependencies": {
     "@stakecom/commune-sdk": "workspace:^0.1.0",
     "@stakecom/core": "workspace:^0.1.0",
-    "@stakecom/db": "workspace:^0.1.0"
+    "@stakecom/db": "workspace:^0.1.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@stakecom/eslint-config": "^0.2.0",
     "@stakecom/prettier-config": "^0.1.0",
     "@stakecom/tsconfig": "^0.1.0",
+    "@types/lodash": "^4.14.202",
     "bun-types": "latest"
   },
   "module": "src/index.js",

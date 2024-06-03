@@ -1,7 +1,7 @@
 import type { ResponsePromise } from "ky";
 
 import type { TweetsRes } from "./types";
-import { shuffleCachedTweetsRes } from "./shuffleCachedTweetsRes";
+// import { shuffleCachedTweetsRes } from "./shuffleCachedTweetsRes";
 import { sleep } from "./sleep";
 
 export interface CacheValue {
@@ -32,7 +32,7 @@ export async function getCachedValue(key: string, maxAgeMs: number) {
   if (cachedValue?.value && cachedValue.timestamp) {
     const age = Date.now() - cachedValue.timestamp;
     if (age < maxAgeMs) {
-      return { age, value: shuffleCachedTweetsRes(cachedValue.value) };
+      return { age, value: cachedValue.value };
     }
 
     const ageInSeconds = Math.floor(age / 1000);

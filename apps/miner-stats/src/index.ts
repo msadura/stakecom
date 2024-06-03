@@ -1,5 +1,4 @@
 import { getBalances, getEmission } from "@stakecom/commune-sdk";
-import { statsApiRouter } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getKeys } from "./getKeys";
@@ -16,6 +15,9 @@ const servers = [
   { pattern: /^fisk[0-9]+$/i, label: "🔥 FISK" },
   { pattern: /^udar[0-9]+$/i, label: "🔥 UDAR" },
   { pattern: /^adac[0-9]+$/i, label: "🔥 ADAC" },
+  { pattern: /^agil[0-9]+$/i, label: "🔥 AGIL" },
+  { pattern: /^babo[0-9]+$/i, label: "🔥 BABO" },
+  { pattern: /^buster[0-9]+$/i, label: "🔥 BUSTER" },
 ];
 
 const emission = await getEmission({ networkId: 17 });

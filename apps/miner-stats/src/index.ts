@@ -22,7 +22,6 @@ const emission = await getEmission({ networkId: 17 });
 
 const getFilteredBalance = async ({
   pattern,
-  showDetails = false,
 }: {
   pattern: RegExp;
   label: string;
@@ -31,7 +30,7 @@ const getFilteredBalance = async ({
   const keys = await getKeys();
   const filteredKeys = keys.filter((key) => pattern.test(key.path));
 
-  if (filteredKeys.length === 0) return 0n;
+  if (filteredKeys.length === 0) return { sumBalance: 0n, withEmission: 0 };
 
   const balances = await Promise.all(
     filteredKeys.map(async (key) => {
@@ -39,28 +38,6 @@ const getFilteredBalance = async ({
         address: key.ss58_address,
         networkId: 17,
       });
-
-      // console.log("🔥", key.path, formatCOMAmount(balance));
-
-      if (showDetails) {
-        let isRegistered = stakeTotal > 0n;
-        if (stakeTotal === 0n) {
-          try {
-            await statsApiRouter.getValidator(key.ss58_address, 17);
-            isRegistered = true;
-          } catch (e) {
-            isRegistered = false;
-          }
-        }
-
-        console.log(
-          "🔥",
-          key.path,
-          `balance: ${formatCOMAmount(balance)}`,
-          `staked: ${formatCOMAmount(stakeTotal)}`,
-          isRegistered ? "✅" : "❌",
-        );
-      }
 
       return {
         balance: balance + stakeTotal,
@@ -74,6 +51,9 @@ const getFilteredBalance = async ({
   );
 
   const sumBalance = balances.reduce((acc, { balance }) => acc + balance, 0n);
+  const countWithEmission = balances.filter(
+    ({ emission }) => emission >= 0.005,
+  ).length;
 
   console.table(
     balances
@@ -102,11 +82,18 @@ const getFilteredBalance = async ({
       ]),
   );
 
-  return sumBalance;
+  return { sumBalance, countWithEmission };
 };
 
 const sGroups = await Promise.all(servers.map(getFilteredBalance));
-const sGroupsTotal = sGroups.reduce((acc, value) => acc + value, 0n);
+const sGroupsTotal = sGroups.reduce(
+  (acc, { sumBalance }) => acc + sumBalance,
+  0n,
+);
+const withEmissionTotal = sGroups.reduce(
+  (acc, { countWithEmission }) => acc + (countWithEmission || 0),
+  0,
+);
 const { balance } = await getBalances({
   address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
   networkId: 17,
@@ -114,6 +101,7 @@ const { balance } = await getBalances({
 
 console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 console.log("🔥 Market compass total:", formatCOMAmount(sGroupsTotal));
+console.log("🔥 With emission total:", withEmissionTotal);
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

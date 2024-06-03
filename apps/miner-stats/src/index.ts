@@ -52,7 +52,8 @@ const getFilteredBalance = async ({
 
   const sumBalance = balances.reduce((acc, { balance }) => acc + balance, 0n);
   const countWithEmission = balances.filter(
-    ({ emission }) => emission > 0.09,
+    ({ emission }) =>
+      Number(formatCOMAmount(emission, { maxDecimals: 2 })) > 0.09,
   ).length;
 
   console.table(

@@ -15,6 +15,7 @@ const servers = [
   { pattern: /^lotar[0-9]+$/i, label: "🔥 LOTAR" },
   { pattern: /^fisk[0-9]+$/i, label: "🔥 FISK" },
   { pattern: /^udar[0-9]+$/i, label: "🔥 UDAR" },
+  { pattern: /^adac[0-9]+$/i, label: "🔥 ADAC" },
 ];
 
 const emission = await getEmission({ networkId: 17 });

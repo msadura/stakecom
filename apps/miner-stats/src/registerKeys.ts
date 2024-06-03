@@ -13,6 +13,45 @@ import { getFilteredKeys, getKeyByName } from "./getKeys";
 const bankName = "epic";
 const maxBurn = toAmountValue("12");
 
+const servers = [
+  // { pattern: /^ex[0-9]$/i, label: "🔥 EX", ipTemplate: "154.38.169.84:600x" },
+  // {
+  //   pattern: /^epco[0-9]$/i,
+  //   label: "🔥 EPCO",
+  //   ipTemplate: "154.38.176.110:700x",
+  // },
+  // {
+  //   pattern: /^bakudo[0-9]+$/i,
+  //   label: "🔥 BAKUDO",
+  //   ipTemplate: "154.38.176.110:732x",
+  // },
+  // {
+  //   pattern: /^dixie[0-9]+$/i,
+  //   label: "🔥 DIXIE",
+  //   ipTemplate: "154.38.169.84:545x",
+  // },
+  // {
+  //   pattern: /^lotar[0-9]+$/i,
+  //   label: "🔥 LOTAR",
+  //   ipTemplate: "154.38.176.110:877x",
+  // },
+  // {
+  //   pattern: /^fisk[0-9]+$/i,
+  //   label: "🔥 FISK",
+  //   ipTemplate: "86.48.6.108:971x",
+  // },
+  // {
+  //   pattern: /^udar[0-9]+$/i,
+  //   label: "🔥 UDAR",
+  //   ipTemplate: "86.48.6.108:871x",
+  // },
+  {
+    pattern: /^adac[0-9]+$/i,
+    label: "🔥 ADAC",
+    ipTemplate: "86.48.6.108:566x",
+  },
+];
+
 export const registerKeys = async ({
   pattern,
   ipTemplate,
@@ -98,44 +137,6 @@ export const registerKeys = async ({
   }
 };
 
-// await registerKeys({
-//   pattern: /^hodor[1-9]+$/i,
-//   ipTemplate: "66.94.112.167:454x",
-// });
-
-await registerKeys({
-  pattern: /^ex[1-9]+$/i,
-  ipTemplate: "154.38.169.84:600x",
-});
-
-await registerKeys({
-  pattern: /^dixie[1-9]$/i,
-  ipTemplate: "154.38.169.84:545x",
-});
-
-await registerKeys({
-  pattern: /^epco[1-9]$/i,
-  ipTemplate: "154.38.176.110:700x",
-});
-
-await registerKeys({
-  pattern: /^lotar[1-9]$/i,
-  ipTemplate: "154.38.176.110:877x",
-});
-
-await registerKeys({
-  pattern: /^bakudo[1-9]$/i,
-  ipTemplate: "154.38.176.110:732x",
-});
-
-await registerKeys({
-  pattern: /^fisk[1-9]$/i,
-  ipTemplate: "86.48.6.108:971x",
-});
-
-await registerKeys({
-  pattern: /^udar[1-9]$/i,
-  ipTemplate: "86.48.6.108:871x",
-});
+await Promise.all(servers.map(registerKeys));
 
 process.exit(0);

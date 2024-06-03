@@ -14,37 +14,37 @@ const bankName = "epic";
 const maxBurn = toAmountValue("12");
 
 const servers = [
-  // { pattern: /^ex[0-9]$/i, label: "🔥 EX", ipTemplate: "154.38.169.84:600x" },
-  // {
-  //   pattern: /^epco[0-9]$/i,
-  //   label: "🔥 EPCO",
-  //   ipTemplate: "154.38.176.110:700x",
-  // },
-  // {
-  //   pattern: /^bakudo[0-9]+$/i,
-  //   label: "🔥 BAKUDO",
-  //   ipTemplate: "154.38.176.110:732x",
-  // },
-  // {
-  //   pattern: /^dixie[0-9]+$/i,
-  //   label: "🔥 DIXIE",
-  //   ipTemplate: "154.38.169.84:545x",
-  // },
-  // {
-  //   pattern: /^lotar[0-9]+$/i,
-  //   label: "🔥 LOTAR",
-  //   ipTemplate: "154.38.176.110:877x",
-  // },
-  // {
-  //   pattern: /^fisk[0-9]+$/i,
-  //   label: "🔥 FISK",
-  //   ipTemplate: "86.48.6.108:971x",
-  // },
-  // {
-  //   pattern: /^udar[0-9]+$/i,
-  //   label: "🔥 UDAR",
-  //   ipTemplate: "86.48.6.108:871x",
-  // },
+  { pattern: /^ex[0-9]$/i, label: "🔥 EX", ipTemplate: "154.38.169.84:600x" },
+  {
+    pattern: /^epco[0-9]$/i,
+    label: "🔥 EPCO",
+    ipTemplate: "154.38.176.110:700x",
+  },
+  {
+    pattern: /^bakudo[0-9]+$/i,
+    label: "🔥 BAKUDO",
+    ipTemplate: "154.38.176.110:732x",
+  },
+  {
+    pattern: /^dixie[0-9]+$/i,
+    label: "🔥 DIXIE",
+    ipTemplate: "154.38.169.84:545x",
+  },
+  {
+    pattern: /^lotar[0-9]+$/i,
+    label: "🔥 LOTAR",
+    ipTemplate: "154.38.176.110:877x",
+  },
+  {
+    pattern: /^fisk[0-9]+$/i,
+    label: "🔥 FISK",
+    ipTemplate: "86.48.6.108:971x",
+  },
+  {
+    pattern: /^udar[0-9]+$/i,
+    label: "🔥 UDAR",
+    ipTemplate: "86.48.6.108:871x",
+  },
   {
     pattern: /^adac[0-9]+$/i,
     label: "🔥 ADAC",
@@ -137,6 +137,8 @@ export const registerKeys = async ({
   }
 };
 
-await Promise.all(servers.map(registerKeys));
+for (const server of servers) {
+  await registerKeys(server);
+}
 
 process.exit(0);

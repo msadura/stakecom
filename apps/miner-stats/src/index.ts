@@ -7,17 +7,9 @@ const servers = [
   { pattern: /^synthia_[0-9]+$/i, label: "🔥 Synthia" },
   { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
   { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
-  { pattern: /^ex[0-9]$/i, label: "🔥 EX" },
-  { pattern: /^epco[0-9]$/i, label: "🔥 EPCO" },
-  { pattern: /^bakudo[0-9]+$/i, label: "🔥 BAKUDO" },
-  { pattern: /^dixie[0-9]+$/i, label: "🔥 DIXIE" },
-  { pattern: /^lotar[0-9]+$/i, label: "🔥 LOTAR" },
-  { pattern: /^fisk[0-9]+$/i, label: "🔥 FISK" },
-  { pattern: /^udar[0-9]+$/i, label: "🔥 UDAR" },
-  { pattern: /^adac[0-9]+$/i, label: "🔥 ADAC" },
-  { pattern: /^agil[0-9]+$/i, label: "🔥 AGIL" },
-  { pattern: /^babo[0-9]+$/i, label: "🔥 BABO" },
-  { pattern: /^buster[0-9]+$/i, label: "🔥 BUSTER" },
+  { pattern: /^akali[0-9]$/i, label: "🔥 AKALI" },
+  { pattern: /^bankai[0-9]$/i, label: "🔥 BANKAI" },
+  { pattern: /^cord[0-9]$/i, label: "🔥 CORD" },
 ];
 
 const emission = await getEmission({ networkId: 17 });

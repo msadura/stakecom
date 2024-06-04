@@ -11,7 +11,22 @@ import type { ComKey } from "./getKeys";
 import { getFilteredKeys } from "./getKeys";
 
 const destAddress = "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w";
-const MIN_BALANCE = toAmountValue("1");
+const MIN_BALANCE = toAmountValue("0");
+
+const servers = [
+  {
+    pattern: /^akali[0-9]$/i,
+    label: "🔥 AKALI",
+  },
+  {
+    pattern: /^bankai[0-9]$/i,
+    label: "🔥 BANKAI",
+  },
+  {
+    pattern: /^cord[0-9]$/i,
+    label: "🔥 CORD",
+  },
+];
 
 const unstakeAndTransferSingle = async (key: ComKey) => {
   const signer = await getSigner(key.mnemonic);
@@ -115,50 +130,13 @@ const unstakeAndTransferFilteredKeys = async ({
   return sumBalance;
 };
 
-const s2 = await unstakeAndTransferFilteredKeys({
-  pattern: /^ex[0-9]$/i,
-  label: "🔥 MC contabo5 sum",
-});
+let unstakedSum = 0n;
+for (const server of servers) {
+  const unstaked = await unstakeAndTransferFilteredKeys(server);
+  unstakedSum += unstaked;
+}
 
-const s3 = await unstakeAndTransferFilteredKeys({
-  pattern: /^epco[0-9]+$/i,
-  label: "🔥 MC contabo4 sum",
-});
-
-const s6 = await unstakeAndTransferFilteredKeys({
-  pattern: /^dixie[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
-const s7 = await unstakeAndTransferFilteredKeys({
-  pattern: /^hodor[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
-const s8 = await unstakeAndTransferFilteredKeys({
-  pattern: /^lotar[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
-const s9 = await unstakeAndTransferFilteredKeys({
-  pattern: /^bakudo[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
-const s10 = await unstakeAndTransferFilteredKeys({
-  pattern: /^fisk[0-9]+$/i,
-  label: "🔥 MC contabo3 kop sum",
-});
-
-const s11 = await unstakeAndTransferFilteredKeys({
-  pattern: /^udar[0-9]+$/i,
-  label: "🔥  UDAR",
-});
-
-console.log(
-  "🔥 Market compass total:",
-  formatCOMAmount(s2 + s3 + s6 + s7 + s8 + s9 + s10 + s11),
-);
+console.log("🔥 Payed out total:", formatCOMAmount(unstakedSum));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

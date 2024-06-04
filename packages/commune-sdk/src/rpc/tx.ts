@@ -65,6 +65,17 @@ export async function transferAll({
     };
   }
 
+  if (keepBalance <= 0n) {
+    const tx = api.tx.balances.transferAll(recipient, false);
+
+    return broadcastTx({
+      tx,
+      signer,
+      api,
+      successMessage: "Transfer all successful",
+    });
+  }
+
   const fee = await estimateTransferFee({ amount: balance, recipient, signer });
   const tx = api.tx.balances.transferKeepAlive(
     recipient,

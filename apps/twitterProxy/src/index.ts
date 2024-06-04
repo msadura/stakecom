@@ -2,6 +2,7 @@ import type { Context, Handler } from "hono";
 import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { logger } from "hono/logger";
 import ky from "ky";
 
 import type { CacheValue } from "./cache";
@@ -12,6 +13,8 @@ import { queuedRequest } from "./requestQueue";
 import { sleep } from "./sleep";
 
 const app = new Hono();
+
+app.use(logger());
 
 const port = process.env.PORT || 3000;
 const maxAgeMs = Number(process.env.MAX_AGE_MS) || 120_000;

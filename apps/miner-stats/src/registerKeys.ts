@@ -11,7 +11,7 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 import { getFilteredKeys, getKeyByName } from "./getKeys";
 
 const bankName = "epic";
-const maxBurn = toAmountValue("12");
+const maxBurn = toAmountValue("17");
 
 const servers = [
   {

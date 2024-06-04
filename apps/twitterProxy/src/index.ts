@@ -101,11 +101,11 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
       delay: () => getRandomNumber(100, 500),
     },
     hooks: {
-      // beforeRequest: [
-      //   async () => {
-      //     await sleep(getRandomNumber(10, 100));
-      //   },
-      // ],
+      beforeRequest: [
+        async () => {
+          await sleep(getRandomNumber(10, 50));
+        },
+      ],
       beforeRetry: [
         ({ retryCount }) => {
           console.log("🟡", "FAIL, retries:", retryCount);

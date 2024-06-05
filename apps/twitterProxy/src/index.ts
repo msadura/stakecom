@@ -98,7 +98,7 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     },
     retry: {
       limit: 10,
-      delay: () => getRandomNumber(500, 1000),
+      delay: () => getRandomNumber(100, 500),
     },
     hooks: {
       beforeRequest: [
@@ -129,7 +129,7 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     if (error.name === "HTTPError") {
       const errorJson: TwitterError = await error.response.json();
 
-      const oldCacheValue = await getCachedValue(cacheKey, 600_000);
+      const oldCacheValue = await getCachedValue(cacheKey, 900_000);
 
       if (oldCacheValue) {
         console.log("🔵 USING OLD CACHE VALUE:", cacheKey);

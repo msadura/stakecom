@@ -1,6 +1,6 @@
 import PQueue from "p-queue";
 
-export const queue = new PQueue({ concurrency: 2 });
+export const queue = new PQueue({ concurrency: 1 });
 
 export const queuedRequest = async (action: () => Promise<any>) => {
   if (queue.size > 0) {

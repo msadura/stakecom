@@ -17,7 +17,7 @@ const app = new Hono();
 app.use(logger());
 
 const port = process.env.PORT || 3000;
-const maxAgeMs = Number(process.env.MAX_AGE_MS) || 120_000;
+const maxAgeMs = Number(process.env.MAX_AGE_MS) || 180_000;
 
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);
@@ -98,12 +98,12 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     },
     retry: {
       limit: 10,
-      delay: () => getRandomNumber(500, 2000),
+      delay: () => getRandomNumber(500, 1000),
     },
     hooks: {
       beforeRequest: [
         async () => {
-          await sleep(getRandomNumber(50, 500));
+          await sleep(getRandomNumber(50, 100));
         },
       ],
       beforeRetry: [

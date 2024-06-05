@@ -8,6 +8,7 @@ const servers = [
   { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
   { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
   { pattern: /^akali[0-9]$/i, label: "🔥 AKALI" },
+  { pattern: /^abarai[0-9]$/i, label: "🔥 ABARAI" },
   { pattern: /^bankai[0-9]$/i, label: "🔥 BANKAI" },
   { pattern: /^cord[0-9]$/i, label: "🔥 CORD" },
 ];

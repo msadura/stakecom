@@ -129,6 +129,13 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     if (error.name === "HTTPError") {
       const errorJson: TwitterError = await error.response.json();
 
+      const oldCacheValue = await getCachedValue(cacheKey, 600_000);
+
+      if (oldCacheValue) {
+        console.log("🔵 USING OLD CACHE VALUE:", cacheKey);
+        return c.json(oldCacheValue.value, 200);
+      }
+
       if (!errorJson) {
         return c.json({ message: "Unknown error in proxy qq" }, 500);
       }

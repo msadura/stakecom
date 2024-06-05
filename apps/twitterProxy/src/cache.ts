@@ -36,10 +36,7 @@ export async function getCachedValue(key: string, maxAgeMs: number) {
     }
 
     const ageInSeconds = Math.floor(age / 1000);
-
     console.log("🔵🟡", `[${ageInSeconds}s] Stale cache entry`, key);
-
-    delete cache[key];
   }
 
   // if request is pending, wait for it to finish

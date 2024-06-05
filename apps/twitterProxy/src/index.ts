@@ -98,12 +98,12 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     },
     retry: {
       limit: 10,
-      delay: () => getRandomNumber(500, 1000),
+      delay: () => getRandomNumber(500, 2000),
     },
     hooks: {
       beforeRequest: [
         async () => {
-          await sleep(getRandomNumber(10, 100));
+          await sleep(getRandomNumber(100, 200));
         },
       ],
       beforeRetry: [

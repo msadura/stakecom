@@ -14,26 +14,31 @@ const bankName = "epic";
 const maxBurn = toAmountValue("17");
 
 const servers = [
+  // {
+  //   pattern: /^akali[0-9]$/i,
+  //   label: "🔥 AKALI",
+  //   ipTemplate: "154.38.169.84:700x",
+  // },
+  // {
+  //   pattern: /^abarai[0-9]$/i,
+  //   label: "🔥 ABARAI",
+  //   ipTemplate: "154.38.169.84:710x",
+  // },
+  // {
+  //   pattern: /^bankai[0-9]$/i,
+  //   label: "🔥 BANKAI",
+  //   ipTemplate: "154.38.176.110:600x",
+  // },
   {
-    pattern: /^akali[0-9]$/i,
-    label: "🔥 AKALI",
-    ipTemplate: "154.38.169.84:700x",
+    pattern: /^bento[0-9]$/i,
+    label: "🔥 BENTO",
+    ipTemplate: "154.38.176.110:810x",
   },
-  {
-    pattern: /^abarai[0-9]$/i,
-    label: "🔥 ABARAI",
-    ipTemplate: "154.38.169.84:710x",
-  },
-  {
-    pattern: /^bankai[0-9]$/i,
-    label: "🔥 BANKAI",
-    ipTemplate: "154.38.176.110:600x",
-  },
-  {
-    pattern: /^cord[0-9]$/i,
-    label: "🔥 CORD",
-    ipTemplate: "86.48.6.108:500x",
-  },
+  // {
+  //   pattern: /^cord[0-9]$/i,
+  //   label: "🔥 CORD",
+  //   ipTemplate: "86.48.6.108:500x",
+  // },
 ];
 
 export const registerKeys = async ({

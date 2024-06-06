@@ -19,6 +19,8 @@ app.use(logger());
 const port = process.env.PORT || 3000;
 const maxAgeMs = Number(process.env.MAX_AGE_MS) || 180_000;
 
+const cacheStats = { hits: 0, misses: 0 };
+
 console.log("🔥 PORT: ", port);
 console.log("🔥 MAX_AGE_MS: ", maxAgeMs);
 
@@ -45,6 +47,8 @@ app.get("*", async (c, next) => {
       `🔵 AGE: [${ageInSeconds.toFixed(2)}s] Using cached value for key:`,
       cacheKey,
     );
+
+    cacheStats.hits++;
 
     return c.json(cachedValue.value, 200);
   }
@@ -78,6 +82,8 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
       cacheKey,
     );
 
+    cacheStats.hits++;
+
     return c.json(cachedValue.value, 200);
   }
 
@@ -98,12 +104,12 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     },
     retry: {
       limit: 10,
-      // delay: () => getRandomNumber(500, 2500),
+      delay: () => getRandomNumber(1000, 2000),
     },
     hooks: {
       beforeRequest: [
         async () => {
-          await sleep(getRandomNumber(50, 1000));
+          await sleep(getRandomNumber(50, 200));
         },
       ],
       beforeRetry: [
@@ -124,17 +130,12 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
     const requestTimeSec = (Date.now() - startTime) / 1000;
     console.log(`🟢 [${requestTimeSec.toFixed(2)}s] FETCHED:`, cacheKey);
 
+    cacheStats.misses++;
+
     return c.json(tweets, 200);
   } catch (error: any) {
     if (error.name === "HTTPError") {
       const errorJson: TwitterError = await error.response.json();
-
-      const oldCacheValue = await getCachedValue(cacheKey, 900_000);
-
-      if (oldCacheValue) {
-        console.log("🔵 USING OLD CACHE VALUE:", cacheKey);
-        return c.json(oldCacheValue.value, 200);
-      }
 
       if (!errorJson) {
         return c.json({ message: "Unknown error in proxy qq" }, 500);
@@ -148,7 +149,22 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
 };
 
 function basicProxy(url: string): Handler {
-  return async (c) => queuedRequest(() => proxyHandler(c, url, Date.now()));
+  return async (c) => {
+    const res = queuedRequest(() => proxyHandler(c, url, Date.now()));
+
+    if ((cacheStats.hits + cacheStats.misses) % 1 === 0) {
+      const ratio =
+        Math.floor(
+          (cacheStats.hits / (cacheStats.hits + cacheStats.misses)) * 100,
+        ) || 0;
+
+      console.log(
+        `📦 Cache: misses ${cacheStats.misses}, hits ${cacheStats.hits} (${ratio}%)}`,
+      );
+    }
+
+    return res;
+  };
 }
 
 function getRandomNumber(min: number, max: number) {

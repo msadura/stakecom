@@ -14,18 +14,22 @@ const destAddress = "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w";
 const MIN_BALANCE = toAmountValue("0");
 
 const servers = [
+  // {
+  //   pattern: /^akali[0-9]$/i,
+  //   label: "🔥 AKALI",
+  // },
   {
-    pattern: /^akali[0-9]$/i,
-    label: "🔥 AKALI",
+    pattern: /^abarai[0-9]$/i,
+    label: "🔥 ABARAI",
   },
-  {
-    pattern: /^bankai[0-9]$/i,
-    label: "🔥 BANKAI",
-  },
-  {
-    pattern: /^cord[0-9]$/i,
-    label: "🔥 CORD",
-  },
+  // {
+  //   pattern: /^bankai[0-9]$/i,
+  //   label: "🔥 BANKAI",
+  // },
+  // {
+  //   pattern: /^cord[0-9]$/i,
+  //   label: "🔥 CORD",
+  // },
 ];
 
 const unstakeAndTransferSingle = async (key: ComKey) => {

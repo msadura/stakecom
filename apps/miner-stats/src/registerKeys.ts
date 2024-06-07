@@ -14,16 +14,16 @@ const bankName = "epic";
 const maxBurn = toAmountValue("17");
 
 const servers = [
-  // {
-  //   pattern: /^akali[0-9]$/i,
-  //   label: "🔥 AKALI",
-  //   ipTemplate: "154.38.169.84:700x",
-  // },
-  // {
-  //   pattern: /^abarai[0-9]$/i,
-  //   label: "🔥 ABARAI",
-  //   ipTemplate: "154.38.169.84:710x",
-  // },
+  {
+    pattern: /^akali[0-9]$/i,
+    label: "🔥 AKALI",
+    ipTemplate: "154.38.169.84:700x",
+  },
+  {
+    pattern: /^abarai[0-9]$/i,
+    label: "🔥 ABARAI",
+    ipTemplate: "154.38.169.84:710x",
+  },
   // {
   //   pattern: /^bankai[0-9]$/i,
   //   label: "🔥 BANKAI",

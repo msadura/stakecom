@@ -9,6 +9,7 @@ import type { CacheValue } from "./cache";
 import type { TweetsRes, TwitterError } from "./types";
 import { getCachedValue, setCachedValue, setPendingPromise } from "./cache";
 import { getAuthToken } from "./getAuthToken";
+import { queuedRequest } from "./requestQueue";
 import { sleep } from "./sleep";
 
 const app = new Hono();
@@ -102,13 +103,13 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
       "user-agent": "v2FullArchiveSearchPython",
     },
     retry: {
-      limit: 20,
+      limit: 10,
       delay: () => getRandomNumber(1000, 2000),
     },
     hooks: {
       beforeRequest: [
         async () => {
-          // await sleep(getRandomNumber(50, 200));
+          await sleep(getRandomNumber(50, 200));
         },
       ],
       beforeRetry: [
@@ -149,8 +150,7 @@ const proxyHandler = async (c: Context, url: string, startTime: number) => {
 
 function basicProxy(url: string): Handler {
   return async (c) => {
-    // const res = queuedRequest(() => proxyHandler(c, url, Date.now()));
-    const res = proxyHandler(c, url, Date.now());
+    const res = queuedRequest(() => proxyHandler(c, url, Date.now()));
 
     if ((cacheStats.hits + cacheStats.misses) % 1 === 0) {
       const ratio =

@@ -11,21 +11,25 @@ import type { ComKey } from "./getKeys";
 import { getFilteredKeys } from "./getKeys";
 
 const destAddress = "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w";
-const MIN_BALANCE = toAmountValue("0");
+const MIN_BALANCE = toAmountValue("0.1");
 
 const servers = [
   // {
   //   pattern: /^akali[0-9]$/i,
   //   label: "🔥 AKALI",
   // },
-  {
-    pattern: /^abarai[0-9]$/i,
-    label: "🔥 ABARAI",
-  },
+  // {
+  //   pattern: /^abarai[0-9]$/i,
+  //   label: "🔥 ABARAI",
+  // },
   // {
   //   pattern: /^bankai[0-9]$/i,
   //   label: "🔥 BANKAI",
   // },
+  {
+    pattern: /^bento[0-9]$/i,
+    label: "🔥 BENTO",
+  },
   // {
   //   pattern: /^cord[0-9]$/i,
   //   label: "🔥 CORD",

@@ -19,11 +19,11 @@ const servers = [
   //   label: "🔥 AKALI",
   //   ipTemplate: "154.38.169.84:700x",
   // },
-  {
-    pattern: /^abarai[0-9]$/i,
-    label: "🔥 ABARAI",
-    ipTemplate: "154.38.169.84:710x",
-  },
+  // {
+  //   pattern: /^abarai[0-9]$/i,
+  //   label: "🔥 ABARAI",
+  //   ipTemplate: "154.38.169.84:710x",
+  // },
   {
     pattern: /^bento[0-9]$/i,
     label: "🔥 BENTO",
@@ -38,6 +38,11 @@ const servers = [
     pattern: /^ezek[0-9]$/i,
     label: "🔥 EZEK",
     ipTemplate: "154.38.169.84:812x",
+  },
+  {
+    pattern: /^fiskk[0-9]$/i,
+    label: "🔥 FISKK",
+    ipTemplate: "154.38.169.84:813x",
   },
 ];
 

@@ -4,7 +4,7 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 import { getKeys } from "./getKeys";
 
 const servers = [
-  { pattern: /^synthia_[0-9]+$/i, label: "🔥 Synthia" },
+  { pattern: /^wraith[0-9]+$/i, label: "🔥 Wraith" },
   { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
   { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
   // { pattern: /^akali[0-9]$/i, label: "🔥 AKALI" },

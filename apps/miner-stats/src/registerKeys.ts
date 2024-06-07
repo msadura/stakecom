@@ -24,11 +24,11 @@ const servers = [
   //   label: "🔥 ABARAI",
   //   ipTemplate: "154.38.169.84:710x",
   // },
-  {
-    pattern: /^bento[0-9]$/i,
-    label: "🔥 BENTO",
-    ipTemplate: "154.38.176.110:810x",
-  },
+  // {
+  //   pattern: /^bento[0-9]$/i,
+  //   label: "🔥 BENTO",
+  //   ipTemplate: "154.38.176.110:810x",
+  // },
   {
     pattern: /^drago[0-9]$/i,
     label: "🔥 DRAGO",

@@ -19,20 +19,25 @@ const servers = [
   //   label: "🔥 AKALI",
   //   ipTemplate: "154.38.169.84:700x",
   // },
-  // {
-  //   pattern: /^abarai[0-9]$/i,
-  //   label: "🔥 ABARAI",
-  //   ipTemplate: "154.38.169.84:710x",
-  // },
-  // {
-  //   pattern: /^bento[0-9]$/i,
-  //   label: "🔥 BENTO",
-  //   ipTemplate: "154.38.176.110:810x",
-  // },
+  {
+    pattern: /^abarai[0-9]$/i,
+    label: "🔥 ABARAI",
+    ipTemplate: "154.38.169.84:710x",
+  },
+  {
+    pattern: /^bento[0-9]$/i,
+    label: "🔥 BENTO",
+    ipTemplate: "154.38.176.110:810x",
+  },
   {
     pattern: /^drago[0-9]$/i,
     label: "🔥 DRAGO",
     ipTemplate: "154.38.169.84:811x",
+  },
+  {
+    pattern: /^ezek[0-9]$/i,
+    label: "🔥 EZEK",
+    ipTemplate: "154.38.169.84:812x",
   },
 ];
 

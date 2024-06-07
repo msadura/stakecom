@@ -11,7 +11,7 @@ import type { ComKey } from "./getKeys";
 import { getFilteredKeys } from "./getKeys";
 
 const destAddress = "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w";
-const MIN_BALANCE = toAmountValue("0.1");
+const MIN_BALANCE = toAmountValue("1");
 
 const servers = [
   {

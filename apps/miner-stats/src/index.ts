@@ -83,6 +83,19 @@ const getFilteredBalance = async ({
   return { sumBalance, countWithEmission };
 };
 
+const getProxyStats = async () => {
+  return (await (
+    await fetch("http://good-fucking-proxy.com/stats")
+  ).json()) as {
+    requests: number;
+    hits: number;
+    misses: number;
+    ratio: string;
+    size: number;
+    ttl: number;
+  };
+};
+
 const sGroups = await Promise.all(servers.map(getFilteredBalance));
 const sGroupsTotal = sGroups.reduce(
   (acc, { sumBalance }) => acc + sumBalance,
@@ -100,6 +113,7 @@ const { balance } = await getBalances({
 console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
 console.log("🔥 Market compass total:", formatCOMAmount(sGroupsTotal));
 console.log("🔥 With emission total:", withEmissionTotal);
+console.log("🔥 Proxy:", JSON.stringify(await getProxyStats()));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("===========================");
 

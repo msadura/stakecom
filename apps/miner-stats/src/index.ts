@@ -48,10 +48,15 @@ const getFilteredBalance = async ({
   );
 
   const sumBalance = balances.reduce((acc, { balance }) => acc + balance, 0n);
+  const sumEmission = balances.reduce((acc, { emission }) => acc + emission, 0);
   const countWithEmission = balances.filter(
     ({ emission }) =>
       Number(formatCOMAmount(emission, { maxDecimals: 2 })) > 0.09,
   ).length;
+  const countRegistered = balances.filter(
+    ({ uid }) => typeof uid === "number",
+  ).length;
+  const countTotal = balances.length;
 
   console.table(
     balances
@@ -80,7 +85,13 @@ const getFilteredBalance = async ({
       ]),
   );
 
-  return { sumBalance, countWithEmission };
+  return {
+    sumBalance,
+    sumEmission,
+    countWithEmission,
+    countRegistered,
+    countTotal,
+  };
 };
 
 const getProxyStats = async () => {
@@ -96,25 +107,56 @@ const getProxyStats = async () => {
   };
 };
 
+const getCoinPrice = async () => {
+  const data = await (
+    await fetch("http://good-fucking-proxy.com/coingecko/comai")
+  ).json();
+
+  const price = data.market_data.current_price.usd as number;
+  const change = {
+    daily: data.market_data.price_change_percentage_24h_in_currency
+      .usd as number,
+  };
+
+  return { price, change };
+};
+
 const sGroups = await Promise.all(servers.map(getFilteredBalance));
 const sGroupsTotal = sGroups.reduce(
   (acc, { sumBalance }) => acc + sumBalance,
   0n,
 );
+const dailyEmission = sGroups.reduce(
+  (acc, { sumEmission }) => acc + (sumEmission || 0),
+  0,
+);
 const withEmissionTotal = sGroups.reduce(
   (acc, { countWithEmission }) => acc + (countWithEmission || 0),
   0,
 );
-const { balance } = await getBalances({
-  address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
-  networkId: 17,
-});
-
-console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
-console.log("🔥 Market compass total:", formatCOMAmount(sGroupsTotal));
-console.log("🔥 With emission total:", withEmissionTotal);
+const registeredTotal = sGroups.reduce(
+  (acc, { countRegistered }) => acc + (countRegistered || 0),
+  0,
+);
+const countTotal = sGroups.reduce(
+  (acc, { countTotal }) => acc + (countTotal || 0),
+  0,
+);
+const coingecko = await getCoinPrice();
+console.log(
+  `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coingecko.price), { maxDecimals: 2 })} USD`,
+);
+console.log(
+  `🔥 Miners: ${withEmissionTotal} with emission, ${registeredTotal} registered, ${countTotal} total`,
+);
+console.log(
+  `🔥 Daily emission: ${formatCOMAmount(dailyEmission * 108, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(dailyEmission * 108 * coingecko.price), { maxDecimals: 2 })} USD`,
+);
+console.log(
+  `🔥 Coin price $comai: ${coingecko.price.toFixed(2)} USD (change ${coingecko.change.daily.toFixed(2)}%)`,
+);
 console.log("🔥 Proxy:", JSON.stringify(await getProxyStats()));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
-console.log("===========================");
+console.log("🔥 ==========================");
 
 process.exit();

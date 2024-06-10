@@ -24,6 +24,34 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  apps/aim-server:
+    dependencies:
+      hono:
+        specifier: ^4.3.10
+        version: 4.3.10
+      ky:
+        specifier: ^1.2.2
+        version: 1.2.2
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@stakecom/eslint-config':
+        specifier: ^0.2.0
+        version: link:../../tooling/eslint
+      '@stakecom/prettier-config':
+        specifier: ^0.1.0
+        version: link:../../tooling/prettier
+      '@stakecom/tsconfig':
+        specifier: ^0.1.0
+        version: link:../../tooling/typescript
+      '@types/lodash':
+        specifier: ^4.14.202
+        version: 4.14.202
+      bun-types:
+        specifier: latest
+        version: 1.1.12
+
   apps/miner-stats:
     dependencies:
       '@stakecom/commune-sdk':
@@ -54,25 +82,6 @@ importers:
       bun-types:
         specifier: latest
         version: 1.1.8
-
-  apps/proxy:
-    dependencies:
-      hono:
-        specifier: ^4.3.10
-        version: 4.3.10
-    devDependencies:
-      '@stakecom/eslint-config':
-        specifier: ^0.2.0
-        version: link:../../tooling/eslint
-      '@stakecom/prettier-config':
-        specifier: ^0.1.0
-        version: link:../../tooling/prettier
-      '@stakecom/tsconfig':
-        specifier: ^0.1.0
-        version: link:../../tooling/typescript
-      bun-types:
-        specifier: latest
-        version: 1.1.9
 
   apps/server:
     dependencies:
@@ -6496,7 +6505,7 @@ packages:
   /@types/secp256k1@4.0.6:
     resolution: {integrity: sha512-hHxJU6PAEUn0TP4S/ZOzuTUvJWuZ6eIKeNKb5RBpODvSl6hp1Wrw4s7ATY50rklRCScUDpHzVA/DQdSjJ3UoYQ==}
     dependencies:
-      '@types/node': 20.11.16
+      '@types/node': 20.12.12
     dev: false
 
   /@types/semver@7.5.6:
@@ -7694,6 +7703,13 @@ packages:
     resolution: {integrity: sha512-JlFllUCVMZbDyGfbv9dBWXd2tRdZSzyP1EWDKcTTVRViYNYX8AEsfpMN/vu6Hk8CBhKrhbbBkKZcNjJev8QQHQ==}
     dependencies:
       '@types/node': 20.11.16
+      '@types/ws': 8.5.10
+    dev: true
+
+  /bun-types@1.1.12:
+    resolution: {integrity: sha512-DIM2C9qCECwhck9nLsCDeTv943VmGMCkwX3KljjprSRDXaK2CSiUDVGbUit80Er38ukgxuESJgYPAys4FsNCdg==}
+    dependencies:
+      '@types/node': 20.12.12
       '@types/ws': 8.5.10
     dev: true
 

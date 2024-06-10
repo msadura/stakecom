@@ -7,12 +7,10 @@ const servers = [
   { pattern: /^wraith[0-9]+$/i, label: "🔥 Wraith" },
   { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
   { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
-  // { pattern: /^akali[0-9]$/i, label: "🔥 AKALI" },
-  // { pattern: /^abarai[0-9]$/i, label: "🔥 ABARAI" },
-  // { pattern: /^bento[0-9]$/i, label: "🔥 BENTO" },
-  { pattern: /^drago[0-9]$/i, label: "🔥 DRAGO" },
+  { pattern: /^drago[1,2,3,5,6,9]$/i, label: "🔥 CHANI" },
   { pattern: /^ezek[0-9]$/i, label: "🔥 EZEK" },
-  { pattern: /^fiskk[0-9]$/i, label: "🔥 EZEK" },
+  { pattern: /^fiskk[0-9]$/i, label: "🔥 FISKK" },
+  { pattern: /^chani[0-9]$/i, label: "🔥 DRAGO" },
 ];
 
 const emission = await getEmission({ networkId: 17 });

@@ -11,38 +11,23 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 import { getFilteredKeys, getKeyByName } from "./getKeys";
 
 const bankName = "epic";
-const maxBurn = toAmountValue("17");
+const maxBurn = toAmountValue("12");
 
 const servers = [
-  // {
-  //   pattern: /^akali[0-9]$/i,
-  //   label: "🔥 AKALI",
-  //   ipTemplate: "154.38.169.84:700x",
-  // },
-  // {
-  //   pattern: /^abarai[0-9]$/i,
-  //   label: "🔥 ABARAI",
-  //   ipTemplate: "154.38.169.84:710x",
-  // },
-  // {
-  //   pattern: /^bento[0-9]$/i,
-  //   label: "🔥 BENTO",
-  //   ipTemplate: "154.38.176.110:810x",
-  // },
-  {
-    pattern: /^drago[0-9]$/i,
-    label: "🔥 DRAGO",
-    ipTemplate: "154.38.169.84:811x",
-  },
   {
     pattern: /^ezek[0-9]$/i,
     label: "🔥 EZEK",
-    ipTemplate: "154.38.169.84:812x",
+    ipTemplate: "213.199.60.156:812x",
   },
   {
     pattern: /^fiskk[0-9]$/i,
     label: "🔥 FISKK",
-    ipTemplate: "154.38.169.84:813x",
+    ipTemplate: "213.199.60.156:813x",
+  },
+  {
+    pattern: /^chani[0-5]$/i,
+    label: "🔥 CHANI",
+    ipTemplate: "213.199.60.156:814x",
   },
 ];
 

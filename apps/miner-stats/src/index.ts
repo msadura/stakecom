@@ -65,7 +65,7 @@ const getFilteredBalance = async ({
         // address: ellipsize(address),
         balance: formatCOMAmount(balance, { maxDecimals: 2 }),
         uid: uid ? String(uid) : "-",
-        emission: formatCOMAmount(emission, { maxDecimals: 2 }),
+        emission: uid ? formatCOMAmount(emission, { maxDecimals: 2 }) : "-",
       }))
       .concat([
         {

@@ -16,7 +16,38 @@ const servers = [
   { pattern: /^fiskk[0-9]$/i, label: "🔥 EZEK" },
 ];
 
-const emission = await getEmission({ networkId: 17 });
+const getProxyStats = async () => {
+  return (await (
+    await fetch("http://good-fucking-proxy.com/stats")
+  ).json()) as {
+    requests: number;
+    hits: number;
+    misses: number;
+    ratio: string;
+    size: number;
+    ttl: number;
+  };
+};
+
+const getCoinStats = async () => {
+  const data = await (
+    await fetch("http://good-fucking-proxy.com/coingecko/comai")
+  ).json();
+
+  const price = data.market_data.current_price.usd as number;
+  const change = {
+    daily: data.market_data.price_change_percentage_24h_in_currency
+      .usd as number,
+  };
+
+  return { price, change };
+};
+
+const [emission, proxyStats, coinStats] = await Promise.all([
+  getEmission({ networkId: 17 }),
+  getProxyStats(),
+  getCoinStats(),
+]);
 const isSlowEmission = (emission: number) =>
   emission > 0 && emission < 0.1 * 10 ** COMAI_DECIMALS;
 const isZeroEmission = (emission: number) => emission === 0;
@@ -102,33 +133,6 @@ const getFilteredBalance = async ({
   };
 };
 
-const getProxyStats = async () => {
-  return (await (
-    await fetch("http://good-fucking-proxy.com/stats")
-  ).json()) as {
-    requests: number;
-    hits: number;
-    misses: number;
-    ratio: string;
-    size: number;
-    ttl: number;
-  };
-};
-
-const getCoinPrice = async () => {
-  const data = await (
-    await fetch("http://good-fucking-proxy.com/coingecko/comai")
-  ).json();
-
-  const price = data.market_data.current_price.usd as number;
-  const change = {
-    daily: data.market_data.price_change_percentage_24h_in_currency
-      .usd as number,
-  };
-
-  return { price, change };
-};
-
 const sGroups = await Promise.all(servers.map(getFilteredBalance));
 const sGroupsTotal = sGroups.reduce(
   (acc, { sumBalance }) => acc + sumBalance,
@@ -150,20 +154,21 @@ const countTotal = sGroups.reduce(
   (acc, { countTotal }) => acc + (countTotal || 0),
   0,
 );
-const coingecko = await getCoinPrice();
 console.log(
-  `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coingecko.price), { maxDecimals: 2 })} USD`,
+  `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coinStats.price), { maxDecimals: 2 })} USD`,
 );
 console.log(
   `🔥 Miners: ${withEmissionTotal} with emission, ${registeredTotal} registered, ${countTotal} total`,
 );
 console.log(
-  `🔥 Daily emission: ${formatCOMAmount(dailyEmission * 108, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(dailyEmission * 108 * coingecko.price), { maxDecimals: 2 })} USD`,
+  `🔥 Daily emission: ${formatCOMAmount(dailyEmission * 108, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(dailyEmission * 108 * coinStats.price), { maxDecimals: 2 })} USD`,
 );
 console.log(
-  `🔥 Coin price $comai: ${coingecko.price.toFixed(2)} USD (change ${coingecko.change.daily.toFixed(2)}%)`,
+  `🔥 Coin price $comai: ${coinStats.price.toFixed(2)} USD (change ${coinStats.change.daily.toFixed(2)}%)`,
 );
-console.log("🔥 Proxy:", JSON.stringify(await getProxyStats()));
+console.log(
+  `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl / 1000}s ttl`,
+);
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("🔥 ==========================");
 

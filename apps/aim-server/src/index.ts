@@ -15,7 +15,7 @@ export default {
   fetch: app.fetch,
 };
 
-app.get("/", async (c) => {
+app.post("/method/generate", async (c) => {
   const req = c.req;
 
   const body = await req.parseBody();

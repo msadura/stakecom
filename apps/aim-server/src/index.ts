@@ -18,7 +18,7 @@ export default {
 app.post("/method/generate", async (c) => {
   const req = c.req;
 
-  const body = await req.parseBody();
+  const body = await req.json();
   console.log("🔥 query: ", req.query());
   console.log("🔥 headers", req.header());
   console.log("🔥 body", body);

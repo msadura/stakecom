@@ -25,7 +25,7 @@ const servers = [
     ipTemplate: "213.199.60.156:813x",
   },
   {
-    pattern: /^chani[0-5]$/i,
+    pattern: /^chani[0-9]$/i,
     label: "🔥 CHANI",
     ipTemplate: "213.199.60.156:814x",
   },

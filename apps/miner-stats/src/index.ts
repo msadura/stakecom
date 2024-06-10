@@ -103,7 +103,7 @@ const getFilteredBalance = async ({
         uid: typeof uid === "number" ? String(uid) : "-",
         emission:
           typeof uid === "number"
-            ? `${formatCOMAmount(emission, { maxDecimals: 2 })} ${isSlowEmission(emission) ? "🐢" : ""}`.trim()
+            ? `${formatCOMAmount(emission, { maxDecimals: 2 })} ${isSlowEmission(emission) ? "🐢" : isZeroEmission(emission) ? "🚷" : ""}`.trim()
             : "-",
       }))
       .concat([

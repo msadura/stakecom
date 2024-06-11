@@ -4,6 +4,6 @@
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
     "types": ["bun-types"]
   },
-  "include": ["."],
+  "include": [".", "../miner-stats/src/generate.ts"],
   "exclude": ["node_modules"]
 }

@@ -11,6 +11,7 @@ const servers = [
   { pattern: /^ezek[0-9]$/i, label: "🔥 EZEK" },
   { pattern: /^fiskk[0-9]$/i, label: "🔥 FISKK" },
   { pattern: /^chani[0-9]$/i, label: "🔥 DRAGO" },
+  { pattern: /^gorax[0-9]$/i, label: "🔥 GORAX" },
 ];
 
 const emission = await getEmission({ networkId: 17 });

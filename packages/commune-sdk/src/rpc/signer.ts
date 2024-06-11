@@ -1,4 +1,6 @@
+import type { KeyringPair } from "@polkadot/keyring/types";
 import Keyring from "@polkadot/keyring";
+import { stringToU8a } from "@polkadot/util";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
 export async function getKeyring() {
@@ -12,4 +14,16 @@ export async function getSigner(mnemonic: string) {
   const signer = keyring.addFromUri(mnemonic);
 
   return signer;
+}
+
+export function getSignedMessage({
+  signer,
+  message,
+}: {
+  signer: KeyringPair;
+  message: string;
+}) {
+  const messageToSign = stringToU8a(message);
+
+  return signer.sign(messageToSign);
 }

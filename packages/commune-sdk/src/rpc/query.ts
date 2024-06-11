@@ -94,3 +94,71 @@ export const getMinStake = async (networkId = 0) => {
 
   return BigInt(minStake.toString());
 };
+
+export const getSubnetModules = async ({
+  networkId = 0,
+}: {
+  networkId: number;
+}): Promise<any> => {
+  const api = await getClient();
+  const uidsRes = await api.query.subspaceModule.uids.entries(networkId);
+  const uidsArr = uidsRes.map(([_, value]) => {
+    return Number(value.toHuman());
+  });
+  // const keyss = await api.query.subspaceModule.name.entries(17);
+  // console.log("🔥", uidsArr);
+
+  // keyss.forEach(([key, name]) => {
+  //   console.log("     uid:", name.toHuman());
+  // });
+
+  const keyz = await getKeys(17);
+
+  // console.log("🔥k", keyz);
+
+  const [
+    keys,
+    address,
+    uids,
+    name,
+    delegationFee,
+    emission,
+    incentive,
+    dividends,
+    lastUpdate,
+    metadata,
+    stakeFrom,
+  ] = await api.queryMulti([
+    [api.query.subspaceModule.keys.multi(uids), [networkId]],
+    // [api.query.subspaceModule.address, networkId],
+    // [api.query.subspaceModule.uids, [networkId]],
+    // [api.query.subspaceModule.name, [networkId]],
+    // [api.query.subspaceModule.delegationFee, [networkId]],
+    // [api.query.subspaceModule.emission, [networkId]],
+    // [api.query.subspaceModule.incentive, [networkId]],
+    // [api.query.subspaceModule.dividends, [networkId]],
+    // [api.query.subspaceModule.lastUpdate, [networkId]],
+    // [api.query.subspaceModule.metadata, [networkId]],
+    // [api.query.subspaceModule.stakeFrom, [networkId]],
+  ]);
+
+  console.log("🔥", keys?.toJSON(), name?.toJSON());
+};
+
+async function getKeys(networkId = 0) {
+  const api = await getClient();
+  const keys = await api.query.subspaceModule.keys.entries(networkId);
+  keys.forEach(([key, address]) => {
+    const subnetId = key.args[0]?.toJSON();
+    console.log("🔥", subnetId);
+    const uid = key.args[1]?.toJSON();
+    console.log("🔥", uid);
+
+    console.log(
+      "key arguments:",
+      key.args.map((k) => k.toHuman()),
+    );
+    console.log("     address:", address.toHuman());
+  });
+  return keys;
+}

@@ -29,6 +29,11 @@ const servers = [
     label: "🔥 CHANI",
     ipTemplate: "213.199.60.156:814x",
   },
+  {
+    pattern: /^gorax[0-9]$/i,
+    label: "🔥 GORAX",
+    ipTemplate: "213.199.60.156:815x",
+  },
 ];
 
 export const registerKeys = async ({

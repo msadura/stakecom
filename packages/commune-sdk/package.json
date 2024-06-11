@@ -19,7 +19,7 @@
     "generate:meta": "npx tsx ../../node_modules/.bin/polkadot-types-from-chain --package src/interfaces --endpoint ./metadata.json --output ./src/interfaces"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^10.12.2",
+    "@polkadot/typegen": "^11.2.1",
     "@stakecom/eslint-config": "workspace:^0.2.0",
     "@stakecom/prettier-config": "workspace:^0.1.0",
     "@stakecom/tsconfig": "workspace:^0.1.0",
@@ -36,7 +36,7 @@
   },
   "prettier": "@stakecom/prettier-config",
   "dependencies": {
-    "@polkadot/api": "^10.12.2",
+    "@polkadot/api": "^11.2.1",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",

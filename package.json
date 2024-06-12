@@ -24,7 +24,8 @@
     "pm2:server": "pm2 start --name stakecomai-server --interpreter ~/.bun/bin/bun ./apps/server/src/index.ts",
     "stats": "bun apps/miner-stats/src/index.ts",
     "unstake": "bun apps/miner-stats/src/unstakeAndTransfer.ts",
-    "proxy": "bun apps/twitterProxy/src/index.ts"
+    "proxy": "bun apps/twitterProxy/src/index.ts",
+    "serve": "bun apps/aim-server/src/index.ts"
   },
   "devDependencies": {
     "@stakecom/prettier-config": "workspace:^0.1.0",

@@ -6,6 +6,7 @@ import { getSubnetModules } from "@stakecom/commune-sdk";
 import { getBlacklistedModules } from "./blacklistedModules";
 
 const networkId = 17;
+const protectedIps = ["213.199.60.156"];
 
 export const modulesCache = new TTLCache<string, Promise<any>>({
   ttl: 3 * 60 * 1000, // 3 minutes
@@ -25,10 +26,13 @@ export async function getActiveModules({
 
   const activeModules = ignoreBlacklist
     ? modules
-    : modules.filter(
-        (module) =>
-          !blacklisted.includes(module.address.split(":")[0] || module.address),
-      );
+    : modules.filter((module) => {
+        const address = module.address.split(":")[0] || module.address;
+
+        return (
+          !blacklisted.includes(address) && !protectedIps.includes(address)
+        );
+      });
 
   // filter our "protected" ips
 

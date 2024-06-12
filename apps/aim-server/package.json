@@ -6,6 +6,7 @@
     "dev": "bun run --env-file=../../.env --watch src/index.ts"
   },
   "dependencies": {
+    "@isaacs/ttlcache": "^1.4.1",
     "@stakecom/commune-sdk": "workspace:^0.1.0",
     "@stakecom/core": "workspace:^0.1.0",
     "@stakecom/db": "workspace:^0.1.0",

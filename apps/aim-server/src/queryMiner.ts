@@ -1,15 +1,12 @@
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 
 import type { ModuleInfo } from "@stakecom/commune-sdk/types";
-import {
-  getSignedMessage,
-  getSigner,
-  getSubnetModules,
-} from "@stakecom/commune-sdk";
+import { getSignedMessage } from "@stakecom/commune-sdk";
 import { u8aToHex } from "@stakecom/commune-sdk/utils";
 
 import type { Tweet } from "./types";
-import { loadComKey } from "./loadComKey";
+import { addBlacklistedModule } from "./blacklistedModules";
+import { getActiveModules } from "./getActiveModules";
 import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
@@ -32,14 +29,16 @@ function getRandomModule(modules: ModuleInfo[]) {
 export async function queryMiner({
   keyName,
   prompt,
+  minerName = "",
 }: {
   keyName: string;
   prompt: string;
+  minerName?: string;
 }) {
-  // TODO: cache modules in redis
-  const modules = await getSubnetModules({ networkId: 17 });
-  // TODO 2: filter modules by blacklist
-  const moduleToQuery = getRandomModule(modules.active);
+  const modules = await getActiveModules({ ignoreBlacklist: !!minerName });
+  const specificModule =
+    minerName && modules.find((module) => module.name === minerName);
+  const moduleToQuery = specificModule || getRandomModule(modules);
 
   const signer = await getSignerByKeyName(keyName);
   const timestamp = new Date().toISOString();
@@ -59,6 +58,10 @@ export async function queryMiner({
   });
   const signature = u8aToHex(signedBody);
 
+  console.log("🔥 Miner to query:", moduleToQuery.name);
+
+  const xKey = u8aToHex(signer.publicKey).replace(/^0x/, "");
+
   try {
     const res = await ky.post(
       `http://${moduleToQuery.address}/method/generate`,
@@ -68,7 +71,7 @@ export async function queryMiner({
           "Content-Type": "application/json",
           "X-Signature": signature,
           "X-Timestamp": timestamp,
-          "X-Key": comKey.public_key,
+          "X-Key": xKey,
           "X-Crypto": "1",
         },
       },
@@ -77,10 +80,19 @@ export async function queryMiner({
     const data = await res.json();
 
     return data as Tweet[];
-  } catch (e) {
+  } catch (error: any) {
     // TODO: handle error
     // NOTE: some modules errors with connection refused (probably they whitelisted only validator's ip)
     // add them do blacklist (redis) to not query them again
-    console.log("🔥e", e);
+
+    // connection refused - blacklist module
+    if (error.code === "ConnectionRefused") {
+      await addBlacklistedModule(moduleToQuery.address);
+    }
+
+    if (error instanceof HTTPError) {
+      const res = await error.response.json();
+      console.log("🔥 e res", res);
+    }
   }
 }

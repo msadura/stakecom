@@ -28,7 +28,7 @@ function getRandomModule(modules: ModuleInfo[]) {
   return module;
 }
 
-export async function generate({
+export async function queryMiner({
   keyName,
   prompt,
 }: {

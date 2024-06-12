@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
+import { sleep } from "./sleep";
 import { validatorRequestBodySchema } from "./types";
 
 const app = new Hono();
@@ -37,10 +38,21 @@ app.post("/method/generate", async (c) => {
   const body = await req.json();
   const parsedBody = validatorRequestBodySchema.parse(body);
 
-  const res = await queryMiner({
-    prompt: parsedBody.params.prompt,
-    keyName: MINER_NAME,
-  });
+  const res = await Promise.race([
+    queryMiner({
+      prompt: parsedBody.params.prompt,
+      keyName: MINER_NAME,
+    }),
+    queryMiner({
+      prompt: parsedBody.params.prompt,
+      keyName: MINER_NAME,
+    }),
+    queryMiner({
+      prompt: parsedBody.params.prompt,
+      keyName: MINER_NAME,
+    }),
+    sleep(15000),
+  ]);
 
   // TODO: what if request fails?
 

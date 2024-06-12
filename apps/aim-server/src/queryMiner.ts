@@ -10,7 +10,7 @@ import { getActiveModules } from "./getActiveModules";
 import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
-const maxRetries = 1;
+const maxRetries = 0;
 
 function getRandomModule(modules: ModuleInfo[]) {
   const index = Math.floor(Math.random() * modules.length);

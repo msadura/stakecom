@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Tweet {
   edit_history_tweet_ids: string[];
   id: string;
@@ -20,3 +22,12 @@ export interface TwitterError {
   status: number;
   detail: string;
 }
+
+export const validatorRequestBodySchema = z.object({
+  param: z.object({
+    prompt: z.string(),
+    target_key: z.string(),
+  }),
+});
+
+export type ValidatorRequestBody = z.infer<typeof validatorRequestBodySchema>;

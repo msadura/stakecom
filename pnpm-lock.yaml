@@ -26,6 +26,18 @@ importers:
 
   apps/aim-server:
     dependencies:
+      '@stakecom/commune-sdk':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/commune-sdk
+      '@stakecom/core':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/core
+      '@stakecom/db':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/db
+      bun-utilities:
+        specifier: ^0.2.1
+        version: 0.2.1
       hono:
         specifier: ^4.3.10
         version: 4.3.10
@@ -35,6 +47,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@stakecom/eslint-config':
         specifier: ^0.2.0
@@ -63,6 +78,9 @@ importers:
       '@stakecom/db':
         specifier: workspace:^0.1.0
         version: link:../../packages/db
+      bun-utilities:
+        specifier: ^0.2.1
+        version: 0.2.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -7726,6 +7744,10 @@ packages:
       '@types/node': 20.12.12
       '@types/ws': 8.5.10
     dev: true
+
+  /bun-utilities@0.2.1:
+    resolution: {integrity: sha512-2e4rMaA50zfUqvc3+Cu8I88nCzvF6WsOnxz4iZSSSQt/pBGgpiwgFCx2y5/s69C9iaCVfyrM6kHxYOgvVx1e8Q==}
+    dev: false
 
   /busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}

@@ -8,7 +8,8 @@ import {
 } from "@stakecom/commune-sdk";
 import { u8aToHex } from "@stakecom/commune-sdk/utils";
 
-import { getComxKey } from "./getComxKey";
+import type { Tweet } from "./types";
+import { loadComKey } from "./loadComKey";
 
 const immuneIps: string[] = [];
 
@@ -27,20 +28,25 @@ function getRandomModule(modules: ModuleInfo[]) {
   return module;
 }
 
-export async function generate({ keyName }: { keyName: string }) {
+export async function generate({
+  keyName,
+  prompt,
+}: {
+  keyName: string;
+  prompt: string;
+}) {
+  // TODO: cache modules in redis
   const modules = await getSubnetModules({ networkId: 17 });
+  // TODO 2: filter modules by blacklist
   const moduleToQuery = getRandomModule(modules.active);
 
-  const comKey = await getComxKey(keyName);
+  const comKey = await loadComKey(keyName);
   const signer = await getSigner(comKey.mnemonic);
   const timestamp = new Date().toISOString();
 
   const body = {
     params: {
-      // get from original request
-      prompt:
-        "crypto forensics lang:en -is:retweet -meme -🚀 -t.me -https -http is:verified",
-      // get target from chain modules list
+      prompt,
       target_key: moduleToQuery.key,
       timestamp,
     },
@@ -62,18 +68,19 @@ export async function generate({ keyName }: { keyName: string }) {
           "Content-Type": "application/json",
           "X-Signature": signature,
           "X-Timestamp": timestamp,
-          "X-Crypto": "1",
           "X-Key": comKey.public_key,
+          "X-Crypto": "1",
         },
       },
     );
 
     const data = await res.json();
 
-    console.log("🔥", data);
+    return data as Tweet[];
   } catch (e) {
+    // TODO: handle error
+    // NOTE: some modules errors with connection refused (probably they whitelisted only validator's ip)
+    // add them do blacklist (redis) to not query them again
     console.log("🔥e", e);
   }
 }
-
-await generate({ keyName: "chani0" });

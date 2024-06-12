@@ -9,6 +9,7 @@
     "@stakecom/commune-sdk": "workspace:^0.1.0",
     "@stakecom/core": "workspace:^0.1.0",
     "@stakecom/db": "workspace:^0.1.0",
+    "bun-utilities": "^0.2.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

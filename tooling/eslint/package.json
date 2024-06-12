@@ -31,7 +31,7 @@
     "@stakecom/tsconfig": "workspace:^0.1.0",
     "@types/eslint": "^8.56.2",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3"
+    "typescript": "5.4.5"
   },
   "eslintConfig": {
     "root": true,

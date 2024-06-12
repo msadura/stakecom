@@ -10,6 +10,7 @@ import { u8aToHex } from "@stakecom/commune-sdk/utils";
 
 import type { Tweet } from "./types";
 import { loadComKey } from "./loadComKey";
+import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
 
@@ -40,8 +41,7 @@ export async function queryMiner({
   // TODO 2: filter modules by blacklist
   const moduleToQuery = getRandomModule(modules.active);
 
-  const comKey = await loadComKey(keyName);
-  const signer = await getSigner(comKey.mnemonic);
+  const signer = await getSignerByKeyName(keyName);
   const timestamp = new Date().toISOString();
 
   const body = {

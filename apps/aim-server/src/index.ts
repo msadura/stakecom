@@ -11,18 +11,22 @@ const app = new Hono();
 
 app.use(logger());
 
-const port = process.env.PORT || 8813;
+const PORT = process.env.PORT;
 const MINER_NAME = process.env.MINER_NAME;
 
 if (!MINER_NAME) {
   throw new Error("MINER_NAME var is required");
 }
 
+if (!PORT) {
+  throw new Error("PORT var is required");
+}
+
 console.log("🔥 MINER_NAME: ", MINER_NAME);
-console.log("🔥 PORT: ", port);
+console.log("🔥 PORT: ", PORT);
 
 export default {
-  port,
+  port: PORT,
   fetch: app.fetch,
 };
 

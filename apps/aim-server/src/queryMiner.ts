@@ -94,9 +94,7 @@ export async function queryMiner({
 
     if (error instanceof TimeoutError) {
       console.log(`🟠 [TIMEOUT] ${moduleToQuery.name}`);
-    }
-
-    if (error instanceof HTTPError) {
+    } else if (error instanceof HTTPError) {
       if (error.response.status === 500) {
         // somethign wrong with the miner, do not bother to retry
         console.log(`🔴 [ERROR] ${moduleToQuery.name} - 500 skipping`);
@@ -104,7 +102,7 @@ export async function queryMiner({
       }
 
       if (error.response.status === 403) {
-        await addBlacklistedModule(moduleToQuery.address);
+        // await addBlacklistedModule(moduleToQuery.address);
       }
 
       try {

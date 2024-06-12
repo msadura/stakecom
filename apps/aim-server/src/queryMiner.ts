@@ -89,6 +89,7 @@ export async function queryMiner({
   } catch (error: any) {
     // connection refused - blacklist module
     if (error.code === "ConnectionRefused") {
+      console.log(`🔴 [BLACKLIST] ${moduleToQuery.name} - ConnectionRefused`);
       await addBlacklistedModule(moduleToQuery.address);
     }
 
@@ -116,7 +117,7 @@ export async function queryMiner({
     }
 
     if (retry < maxRetries) {
-      console.log(`🟡 [RETRY] ${moduleToQuery.name}`);
+      console.log(`🟡 [RETRY] ${retry + 1} / ${maxRetries}`);
       return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
     }
   }

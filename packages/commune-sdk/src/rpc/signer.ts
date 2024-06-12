@@ -1,7 +1,7 @@
 import type { KeyringPair } from "@polkadot/keyring/types";
 import Keyring from "@polkadot/keyring";
 import { stringToU8a } from "@polkadot/util";
-import { cryptoWaitReady } from "@polkadot/util-crypto";
+import { cryptoWaitReady, mnemonicGenerate } from "@polkadot/util-crypto";
 
 export async function getKeyring() {
   await cryptoWaitReady();
@@ -14,6 +14,11 @@ export async function getSigner(mnemonic: string) {
   const signer = keyring.addFromUri(mnemonic);
 
   return signer;
+}
+
+export async function getRandomSigner() {
+  const mnemonic = mnemonicGenerate();
+  return getSigner(mnemonic);
 }
 
 export function getSignedMessage({

@@ -7,9 +7,7 @@ export interface CommuneTxResponse {
   errorCode?: string;
 }
 
-export interface NetworkEmission {
-  [uid: number]: number;
-}
+export type NetworkEmission = Record<number, number>;
 
 export interface AccountBalances {
   balance: bigint;
@@ -45,4 +43,14 @@ export interface RegisterInput extends GenericTxInput {
 export interface TxError {
   code: string;
   reason?: string;
+}
+
+export interface ModuleInfo {
+  uid: number;
+  key: string;
+  name: string;
+  address: string;
+  emission: number;
+  dividends: number;
+  incentive: number;
 }

@@ -1,4 +1,8 @@
-import type { AccountBalances, NetworkEmission } from "../types";
+import type { u16 } from "@polkadot/types";
+import type { StorageKey } from "@polkadot/types/primitive";
+import type { Codec } from "@polkadot/types/types";
+
+import type { AccountBalances, ModuleInfo, NetworkEmission } from "../types";
 import { getClient } from "./client";
 
 export const getEmission = async ({
@@ -11,6 +15,24 @@ export const getEmission = async ({
 
   return emissionData.toJSON() as number[];
 };
+
+export const getIncentive = async ({
+  networkId = 0,
+}: {
+  networkId?: number;
+}): Promise<NetworkEmission> => {
+  const api = await getClient();
+  const data = await api.query.subspaceModule.incentive(networkId);
+
+  return data.toJSON() as number[];
+};
+
+export async function getDividends({ networkId = 0 }: { networkId?: number }) {
+  const api = await getClient();
+  const entries = await api.query.subspaceModule.dividends(networkId);
+
+  return entries.toJSON() as number[];
+}
 
 export const getBalances = async ({
   networkId = 0,
@@ -99,66 +121,78 @@ export const getSubnetModules = async ({
   networkId = 0,
 }: {
   networkId: number;
-}): Promise<any> => {
-  const api = await getClient();
-  const uidsRes = await api.query.subspaceModule.uids.entries(networkId);
-  const uidsArr = uidsRes.map(([_, value]) => {
-    return Number(value.toHuman());
-  });
-  // const keyss = await api.query.subspaceModule.name.entries(17);
-  // console.log("🔥", uidsArr);
+}) => {
+  const [uids, keys, names, addresses, emission, dividends, incentive] =
+    await Promise.all([
+      getUids(networkId),
+      getKeys(networkId),
+      getNames(networkId),
+      getAddresses(networkId),
+      getEmission({ networkId }),
+      getDividends({ networkId }),
+      getIncentive({ networkId }),
+    ]);
 
-  // keyss.forEach(([key, name]) => {
-  //   console.log("     uid:", name.toHuman());
-  // });
+  const allModules: ModuleInfo[] = uids.map((uid) => ({
+    uid: uid,
+    key: keys[uid] || "",
+    name: names[uid] || "",
+    emission: emission[uid] || 0,
+    address: addresses[uid] || "",
+    dividends: dividends[uid] || 0,
+    incentive: incentive[uid] || 0,
+  }));
 
-  const keyz = await getKeys(17);
+  const modules = {
+    all: allModules,
+    active: allModules.filter((m) => m.dividends < m.incentive),
+    validators: allModules.filter(
+      (m) => m.emission > 0 && m.dividends >= m.incentive,
+    ),
+    inactive: allModules.filter((m) => m.incentive === 0 && m.dividends === 0),
+  };
 
-  // console.log("🔥k", keyz);
-
-  const [
-    keys,
-    address,
-    uids,
-    name,
-    delegationFee,
-    emission,
-    incentive,
-    dividends,
-    lastUpdate,
-    metadata,
-    stakeFrom,
-  ] = await api.queryMulti([
-    [api.query.subspaceModule.keys.multi(uids), [networkId]],
-    // [api.query.subspaceModule.address, networkId],
-    // [api.query.subspaceModule.uids, [networkId]],
-    // [api.query.subspaceModule.name, [networkId]],
-    // [api.query.subspaceModule.delegationFee, [networkId]],
-    // [api.query.subspaceModule.emission, [networkId]],
-    // [api.query.subspaceModule.incentive, [networkId]],
-    // [api.query.subspaceModule.dividends, [networkId]],
-    // [api.query.subspaceModule.lastUpdate, [networkId]],
-    // [api.query.subspaceModule.metadata, [networkId]],
-    // [api.query.subspaceModule.stakeFrom, [networkId]],
-  ]);
-
-  console.log("🔥", keys?.toJSON(), name?.toJSON());
+  return modules;
 };
 
-async function getKeys(networkId = 0) {
+export async function getUids(networkId = 0) {
   const api = await getClient();
-  const keys = await api.query.subspaceModule.keys.entries(networkId);
-  keys.forEach(([key, address]) => {
-    const subnetId = key.args[0]?.toJSON();
-    console.log("🔥", subnetId);
-    const uid = key.args[1]?.toJSON();
-    console.log("🔥", uid);
+  const uidsRes = await api.query.subspaceModule.uids.entries(networkId);
 
-    console.log(
-      "key arguments:",
-      key.args.map((k) => k.toHuman()),
-    );
-    console.log("     address:", address.toHuman());
-  });
-  return keys;
+  return uidsRes.map(([_, value]) => value.toJSON() as number);
+}
+
+export async function getKeys(networkId = 0) {
+  const api = await getClient();
+  const entries = await api.query.subspaceModule.keys.entries(networkId);
+
+  return getMapFromEntries(entries);
+}
+
+export async function getNames(networkId = 0) {
+  const api = await getClient();
+  const entries = await api.query.subspaceModule.name.entries(networkId);
+
+  return getMapFromEntries(entries);
+}
+
+export async function getAddresses(networkId = 0) {
+  const api = await getClient();
+  const entries = await api.query.subspaceModule.address.entries(networkId);
+
+  return getMapFromEntries(entries);
+}
+
+function getMapFromEntries<T = string>(
+  entries: [StorageKey<[u16, u16]> | StorageKey<[u16]>, Codec][],
+) {
+  return entries.reduce(
+    (acc, [key, value]) => {
+      const uid = key.args[1]?.toJSON() as number;
+      acc[uid] = value.toHuman() as T;
+
+      return acc;
+    },
+    {} as Record<string, T>,
+  );
 }

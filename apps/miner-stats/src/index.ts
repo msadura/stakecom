@@ -1,4 +1,5 @@
 import { getBalances, getEmission } from "@stakecom/commune-sdk";
+import { COMAI_DECIMALS } from "@stakecom/core";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getKeys } from "./getKeys";
@@ -14,7 +15,43 @@ const servers = [
   { pattern: /^gorax[0-9]$/i, label: "🔥 GORAX" },
 ];
 
-const emission = await getEmission({ networkId: 17 });
+const getProxyStats = async () => {
+  return (await (
+    await fetch("http://good-fucking-proxy.com/stats")
+  ).json()) as {
+    requests: number;
+    hits: number;
+    misses: number;
+    ratio: string;
+    size: number;
+    ttl: number;
+  };
+};
+
+const getCoinStats = async () => {
+  const data = await (
+    await fetch("http://good-fucking-proxy.com/coingecko/comai")
+  ).json();
+
+  const price = data.market_data.current_price.usd as number;
+  const change = {
+    daily: data.market_data.price_change_percentage_24h_in_currency
+      .usd as number,
+  };
+
+  return { price, change };
+};
+
+const [emission, proxyStats, coinStats] = await Promise.all([
+  getEmission({ networkId: 17 }),
+  getProxyStats(),
+  getCoinStats(),
+]);
+const isSlowEmission = (emission: number) =>
+  emission > 0 && emission < 0.1 * 10 ** COMAI_DECIMALS;
+const isZeroEmission = (emission: number) => emission === 0;
+const isGoodEmission = (emission: number) =>
+  !isSlowEmission(emission) && !isZeroEmission(emission);
 
 const getFilteredBalance = async ({
   pattern,
@@ -47,10 +84,14 @@ const getFilteredBalance = async ({
   );
 
   const sumBalance = balances.reduce((acc, { balance }) => acc + balance, 0n);
-  const countWithEmission = balances.filter(
-    ({ emission }) =>
-      Number(formatCOMAmount(emission, { maxDecimals: 2 })) > 0.09,
+  const sumEmission = balances.reduce((acc, { emission }) => acc + emission, 0);
+  const countWithEmission = balances.filter(({ emission }) =>
+    isGoodEmission(emission),
   ).length;
+  const countRegistered = balances.filter(
+    ({ uid }) => typeof uid === "number",
+  ).length;
+  const countTotal = balances.length;
 
   console.table(
     balances
@@ -58,8 +99,11 @@ const getFilteredBalance = async ({
         name,
         // address: ellipsize(address),
         balance: formatCOMAmount(balance, { maxDecimals: 2 }),
-        uid: uid ? String(uid) : "-",
-        emission: formatCOMAmount(emission, { maxDecimals: 2 }),
+        uid: typeof uid === "number" ? String(uid) : "-",
+        emission:
+          typeof uid === "number"
+            ? `${formatCOMAmount(emission, { maxDecimals: 2 })} ${isSlowEmission(emission) ? "🐢" : isZeroEmission(emission) ? "🚷" : ""}`.trim()
+            : "-",
       }))
       .concat([
         {
@@ -72,14 +116,20 @@ const getFilteredBalance = async ({
         {
           name: "",
           // address: "",
-          uid: `${balances.filter(({ uid }) => typeof uid === "number").length} / ${balances.length}`,
-          balance: formatCOMAmount(sumBalance, { maxDecimals: 3 }),
-          emission: `${balances.filter(({ emission }) => Number(formatCOMAmount(emission, { maxDecimals: 2 })) > 0.09).length} / ${balances.length}`,
+          uid: `${countRegistered} / ${countTotal}`,
+          balance: formatCOMAmount(sumBalance, { maxDecimals: 2 }),
+          emission: `${countWithEmission} / ${balances.length}`,
         },
       ]),
   );
 
-  return { sumBalance, countWithEmission };
+  return {
+    sumBalance,
+    sumEmission,
+    countWithEmission,
+    countRegistered,
+    countTotal,
+  };
 };
 
 const sGroups = await Promise.all(servers.map(getFilteredBalance));
@@ -87,19 +137,38 @@ const sGroupsTotal = sGroups.reduce(
   (acc, { sumBalance }) => acc + sumBalance,
   0n,
 );
+const dailyEmission = sGroups.reduce(
+  (acc, { sumEmission }) => acc + (sumEmission || 0),
+  0,
+);
 const withEmissionTotal = sGroups.reduce(
   (acc, { countWithEmission }) => acc + (countWithEmission || 0),
   0,
 );
-const { balance } = await getBalances({
-  address: "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
-  networkId: 17,
-});
-
-console.log("🔥", "EPIC balance free", formatCOMAmount(balance));
-console.log("🔥 Market compass total:", formatCOMAmount(sGroupsTotal));
-console.log("🔥 With emission total:", withEmissionTotal);
+const registeredTotal = sGroups.reduce(
+  (acc, { countRegistered }) => acc + (countRegistered || 0),
+  0,
+);
+const countTotal = sGroups.reduce(
+  (acc, { countTotal }) => acc + (countTotal || 0),
+  0,
+);
+console.log(
+  `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coinStats.price), { maxDecimals: 2 })} USD`,
+);
+console.log(
+  `🔥 Miners: ${withEmissionTotal} with emission, ${registeredTotal} registered, ${countTotal} total`,
+);
+console.log(
+  `🔥 Daily emission: ${formatCOMAmount(dailyEmission * 108, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(dailyEmission * 108 * coinStats.price), { maxDecimals: 2 })} USD`,
+);
+console.log(
+  `🔥 Coin price $comai: ${coinStats.price.toFixed(2)} USD (change ${coinStats.change.daily.toFixed(2)}%)`,
+);
+console.log(
+  `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl / 1000}s ttl`,
+);
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
-console.log("===========================");
+console.log("🔥 ==========================");
 
 process.exit();

@@ -1,4 +1,4 @@
-import ky, { HTTPError } from "ky";
+import ky, { HTTPError, TimeoutError } from "ky";
 
 import type { ModuleInfo } from "@stakecom/commune-sdk/types";
 import { getSignedMessage } from "@stakecom/commune-sdk";
@@ -10,6 +10,7 @@ import { getActiveModules } from "./getActiveModules";
 import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
+const maxRetries = 3;
 
 function getRandomModule(modules: ModuleInfo[]) {
   const index = Math.floor(Math.random() * modules.length);
@@ -30,10 +31,12 @@ export async function queryMiner({
   keyName,
   prompt,
   minerName = "",
+  retry = 0,
 }: {
   keyName: string;
   prompt: string;
   minerName?: string;
+  retry?: number;
 }) {
   const modules = await getActiveModules({ ignoreBlacklist: !!minerName });
   const specificModule =
@@ -41,7 +44,9 @@ export async function queryMiner({
   const moduleToQuery = specificModule || getRandomModule(modules);
 
   const signer = await getSignerByKeyName(keyName);
-  const timestamp = new Date().toISOString();
+  const timestamp = new Date(new Date().toUTCString())
+    .toISOString()
+    .replace(/Z$/, "+00:00");
 
   const body = {
     params: {
@@ -58,7 +63,7 @@ export async function queryMiner({
   });
   const signature = u8aToHex(signedBody);
 
-  console.log("🔥 Miner to query:", moduleToQuery.name);
+  console.log(`🔵 [QUERY] ${moduleToQuery.name}`);
 
   const xKey = u8aToHex(signer.publicKey).replace(/^0x/, "");
 
@@ -78,21 +83,43 @@ export async function queryMiner({
     );
 
     const data = await res.json();
+    console.log(`🟢 [SUCCESS] ${moduleToQuery.name}`);
 
     return data as Tweet[];
   } catch (error: any) {
-    // TODO: handle error
-    // NOTE: some modules errors with connection refused (probably they whitelisted only validator's ip)
-    // add them do blacklist (redis) to not query them again
-
     // connection refused - blacklist module
     if (error.code === "ConnectionRefused") {
       await addBlacklistedModule(moduleToQuery.address);
     }
 
+    if (error instanceof TimeoutError) {
+      console.log(`🟠 [TIMEOUT] ${moduleToQuery.name}`);
+    }
+
     if (error instanceof HTTPError) {
-      const res = await error.response.json();
-      console.log("🔥 e res", res);
+      if (error.response.status === 500) {
+        // somethign wrong with the miner, do not bother to retry
+        console.log(`🔴 [ERROR] ${moduleToQuery.name} - 500 skipping`);
+        return;
+      }
+
+      if (error.response.status === 403) {
+        await addBlacklistedModule(moduleToQuery.address);
+      }
+
+      try {
+        const res = await error.response.json();
+        console.log(`🔴 [ERROR] ${moduleToQuery.name}`, res);
+      } catch (e) {
+        console.error(`🔴 [ERROR] ${moduleToQuery.name} request error:`, error);
+      }
+    } else {
+      console.error(`🔴 [ERROR] ${moduleToQuery.name} request error:`, error);
+    }
+
+    if (retry < maxRetries) {
+      console.log(`🟡 [RETRY] ${moduleToQuery.name}`);
+      return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
     }
   }
 }

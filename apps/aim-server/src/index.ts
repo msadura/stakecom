@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import { z } from "zod";
 
+import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
 import { validatorRequestBodySchema } from "./types";
 
@@ -66,3 +67,17 @@ app.post("/queryMiner", zValidator("query", queryMinerSchema), async (c) => {
     throw new HTTPException(400, { message: "Unrecognized keyName" });
   }
 });
+
+// refresh modules periodically
+const refreshModules = () => {
+  getActiveModules({ ignoreBlacklist: true, refresh: true }).catch(() =>
+    console.log("Failed to refresh modules"),
+  );
+};
+
+refreshModules();
+
+setInterval(
+  refreshModules,
+  5 * 60 * 1000, // 5 minutes
+);

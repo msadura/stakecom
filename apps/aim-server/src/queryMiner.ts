@@ -10,7 +10,7 @@ import { getActiveModules } from "./getActiveModules";
 import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
-const maxRetries = 3;
+const maxRetries = 1;
 
 function getRandomModule(modules: ModuleInfo[]) {
   const index = Math.floor(Math.random() * modules.length);
@@ -79,6 +79,7 @@ export async function queryMiner({
           "X-Key": xKey,
           "X-Crypto": "1",
         },
+        timeout: 8000,
       },
     );
 
@@ -90,7 +91,7 @@ export async function queryMiner({
     // connection refused - blacklist module
     if (error.code === "ConnectionRefused") {
       console.log(`🔴 [BLACKLIST] ${moduleToQuery.name} - ConnectionRefused`);
-      await addBlacklistedModule(moduleToQuery.address);
+      addBlacklistedModule(moduleToQuery.address).catch(console.error);
     }
 
     if (error instanceof TimeoutError) {
@@ -103,6 +104,7 @@ export async function queryMiner({
       }
 
       if (error.response.status === 403) {
+        // find out more about 403 causes
         // await addBlacklistedModule(moduleToQuery.address);
       }
 

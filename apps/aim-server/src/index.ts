@@ -70,6 +70,7 @@ app.post("/queryMiner", zValidator("query", queryMinerSchema), async (c) => {
 
 // refresh modules periodically
 const refreshModules = () => {
+  console.log("🔥", "Refreshing modules list");
   getActiveModules({ ignoreBlacklist: true, refresh: true }).catch(() =>
     console.log("Failed to refresh modules"),
   );

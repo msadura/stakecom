@@ -34,12 +34,10 @@ app.post("/method/generate", async (c) => {
   const req = c.req;
 
   const body = await req.json();
-
-  console.log("🔥 b", body);
   const parsedBody = validatorRequestBodySchema.parse(body);
 
   const res = await queryMiner({
-    prompt: parsedBody.param.prompt,
+    prompt: parsedBody.params.prompt,
     keyName: MINER_NAME,
   });
 

@@ -24,7 +24,7 @@ export interface TwitterError {
 }
 
 export const validatorRequestBodySchema = z.object({
-  param: z.object({
+  params: z.object({
     prompt: z.string(),
     target_key: z.string(),
   }),

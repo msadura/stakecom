@@ -111,7 +111,10 @@ export async function queryMiner({
 
       try {
         const res = await error.response.json();
-        console.log(`🔴 [ERROR] ${moduleToQuery.name}`, res);
+        console.log(
+          `🔴 [ERROR] ${moduleToQuery.name} [STATUS: ${error.response.status}]`,
+          res,
+        );
       } catch (e) {
         console.error(`🔴 [ERROR] ${moduleToQuery.name} request error:`, error);
       }

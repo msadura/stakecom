@@ -15,8 +15,8 @@ const MIN_BALANCE = toAmountValue("1");
 
 const servers = [
   {
-    pattern: /^drago[0-9]$/i,
-    label: "🔥 DRAGO",
+    pattern: /^gorax[0-9]$/i,
+    label: "🔥 GORAX",
   },
   {
     pattern: /^ezek[0-9]$/i,

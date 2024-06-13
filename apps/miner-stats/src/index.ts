@@ -12,6 +12,7 @@ const servers = [
   { pattern: /^fiskk[0-9]$/i, label: "🔥 FISKK" },
   { pattern: /^chani[0-9]$/i, label: "🔥 DRAGO" },
   { pattern: /^gorax[0-9]$/i, label: "🔥 GORAX" },
+  { pattern: /^tmod[0-9]$/i, label: "🔥 TMOD" },
 ];
 
 const getProxyStats = async () => {

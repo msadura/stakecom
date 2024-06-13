@@ -10,7 +10,7 @@ import { getActiveModules } from "./getActiveModules";
 import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
-const maxRetries = 0;
+const maxRetries = 1;
 
 function getRandomModule(modules: ModuleInfo[]) {
   const index = Math.floor(Math.random() * modules.length);
@@ -100,7 +100,8 @@ export async function queryMiner({
       if (error.response.status === 500) {
         // somethign wrong with the miner, do not bother to retry
         console.log(`🔴 [ERROR] ${moduleToQuery.name} - 500 skipping`);
-        return;
+
+        return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
       }
 
       if (error.response.status === 403) {
@@ -122,5 +123,7 @@ export async function queryMiner({
       console.log(`🟡 [RETRY] ${retry + 1} / ${maxRetries}`);
       return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
     }
+
+    throw new Error(`NGMI`);
   }
 }

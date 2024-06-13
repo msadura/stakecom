@@ -38,25 +38,28 @@ app.post("/method/generate", async (c) => {
   const body = await req.json();
   const parsedBody = validatorRequestBodySchema.parse(body);
 
-  const res = await Promise.race([
-    queryMiner({
-      prompt: parsedBody.params.prompt,
-      keyName: MINER_NAME,
-    }),
-    queryMiner({
-      prompt: parsedBody.params.prompt,
-      keyName: MINER_NAME,
-    }),
-    queryMiner({
-      prompt: parsedBody.params.prompt,
-      keyName: MINER_NAME,
-    }),
-    sleep(15000),
-  ]);
+  try {
+    const res = await Promise.any([
+      queryMiner({
+        prompt: parsedBody.params.prompt,
+        keyName: MINER_NAME,
+      }),
+      queryMiner({
+        prompt: parsedBody.params.prompt,
+        keyName: MINER_NAME,
+      }),
+      queryMiner({
+        prompt: parsedBody.params.prompt,
+        keyName: MINER_NAME,
+      }),
+      sleep(12000),
+    ]);
 
-  // TODO: what if request fails?
-
-  return c.json(res || []);
+    return c.json(res || []);
+  } catch (e) {
+    // TODO: what if request fails?
+    return c.json([]);
+  }
 });
 
 const queryMinerSchema = z.object({

@@ -67,6 +67,8 @@ export async function queryMiner({
 
   const xKey = u8aToHex(signer.publicKey).replace(/^0x/, "");
 
+  const startTimestamp = Date.now();
+
   try {
     const res = await ky.post(
       `http://${moduleToQuery.address}/method/generate`,
@@ -79,12 +81,17 @@ export async function queryMiner({
           "X-Key": xKey,
           "X-Crypto": "1",
         },
-        timeout: 8000,
+        timeout: 12000,
       },
     );
 
     const data = await res.json();
-    console.log(`🟢 [SUCCESS] ${moduleToQuery.name}`);
+    const endTimestamp = Date.now();
+    const timeInSec = (endTimestamp - startTimestamp) / 1000;
+
+    console.log(
+      `🟢 [SUCCESS] ${moduleToQuery.name} - ${timeInSec.toFixed(2)}s`,
+    );
 
     return data as Tweet[];
   } catch (error: any) {

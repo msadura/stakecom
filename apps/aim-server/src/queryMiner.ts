@@ -7,6 +7,7 @@ import { u8aToHex } from "@stakecom/commune-sdk/utils";
 import type { Tweet } from "./types";
 import { addBlacklistedModule } from "./blacklistedModules";
 import { getActiveModules } from "./getActiveModules";
+import { addServerStats } from "./serverStats";
 import { getSignerByKeyName } from "./utils/getSignerByKeyName";
 
 const immuneIps: string[] = [];
@@ -42,6 +43,7 @@ export async function queryMiner({
   const specificModule =
     minerName && modules.find((module) => module.name === minerName);
   const moduleToQuery = specificModule || getRandomModule(modules);
+  const moduleIp = moduleToQuery.address.split(":")[0] || moduleToQuery.address;
 
   const signer = await getSignerByKeyName(keyName);
   const timestamp = new Date(new Date().toUTCString())
@@ -87,11 +89,19 @@ export async function queryMiner({
 
     const data = await res.json();
     const endTimestamp = Date.now();
-    const timeInSec = (endTimestamp - startTimestamp) / 1000;
+    const time = endTimestamp - startTimestamp;
+    const timeInSec = time / 1000;
 
     console.log(
       `🟢 [SUCCESS] ${moduleToQuery.name} - ${timeInSec.toFixed(2)}s`,
     );
+
+    addServerStats({
+      ip: moduleIp,
+      responseTime: time,
+      failed: false,
+      name: moduleToQuery.name,
+    });
 
     return data as Tweet[];
   } catch (error: any) {
@@ -134,6 +144,13 @@ export async function queryMiner({
       return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
     }
 
-    throw new Error(`NGMI`);
+    addServerStats({
+      ip: moduleIp,
+      responseTime: 0,
+      failed: true,
+      name: moduleToQuery.name,
+    });
+
+    throw new Error("NGMI");
   }
 }

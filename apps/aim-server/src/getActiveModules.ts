@@ -57,7 +57,7 @@ export async function getActiveModules({
     });
   }
 
-  console.log("🔥 [ACTIVE] count:", activeModules);
+  console.log("🔥 [ACTIVE] count:", activeModules.length);
 
   // filter our "protected" ips
 

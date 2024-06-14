@@ -1,13 +1,13 @@
 import { getFileContent } from "./utils/getFileContent";
 
 const current = import.meta.dir;
-const filePath = `${current}/blacklist.json`;
+const filePath = `${current}/pro.json`;
 
-export async function getBlacklistedModules() {
+export async function getProModules() {
   return getFileContent(filePath);
 }
 
-export async function addBlacklistedModule(address: string) {
+export async function addProModule(address: string) {
   const modules = await getFileContent(filePath);
   const addressRaw = address.split(":")[0] || address;
 

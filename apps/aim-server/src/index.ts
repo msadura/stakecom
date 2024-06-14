@@ -1,10 +1,12 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 
 import blacklist from "./blacklist.json";
 import { addBlacklistedModule } from "./blacklistedModules";
 import { getActiveModules } from "./getActiveModules";
+import pro from "./pro.json";
+import { addProModule } from "./proModules";
 import { queryMiner } from "./queryMiner";
 import { sleep } from "./sleep";
 import { validatorRequestBodySchema } from "./types";
@@ -73,7 +75,8 @@ app.post("/classifyMiners", async (c) => {
     `🕵️‍♀️ Found ${activeModules.length} active modules. Proceed with classifing.`,
   );
 
-  const shouldBeBlacklisted = [...blacklist];
+  const shouldBeBlacklisted: string[] = [...blacklist];
+  const shouldBePro: string[] = [...pro];
   let moduleNumber = 0;
 
   for (const activeModule of activeModules) {
@@ -90,11 +93,20 @@ app.post("/classifyMiners", async (c) => {
       if (isAlreadyBlacklisted) {
         throw { code: "AlreadyBlacklisted" };
       }
-      await ky.post(`http://${activeModule.address}/method/generate`).json();
+      await ky
+        .post(`http://${activeModule.address}/method/generate`, {
+          timeout: 3000,
+        })
+        .json();
     } catch (e) {
       if (e.code === "ConnectionRefused" || e.code === "AlreadyBlacklisted") {
         console.log(`🔴 [BLACKLIST] ${activeModule.name} - ConnectionRefused`);
         shouldBeBlacklisted.push(activeModule.address);
+      } else if (e instanceof HTTPError) {
+        if (e.response.status === 400) {
+          console.log(`🚀 [PRO] ${activeModule.name}`);
+          shouldBePro.push(activeModule.address);
+        }
       } else {
         console.error(`🔴 [Responded] ${activeModule.name}`, e);
       }
@@ -109,6 +121,15 @@ app.post("/classifyMiners", async (c) => {
       await addBlacklistedModule(blacklistAddress).catch(console.error);
     }
     console.info("✅ Blacklisting completed.");
+  }
+
+  if (shouldBePro.length) {
+    console.info("🔵 Adding to PRO IPs:");
+    console.table(shouldBePro);
+    for (const newPro of shouldBePro) {
+      await addProModule(newPro).catch(console.error);
+    }
+    console.info("✅ Updating pro list completed.");
   }
 
   return c.json([]);

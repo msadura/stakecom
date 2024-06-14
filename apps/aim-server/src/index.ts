@@ -76,9 +76,13 @@ app.post("/classifyMiners", async (c) => {
   );
 
   const shouldBeBlacklisted = [];
+  let moduleNumber = 0;
 
   for (const activeModule of activeModules) {
-    console.info("🔵 Classifing", activeModule.name, activeModule.address);
+    moduleNumber++;
+    console.info(
+      `🔵 Classifing module number ${moduleNumber}: ${activeModule.name} - ${activeModule.address}`,
+    );
     try {
       await ky.post(`http://${activeModule.address}/method/generate`).json();
     } catch (e) {

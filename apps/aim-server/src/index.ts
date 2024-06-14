@@ -1,10 +1,8 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import ky from "ky";
-import { z } from "zod";
 
+import blacklist from "./blacklist.json";
 import { addBlacklistedModule } from "./blacklistedModules";
 import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
@@ -75,7 +73,7 @@ app.post("/classifyMiners", async (c) => {
     `🕵️‍♀️ Found ${activeModules.length} active modules. Proceed with classifing.`,
   );
 
-  const shouldBeBlacklisted = [];
+  const shouldBeBlacklisted = [...blacklist];
   let moduleNumber = 0;
 
   for (const activeModule of activeModules) {
@@ -84,12 +82,21 @@ app.post("/classifyMiners", async (c) => {
       `🔵 Classifing module number ${moduleNumber}: ${activeModule.name} - ${activeModule.address}`,
     );
     try {
+      const [ip] = activeModule.address.split(":");
+      console.info("ip", ip);
+      const isAlreadyBlacklisted = shouldBeBlacklisted.some((entry) =>
+        entry.includes(ip),
+      );
+      if (isAlreadyBlacklisted) {
+        throw { code: "AlreadyBlacklisted" };
+      }
       await ky.post(`http://${activeModule.address}/method/generate`).json();
     } catch (e) {
-      console.log("Responded with error:", e);
-      if (e.code === "ConnectionRefused") {
+      if (e.code === "ConnectionRefused" || e.code === "AlreadyBlacklisted") {
         console.log(`🔴 [BLACKLIST] ${activeModule.name} - ConnectionRefused`);
         shouldBeBlacklisted.push(activeModule.address);
+      } else {
+        console.error(`🔴 [Responded] ${activeModule.name}`, e);
       }
     }
   }

@@ -10,7 +10,8 @@
     "@stakecom/core": "workspace:^0.1.0",
     "@stakecom/db": "workspace:^0.1.0",
     "bun-utilities": "^0.2.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@stakecom/eslint-config": "^0.2.0",

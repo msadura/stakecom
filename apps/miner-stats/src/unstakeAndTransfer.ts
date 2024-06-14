@@ -8,29 +8,13 @@ import { toAmountValue } from "@stakecom/commune-sdk/utils";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import type { ComKey } from "./getKeys";
+import { getConfig } from "./getConfig";
 import { getFilteredKeys } from "./getKeys";
 
 const destAddress = "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w";
 const MIN_BALANCE = toAmountValue("1");
 
-const servers = [
-  {
-    pattern: /^gorax[0-9]$/i,
-    label: "🔥 GORAX",
-  },
-  {
-    pattern: /^ezek[0-9]$/i,
-    label: "🔥 EZEK",
-  },
-  {
-    pattern: /^fiskk[0-9]$/i,
-    label: "🔥 FISKK",
-  },
-  {
-    pattern: /^chani[0-9]$/i,
-    label: "🔥 CHANI",
-  },
-];
+const servers = await getConfig().then((config) => config.unstake);
 
 const unstakeAndTransferSingle = async (key: ComKey) => {
   const signer = await getSigner(key.mnemonic);
@@ -110,7 +94,7 @@ const unstakeAndTransferFilteredKeys = async ({
   label,
 }: {
   pattern: RegExp;
-  label: string;
+  label?: string;
 }) => {
   const filteredKeys = await getFilteredKeys(pattern);
 

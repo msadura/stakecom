@@ -90,6 +90,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      zod:
+        specifier: ^3.22.4
+        version: 3.23.8
     devDependencies:
       '@stakecom/eslint-config':
         specifier: ^0.2.0

@@ -4,16 +4,19 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getKeys } from "./getKeys";
 
-const servers = [
-  { pattern: /^wraith[0-9]+$/i, label: "🔥 Wraith" },
-  { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
-  { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
-  { pattern: /^ezek[0-9]$/i, label: "🔥 EZEK" },
-  { pattern: /^fiskk[0-9]$/i, label: "🔥 FISKK" },
-  { pattern: /^chani[0-9]$/i, label: "🔥 DRAGO" },
-  { pattern: /^gorax[0-9]$/i, label: "🔥 GORAX" },
-  { pattern: /^tmod[0-9]$/i, label: "🔥 TMOD" },
-];
+const servers: { pattern: RegExp; label: string }[] =
+  process.env.SKIP_KEYS_FILTERING === "true"
+    ? [{ pattern: /.*/, label: "🔥 IKZ" }]
+    : [
+        { pattern: /^wraith[0-9]+$/i, label: "🔥 Wraith" },
+        { pattern: /^goblin[0-9]+$/i, label: "🔥 Goblin" },
+        { pattern: /^hobbit[0-9]+$/i, label: "🔥 Hobbit" },
+        { pattern: /^ezek[0-9]$/i, label: "🔥 EZEK" },
+        { pattern: /^fiskk[0-9]$/i, label: "🔥 FISKK" },
+        { pattern: /^chani[0-9]$/i, label: "🔥 DRAGO" },
+        { pattern: /^gorax[0-9]$/i, label: "🔥 GORAX" },
+        { pattern: /^tmod[0-9]$/i, label: "🔥 TMOD" },
+      ];
 
 const getProxyStats = async () => {
   return (await (

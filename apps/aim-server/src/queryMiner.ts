@@ -56,7 +56,7 @@ export async function queryMiner({
     },
   };
 
-  const bodyMessage = JSON.stringify({ ...body });
+  const bodyMessage = JSON.stringify(body);
   const signedBody = getSignedMessage({
     signer,
     message: bodyMessage,
@@ -67,7 +67,7 @@ export async function queryMiner({
 
   const xKey = u8aToHex(signer.publicKey).replace(/^0x/, "");
 
-  const startTimestamp = Date.now();
+  const startTimestamp = performance.now();
 
   try {
     const res = await ky.post(
@@ -86,7 +86,7 @@ export async function queryMiner({
     );
 
     const data = await res.json();
-    const endTimestamp = Date.now();
+    const endTimestamp = performance.now();
     const timeInSec = (endTimestamp - startTimestamp) / 1000;
 
     console.log(
@@ -134,6 +134,6 @@ export async function queryMiner({
       return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
     }
 
-    throw new Error(`NGMI`);
+    throw new Error("NGMI");
   }
 }

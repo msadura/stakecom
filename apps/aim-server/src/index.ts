@@ -2,8 +2,10 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
+import ky from "ky";
 import { z } from "zod";
 
+import { addBlacklistedModule } from "./blacklistedModules";
 import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
 import { sleep } from "./sleep";
@@ -62,25 +64,43 @@ app.post("/method/generate", async (c) => {
   }
 });
 
-const queryMinerSchema = z.object({
-  // todo - accept only valid keys?
-  keyName: z.string(),
-});
+app.post("/classifyMiners", async (c) => {
+  console.info("🔵 Getting active modules");
+  const activeModules = await getActiveModules({
+    ignoreBlacklist: true,
+    refresh: true,
+  });
 
-app.post("/queryMiner", zValidator("query", queryMinerSchema), async (c) => {
-  const query = c.req.valid("query");
+  console.info(
+    `🕵️‍♀️ Found ${activeModules.length} active modules. Proceed with classifing.`,
+  );
 
-  try {
-    const result = await queryMiner({
-      keyName: query.keyName,
-      prompt:
-        "crypto futures lang:en -is:retweet -meme -🚀 -t.me -https -http is:verified",
-    });
+  const shouldBeBlacklisted = [];
 
-    return c.json({ data: result, meta: {} });
-  } catch (e) {
-    throw new HTTPException(400, { message: "Unrecognized keyName" });
+  for (const activeModule of activeModules) {
+    console.info("🔵 Classifing", activeModule.name, activeModule.address);
+    try {
+      await ky.post(`http://${activeModule.address}/method/generate`).json();
+    } catch (e) {
+      console.log("Responded with error:", e);
+      if (e.code === "ConnectionRefused") {
+        console.log(`🔴 [BLACKLIST] ${activeModule.name} - ConnectionRefused`);
+        shouldBeBlacklisted.push(activeModule.address);
+      }
+    }
   }
+
+  console.info("Classifing completed.");
+  if (shouldBeBlacklisted.length) {
+    console.info("🔵 Permanently blacklisting IPs:");
+    console.table(shouldBeBlacklisted);
+    for (const blacklistAddress of shouldBeBlacklisted) {
+      await addBlacklistedModule(blacklistAddress).catch(console.error);
+    }
+    console.info("✅ Blacklisting completed.");
+  }
+
+  return c.json([]);
 });
 
 // refresh modules periodically

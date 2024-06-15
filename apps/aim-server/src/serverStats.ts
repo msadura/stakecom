@@ -1,5 +1,7 @@
 import type { ModuleInfo } from "@stakecom/commune-sdk/types";
 
+import { redisServer } from "./redis";
+
 interface ModuleStats {
   ip: string;
   requestCount: number;
@@ -7,22 +9,31 @@ interface ModuleStats {
   avgResponse: number;
 }
 
-const tempCache: Record<string, ModuleStats> = {};
+const cacheKey = "serverStats";
 
 // TODO - replace with async methods from redis
 export const setServerStats = (ip: string, stats: ModuleStats) => {
-  tempCache[ip] = stats;
+  return redisServer.hset(cacheKey, ip, JSON.stringify(stats));
 };
 
 export const getServerStats = (ip: string) => {
-  return tempCache[ip];
+  return redisServer
+    .hget(cacheKey, ip)
+    .then((res) => res && (JSON.parse(res) as ModuleStats));
 };
 
 export const getAllServerStats = () => {
-  return tempCache;
+  return redisServer.hgetall(cacheKey).then((res) => {
+    return Object.fromEntries(
+      Object.entries(res).map(([key, value]) => [
+        key,
+        JSON.parse(value) as ModuleStats,
+      ]),
+    );
+  });
 };
 
-export const addServerStats = ({
+export const addServerStats = async ({
   ip,
   responseTime,
   failed,
@@ -34,7 +45,7 @@ export const addServerStats = ({
   name: string;
 }) => {
   const ipRaw = ip.split(":")[0] || ip;
-  const cached = getServerStats(ip);
+  const cached = await getServerStats(ip);
 
   const stats: ModuleStats = cached || {
     ip: ipRaw,
@@ -54,7 +65,7 @@ export const addServerStats = ({
       (stats.requestCount + 1),
   };
 
-  setServerStats(ip, updatedStats);
+  await setServerStats(ip, updatedStats);
 
   console.log(
     `📊 [STATS] ${name}`,
@@ -66,13 +77,15 @@ export const addServerStats = ({
   return updatedStats;
 };
 
-export const getServerStatsList = () => {
-  return Object.values(getAllServerStats());
+export const getServerStatsList = async () => {
+  const all = await getAllServerStats();
+  return Object.values(all);
 };
 
-export const getFastestServersList = () => {
+export const getReliableServers = async () => {
+  const list = await getServerStatsList();
   // filter servers with more than 5, less tan 10% failure rate and less than 8s response time
-  return Object.values(getAllServerStats()).filter(
+  return list.filter(
     (server) =>
       server.requestCount > 5 &&
       server.failureRatio < 0.1 &&
@@ -80,9 +93,11 @@ export const getFastestServersList = () => {
   );
 };
 
-export const filterByReliability = (server: ModuleInfo) => {
+export const filterByReliability = (
+  server: ModuleInfo,
+  stats: Record<string, ModuleStats>,
+) => {
   const ipRaw = server.address.split(":")[0] || server.address;
-  const stats = getAllServerStats();
   const serverStats = stats[ipRaw];
 
   if (!serverStats || serverStats.requestCount < 5) {

@@ -1,11 +1,14 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
+import { get } from "lodash";
 
 import { classifyModules } from "./classifyModules";
 import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
 import { sleep } from "./sleep";
 import { validatorRequestBodySchema } from "./types";
+import { getRequestIp } from "./utils/getRequestIp";
+import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
 
@@ -31,8 +34,9 @@ export default {
 };
 
 app.post("/method/generate", async (c) => {
-  // TODO - verify ip of req sender - if not validator, sleep infinitely to waste spammer's time
   const req = c.req;
+  const reqIp = getRequestIp(c);
+  await verifyValidator(reqIp);
 
   const body = await req.json();
   const parsedBody = validatorRequestBodySchema.parse(body);

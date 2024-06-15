@@ -7,7 +7,7 @@ export const env = createEnv({
     // AUTH_DISCORD_SECRET: z.string().min(1),
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
-        ? z.string().min(1)
+        ? z.string().min(1).optional()
         : z.string().min(1).optional(),
   },
   client: {},

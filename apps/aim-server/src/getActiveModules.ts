@@ -4,7 +4,7 @@ import type { ModuleInfo } from "@stakecom/commune-sdk/types";
 import { getSubnetModules } from "@stakecom/commune-sdk";
 
 import { getProModules } from "./proModules";
-import { filterByReliability } from "./serverStats";
+import { filterByReliability, getAllServerStats } from "./serverStats";
 
 const networkId = 17;
 
@@ -33,6 +33,7 @@ export async function getActiveModules({
   }
 
   const pro = await getProModules();
+  const stats = await getAllServerStats();
 
   const activeModules = ignoreBlacklist
     ? modules
@@ -48,7 +49,7 @@ export async function getActiveModules({
           );
         })
         // get only fast or unverified servers
-        .filter(filterByReliability);
+        .filter((server) => filterByReliability(server, stats));
 
   console.log("🔥 [ACTIVE] count:", activeModules.length);
 

@@ -96,7 +96,7 @@ export async function queryMiner({
       `🟢 [SUCCESS] ${moduleToQuery.name} - ${timeInSec.toFixed(2)}s`,
     );
 
-    addServerStats({
+    await addServerStats({
       ip: moduleIp,
       responseTime: time,
       failed: false,
@@ -144,7 +144,7 @@ export async function queryMiner({
       return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
     }
 
-    addServerStats({
+    await addServerStats({
       ip: moduleIp,
       responseTime: 0,
       failed: true,

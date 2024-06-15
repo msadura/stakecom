@@ -3,7 +3,7 @@ import TTLCache from "@isaacs/ttlcache";
 import type { ModuleInfo } from "@stakecom/commune-sdk/types";
 import { getSubnetModules } from "@stakecom/commune-sdk";
 
-import { getBlacklistedModules } from "./blacklistedModules";
+import { getProModules } from "./proModules";
 import { getBrokenServersList } from "./serverStats";
 
 const networkId = 17;
@@ -31,7 +31,7 @@ export async function getActiveModules({
     modulesCache.set("activeModules", modules);
   }
 
-  const blacklisted = await getBlacklistedModules();
+  const pro = await getProModules();
 
   // const fastIps = getFastestServersList().map((server) => server.ip);
   const brokenIps = getBrokenServersList().map((server) => server.ip);
@@ -42,24 +42,16 @@ export async function getActiveModules({
         const address = module.address.split(":")[0] || module.address;
 
         return (
-          !blacklisted.includes(address) &&
+          // verified that server is not blacklisted and responds
+          pro.includes(address) &&
+          // do not include our ips
           !protectedIps.includes(address) &&
+          // if server is just too slow, we can ignore it
           !brokenIps.includes(address)
         );
       });
 
-  // if we have more than 5 fast servers, we can ignore the slow ones
-  // if (fastIps.length > 5) {
-  //   activeModules = activeModules.filter((module) => {
-  //     const address = module.address.split(":")[0] || module.address;
-
-  //     return fastIps.includes(address);
-  //   });
-  // }
-
   console.log("🔥 [ACTIVE] count:", activeModules.length);
-
-  // filter our "protected" ips
 
   return activeModules;
 }

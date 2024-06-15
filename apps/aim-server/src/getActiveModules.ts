@@ -47,7 +47,7 @@ export async function getActiveModules({
           );
         })
         // get only fast or unverified servers
-        .filter((server) => filterByReliability(server));
+        .filter(filterByReliability);
 
   console.log("🔥 [ACTIVE] count:", activeModules.length);
 

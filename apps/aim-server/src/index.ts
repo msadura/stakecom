@@ -1,9 +1,7 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
-import { z } from "zod";
 
+import { classifyModules } from "./classifyModules";
 import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
 import { sleep } from "./sleep";
@@ -33,6 +31,7 @@ export default {
 };
 
 app.post("/method/generate", async (c) => {
+  // TODO - verify ip of req sender - if not validator, sleep infinitely to waste spammer's time
   const req = c.req;
 
   const body = await req.json();
@@ -62,33 +61,18 @@ app.post("/method/generate", async (c) => {
   }
 });
 
-const queryMinerSchema = z.object({
-  // todo - accept only valid keys?
-  keyName: z.string(),
-});
+app.post("/classifyMiners", async (c) => {
+  await classifyModules();
 
-app.post("/queryMiner", zValidator("query", queryMinerSchema), async (c) => {
-  const query = c.req.valid("query");
-
-  try {
-    const result = await queryMiner({
-      keyName: query.keyName,
-      prompt:
-        "crypto futures lang:en -is:retweet -meme -🚀 -t.me -https -http is:verified",
-    });
-
-    return c.json({ data: result, meta: {} });
-  } catch (e) {
-    throw new HTTPException(400, { message: "Unrecognized keyName" });
-  }
+  return c.json([]);
 });
 
 // refresh modules periodically
 const refreshModules = () => {
   console.log("🔥", "Refreshing modules list");
-  getActiveModules({ ignoreBlacklist: true, refresh: true }).catch(() =>
-    console.log("Failed to refresh modules"),
-  );
+  getActiveModules({ ignoreBlacklist: true, refresh: true })
+    .then(() => classifyModules())
+    .catch(() => console.log("Failed to refresh and classify P>modules"));
 };
 
 refreshModules();

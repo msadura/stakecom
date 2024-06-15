@@ -7,19 +7,22 @@ import {
 import { getActiveModules } from "./getActiveModules";
 import { addProModule, getProModules } from "./proModules";
 
-export async function classifyModules() {
+export async function classifyModules({
+  skipLogs = false,
+}: { skipLogs?: boolean } = {}) {
   const pro = await getProModules();
   const blacklist = await getBlacklistedModules();
 
-  console.info("🔵 Getting active modules");
+  !skipLogs && console.info("🔵 Getting active modules");
   const activeModules = await getActiveModules({
     ignoreBlacklist: true,
     refresh: true,
   });
 
-  console.info(
-    `🕵️‍♀️ Found ${activeModules.length} active modules. Proceed with classifing.`,
-  );
+  !skipLogs &&
+    console.info(
+      `🕵️‍♀️ Found ${activeModules.length} active modules. Proceed with classifing.`,
+    );
 
   const shouldBeBlacklisted: string[] = [...blacklist];
   const shouldBePro: string[] = [...pro];
@@ -30,9 +33,10 @@ export async function classifyModules() {
     const ip = activeModule.address.split(":")[0] || activeModule.address;
 
     moduleNumber++;
-    console.info(
-      `🔵 Classifing module number ${moduleNumber}: ${activeModule.name} - ${activeModule.address}`,
-    );
+    !skipLogs &&
+      console.info(
+        `🔵 Classifing module number ${moduleNumber}: ${activeModule.name} - ${activeModule.address}`,
+      );
     try {
       console.info("ip", ip);
       const isAlreadyBlacklisted = shouldBeBlacklisted.some((entry) =>
@@ -48,7 +52,10 @@ export async function classifyModules() {
         .json();
     } catch (e: any) {
       if (e.code === "ConnectionRefused" || e.code === "AlreadyBlacklisted") {
-        console.log(`🔴 [BLACKLIST] ${activeModule.name} - ConnectionRefused`);
+        !skipLogs &&
+          console.log(
+            `🔴 [BLACKLIST] ${activeModule.name} - ConnectionRefused`,
+          );
         shouldBeBlacklisted.push(activeModule.address);
       } else if (e instanceof HTTPError) {
         if (e.response.status === 400) {
@@ -56,15 +63,15 @@ export async function classifyModules() {
           shouldBePro.push(activeModule.address);
         }
       } else {
-        console.error(`🔴 [Responded] ${activeModule.name}`, e);
+        !skipLogs && console.error(`🔴 [Responded] ${activeModule.name}`, e);
       }
     }
   }
 
   console.info("Classifing completed.");
   if (shouldBeBlacklisted.length) {
-    console.info("🔵 Permanently blacklisting IPs:");
-    console.table(shouldBeBlacklisted);
+    !skipLogs && console.info("🔵 Permanently blacklisting IPs:");
+    !skipLogs && console.table(shouldBeBlacklisted);
     for (const blacklistAddress of shouldBeBlacklisted) {
       await addBlacklistedModule(blacklistAddress).catch(console.error);
     }
@@ -72,8 +79,8 @@ export async function classifyModules() {
   }
 
   if (shouldBePro.length) {
-    console.info("🔵 Adding to PRO IPs:");
-    console.table(shouldBePro);
+    !skipLogs && console.info("🔵 Adding to PRO IPs:");
+    !skipLogs && console.table(shouldBePro);
     for (const newPro of shouldBePro) {
       await addProModule(newPro).catch(console.error);
     }

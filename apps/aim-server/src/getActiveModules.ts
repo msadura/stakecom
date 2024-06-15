@@ -4,6 +4,7 @@ import type { ModuleInfo } from "@stakecom/commune-sdk/types";
 import { getSubnetModules } from "@stakecom/commune-sdk";
 
 import { getBlacklistedModules } from "./blacklistedModules";
+import { getBrokenServersList, getFastestServersList } from "./serverStats";
 
 const networkId = 17;
 const protectedIps = ["213.199.60.156"];
@@ -32,15 +33,31 @@ export async function getActiveModules({
 
   const blacklisted = await getBlacklistedModules();
 
-  const activeModules = ignoreBlacklist
+  const fastIps = getFastestServersList().map((server) => server.ip);
+  const brokenIps = getBrokenServersList().map((server) => server.ip);
+
+  let activeModules = ignoreBlacklist
     ? modules
     : modules.filter((module) => {
         const address = module.address.split(":")[0] || module.address;
 
         return (
-          !blacklisted.includes(address) && !protectedIps.includes(address)
+          !blacklisted.includes(address) &&
+          !protectedIps.includes(address) &&
+          !brokenIps.includes(address)
         );
       });
+
+  // if we have more than 5 fast servers, we can ignore the slow ones
+  if (fastIps.length > 5) {
+    activeModules = activeModules.filter((module) => {
+      const address = module.address.split(":")[0] || module.address;
+
+      return fastIps.includes(address);
+    });
+  }
+
+  console.log("🔥 [ACTIVE] count:", activeModules);
 
   // filter our "protected" ips
 

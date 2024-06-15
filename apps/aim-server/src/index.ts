@@ -43,14 +43,14 @@ app.post("/method/generate", async (c) => {
         prompt: parsedBody.params.prompt,
         keyName: MINER_NAME,
       }),
-      queryMiner({
-        prompt: parsedBody.params.prompt,
-        keyName: MINER_NAME,
-      }),
-      queryMiner({
-        prompt: parsedBody.params.prompt,
-        keyName: MINER_NAME,
-      }),
+      // queryMiner({
+      //   prompt: parsedBody.params.prompt,
+      //   keyName: MINER_NAME,
+      // }),
+      // queryMiner({
+      //   prompt: parsedBody.params.prompt,
+      //   keyName: MINER_NAME,
+      // }),
       sleep(12000),
     ]);
 

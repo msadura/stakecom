@@ -7,7 +7,7 @@ import { getProModules } from "./proModules";
 import { filterByReliability } from "./serverStats";
 
 const networkId = 17;
-const protectedIps = ["213.199.60.156"];
+const protectedIps = ["213.199.60.156", "84.247.161.60"];
 
 export const modulesCache = new TTLCache<string, ModuleInfo[]>({
   ttl: 5 * 60 * 1000, // 3 minutes

@@ -1,0 +1,27 @@
+{
+  "stats": [
+    { "pattern": "/^wraith[0-9]+$/i", "label": "🔥 Wraith" },
+    { "pattern": "/^goblin[0-9]+$/i", "label": "🔥 Goblin" },
+    { "pattern": "/^hobbit[0-9]+$/i", "label": "🔥 Hobbit" },
+    { "pattern": "/^ezek[0-9]$/i", "label": "🔥 EZEK" },
+    { "pattern": "/^fiskk[0-9]$/i", "label": "🔥 FISKK" },
+    { "pattern": "/^chani[0-9]$/i", "label": "🔥 DRAGO" },
+    { "pattern": "/^gorax[0-9]$/i", "label": "🔥 GORAX" },
+    { "pattern": "/^tmod[0-9]$/i", "label": "🔥 TMOD" }
+  ],
+  "unstake": [
+    { "pattern": "/^wraith[0-9]+$/i", "label": "🔥 Wraith" },
+    { "pattern": "/^goblin[0-9]+$/i", "label": "🔥 Goblin" },
+    { "pattern": "/^hobbit[0-9]+$/i", "label": "🔥 Hobbit" },
+    { "pattern": "/^ezek[0-9]$/i", "label": "🔥 EZEK" },
+    { "pattern": "/^fiskk[0-9]$/i", "label": "🔥 FISKK" },
+    { "pattern": "/^chani[0-9]$/i", "label": "🔥 DRAGO" },
+    { "pattern": "/^gorax[0-9]$/i", "label": "🔥 GORAX" }
+  ],
+  "register": [
+    { "pattern": "/^ezek[0-9]$/i", "label": "🔥 EZEK",  "ipTemplate": "213.199.60.156:812x" },
+    { "pattern": "/^fiskk[0-9]$/i", "label": "🔥 FISKK", "ipTemplate": "213.199.60.156:813x"  },
+    { "pattern": "/^chani[0-9]$/i", "label": "🔥 CHANI", "ipTemplate": "213.199.60.156:814x" },
+    { "pattern": "/^gorax[0-9]$/i", "label": "🔥 GORAX", "ipTemplate": "213.199.60.156:815x"  }
+  ]
+}

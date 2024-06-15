@@ -8,33 +8,13 @@ import {
 import { toAmountValue } from "@stakecom/commune-sdk/utils";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
+import { getConfig } from "./getConfig";
 import { getFilteredKeys, getKeyByName } from "./getKeys";
 
 const bankName = "epic";
 const maxBurn = toAmountValue("12");
 
-const servers = [
-  {
-    pattern: /^ezek[0-9]$/i,
-    label: "🔥 EZEK",
-    ipTemplate: "213.199.60.156:812x",
-  },
-  {
-    pattern: /^fiskk[0-9]$/i,
-    label: "🔥 FISKK",
-    ipTemplate: "213.199.60.156:813x",
-  },
-  {
-    pattern: /^chani[0-9]$/i,
-    label: "🔥 CHANI",
-    ipTemplate: "213.199.60.156:814x",
-  },
-  {
-    pattern: /^gorax[0-9]$/i,
-    label: "🔥 GORAX",
-    ipTemplate: "213.199.60.156:815x",
-  },
-];
+const servers = await getConfig().then((config) => config.register);
 
 export const registerKeys = async ({
   pattern,

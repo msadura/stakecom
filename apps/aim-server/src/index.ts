@@ -31,6 +31,7 @@ export default {
 };
 
 app.post("/method/generate", async (c) => {
+  // TODO - verify ip of req sender - if not validator, sleep infinitely to waste spammer's time
   const req = c.req;
 
   const body = await req.json();

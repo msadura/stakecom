@@ -13,7 +13,7 @@ export async function classifyModules({
   const pro = await getProModules();
   const blacklist = await getBlacklistedModules();
 
-  !skipLogs && console.info("🔵 Getting active modules");
+  console.info("🔵 Getting active modules");
   const activeModules = await getActiveModules({
     ignoreBlacklist: true,
     refresh: true,
@@ -35,15 +35,21 @@ export async function classifyModules({
     moduleNumber++;
     !skipLogs &&
       console.info(
-        `🔵 Classifing module number ${moduleNumber}: ${activeModule.name} - ${activeModule.address}`,
+        `🔵 Classifing module number ${moduleNumber}: ${activeModule.name} - ${ip}`,
       );
     try {
-      console.info("ip", ip);
+      !skipLogs && console.info("ip", ip);
       const isAlreadyBlacklisted = shouldBeBlacklisted.some((entry) =>
         entry.includes(ip),
       );
+
       if (isAlreadyBlacklisted) {
-        throw { code: "AlreadyBlacklisted" };
+        continue;
+      }
+
+      const isAlreadyPro = shouldBePro.some((entry) => entry.includes(ip));
+      if (isAlreadyPro) {
+        continue;
       }
       await ky
         .post(`http://${activeModule.address}/method/generate`, {
@@ -51,16 +57,16 @@ export async function classifyModules({
         })
         .json();
     } catch (e: any) {
-      if (e.code === "ConnectionRefused" || e.code === "AlreadyBlacklisted") {
+      if (e.code === "ConnectionRefused") {
         !skipLogs &&
           console.log(
             `🔴 [BLACKLIST] ${activeModule.name} - ConnectionRefused`,
           );
-        shouldBeBlacklisted.push(activeModule.address);
+        shouldBeBlacklisted.push(ip);
       } else if (e instanceof HTTPError) {
         if (e.response.status === 400) {
           console.log(`🚀 [PRO] ${activeModule.name}`);
-          shouldBePro.push(activeModule.address);
+          shouldBePro.push(ip);
         }
       } else {
         !skipLogs && console.error(`🔴 [Responded] ${activeModule.name}`, e);

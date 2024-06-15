@@ -71,7 +71,7 @@ app.post("/classifyMiners", async (c) => {
 const refreshModules = () => {
   console.log("🔥", "Refreshing modules list");
   getActiveModules({ ignoreBlacklist: true, refresh: true })
-    .then(() => classifyModules())
+    .then(() => classifyModules({ skipLogs: true }))
     .catch(() => console.log("Failed to refresh and classify P>modules"));
 };
 

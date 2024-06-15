@@ -1,3 +1,5 @@
+import type { ModuleInfo } from "@stakecom/commune-sdk/types";
+
 interface ModuleStats {
   ip: string;
   requestCount: number;
@@ -7,12 +9,17 @@ interface ModuleStats {
 
 const tempCache: Record<string, ModuleStats> = {};
 
+// TODO - replace with async methods from redis
 export const setServerStats = (ip: string, stats: ModuleStats) => {
   tempCache[ip] = stats;
 };
 
 export const getServerStats = (ip: string) => {
   return tempCache[ip];
+};
+
+export const getAllServerStats = () => {
+  return tempCache;
 };
 
 export const addServerStats = ({
@@ -60,12 +67,12 @@ export const addServerStats = ({
 };
 
 export const getServerStatsList = () => {
-  return Object.values(tempCache);
+  return Object.values(getAllServerStats());
 };
 
 export const getFastestServersList = () => {
   // filter servers with more than 5, less tan 10% failure rate and less than 8s response time
-  return Object.values(tempCache).filter(
+  return Object.values(getAllServerStats()).filter(
     (server) =>
       server.requestCount > 5 &&
       server.failureRatio < 0.1 &&
@@ -73,8 +80,18 @@ export const getFastestServersList = () => {
   );
 };
 
-export const getBrokenServersList = () => {
-  return Object.values(tempCache).filter(
-    (server) => server.failureRatio > 0.8 && server.requestCount > 5,
+export const filterByReliability = (server: ModuleInfo) => {
+  const ipRaw = server.address.split(":")[0] || server.address;
+  const stats = getAllServerStats();
+  const serverStats = stats[ipRaw];
+
+  if (!serverStats || serverStats.requestCount < 5) {
+    return true;
+  }
+
+  return (
+    serverStats?.requestCount >= 5 &&
+    serverStats?.failureRatio < 0.5 &&
+    serverStats?.avgResponse < 8000
   );
 };

@@ -14,7 +14,7 @@ export async function verifyValidator(ip: string | undefined) {
   }
 
   // fake request - block with delay
-  console.log("🔥", "Fake request - blocking with delay");
+  console.log("🔥", `Fake request - blocking with delay, ip: ${ip}`);
   await sleep(1000000);
   throw new HTTPException(400, { message: "NGMI" });
 }

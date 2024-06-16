@@ -98,7 +98,7 @@ export async function queryMiner({
 
     await addServerStats({
       ip: moduleIp,
-      responseTime: time,
+      responseTimeMs: time,
       failed: false,
       name: moduleToQuery.name,
     });
@@ -146,7 +146,7 @@ export async function queryMiner({
 
     await addServerStats({
       ip: moduleIp,
-      responseTime: 0,
+      responseTimeMs: 0,
       failed: true,
       name: moduleToQuery.name,
     });

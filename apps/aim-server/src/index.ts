@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { get } from "lodash";
 
 import { classifyModules } from "./classifyModules";
 import { getActiveModules } from "./getActiveModules";
@@ -16,6 +15,7 @@ app.use(logger());
 
 const PORT = process.env.PORT;
 const MINER_NAME = process.env.MINER_NAME;
+const DEV_MODE = process.env.DEV_MODE === "true";
 
 if (!MINER_NAME) {
   throw new Error("MINER_NAME var is required");
@@ -31,12 +31,18 @@ console.log("🔥 PORT: ", PORT);
 export default {
   port: PORT,
   fetch: app.fetch,
+  host: "0.0.0.0",
 };
 
 app.post("/method/generate", async (c) => {
   const req = c.req;
-  const reqIp = getRequestIp(c);
-  await verifyValidator(reqIp);
+
+  if (!DEV_MODE) {
+    const reqIp = getRequestIp(c);
+    await verifyValidator(reqIp);
+  } else {
+    console.log("🔥", "DEV_MODE enabled, skipping ip check");
+  }
 
   const body = await req.json();
   const parsedBody = validatorRequestBodySchema.parse(body);

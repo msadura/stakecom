@@ -35,17 +35,19 @@ export const getAllServerStats = () => {
 
 export const addServerStats = async ({
   ip,
-  responseTime,
+  responseTimeMs,
   failed,
   name,
 }: {
   ip: string;
-  responseTime: number;
+  responseTimeMs: number;
   failed: boolean;
   name: string;
 }) => {
   const ipRaw = ip.split(":")[0] || ip;
   const cached = await getServerStats(ip);
+  // round to 2 decimal places seconds
+  const responseTime = Math.round((responseTimeMs / 1000) * 100) / 100;
 
   const stats: ModuleStats = cached || {
     ip: ipRaw,
@@ -54,15 +56,18 @@ export const addServerStats = async ({
     avgResponse: 0,
   };
 
+  const updatedAvgResponse =
+    (stats.avgResponse * stats.requestCount + responseTime) /
+    (stats.requestCount + 1);
+  const avgRounded = Math.round(updatedAvgResponse * 100) / 100;
+
   const updatedStats = {
     ...stats,
     requestCount: stats.requestCount + 1,
     failureRatio:
       (stats.failureRatio * stats.requestCount + (failed ? 1 : 0)) /
       (stats.requestCount + 1),
-    avgResponse:
-      (stats.avgResponse * stats.requestCount + responseTime) /
-      (stats.requestCount + 1),
+    avgResponse: avgRounded,
   };
 
   await setServerStats(ip, updatedStats);
@@ -71,7 +76,7 @@ export const addServerStats = async ({
     `📊 [STATS] ${name}`,
     `Requests: ${updatedStats.requestCount}`,
     `Failure ratio: ${updatedStats.failureRatio}`,
-    `Avg Response: ${(updatedStats.avgResponse / 1000).toFixed(2)}s`,
+    `Avg Response: ${updatedStats.avgResponse.toFixed(2)}s`,
   );
 
   return updatedStats;
@@ -89,7 +94,7 @@ export const getReliableServers = async () => {
     (server) =>
       server.requestCount > 5 &&
       server.failureRatio < 0.1 &&
-      server.avgResponse < 8000,
+      server.avgResponse < 8,
   );
 };
 
@@ -107,6 +112,6 @@ export const filterByReliability = (
   return (
     serverStats?.requestCount >= 5 &&
     serverStats?.failureRatio < 0.5 &&
-    serverStats?.avgResponse < 8000
+    serverStats?.avgResponse < 8
   );
 };

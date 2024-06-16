@@ -139,17 +139,17 @@ export async function queryMiner({
       console.error(`🔴 [ERROR] ${moduleToQuery.name} request error:`, error);
     }
 
-    if (retry < maxRetries) {
-      console.log(`🟡 [RETRY] ${retry + 1} / ${maxRetries}`);
-      return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
-    }
-
     await addServerStats({
       ip: moduleIp,
       responseTimeMs: 0,
       failed: true,
       name: moduleToQuery.name,
     });
+
+    if (retry < maxRetries) {
+      console.log(`🟡 [RETRY] ${retry + 1} / ${maxRetries}`);
+      return queryMiner({ keyName, prompt, minerName, retry: retry + 1 });
+    }
 
     throw new Error("NGMI");
   }

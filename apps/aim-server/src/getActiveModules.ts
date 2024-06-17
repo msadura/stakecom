@@ -14,6 +14,7 @@ const protectedIps = [
   "194.247.186.132",
   "144.76.237.11",
   "45.136.19.87",
+  " 136.243.67.174",
 ];
 
 export const modulesCache = new TTLCache<string, ModuleInfo[]>({

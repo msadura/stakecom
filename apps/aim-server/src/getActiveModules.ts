@@ -8,7 +8,13 @@ import { filterByReliability, getAllServerStats } from "./serverStats";
 
 const networkId = 17;
 
-const protectedIps = ["213.199.60.156", "84.247.161.60", "194.247.186.132"];
+const protectedIps = [
+  "213.199.60.156",
+  "84.247.161.60",
+  "194.247.186.132",
+  "144.76.237.11",
+  "45.136.19.87",
+];
 
 export const modulesCache = new TTLCache<string, ModuleInfo[]>({
   ttl: 5 * 60 * 1000, // 3 minutes

@@ -1,4 +1,3 @@
-import { cryptoWaitReady } from "@polkadot/util-crypto";
 import { NameForgeJS } from "nameforgejs";
 
 import { comKeySchema } from "../entities/comKeySchema";
@@ -11,10 +10,6 @@ import { writeGeneratedKeys } from "./writeGeneratedKeys";
 const generator = new NameForgeJS();
 
 export const createKey = async () => {
-  // we only need to do this once per app, somewhere in our init code
-  // (when using the API and waiting on `isReady` this is done automatically)
-  await cryptoWaitReady();
-
   const readingKeyResult = await readGeneratedKeys();
 
   let existingKeys: Lowercase<string>[] = [];
@@ -23,7 +18,7 @@ export const createKey = async () => {
   }
 
   let done = false;
-  let newKeyName: Lowercase<string>;
+  let newKeyName: Lowercase<string> = "";
 
   while (!done) {
     const generatedNames: string[] = generator
@@ -38,6 +33,7 @@ export const createKey = async () => {
     const newKey = generatedNames.find(
       (newName) => !existingKeys.includes(newName as Lowercase<string>),
     );
+
     if (newKey) {
       newKeyName = newKey as Lowercase<string>;
       existingKeys.push(newKeyName);
@@ -45,12 +41,16 @@ export const createKey = async () => {
     }
   }
 
+  if (!newKeyName.length) {
+    throw new Error("Failed to generate a new key name");
+  }
+
   const updatedKeys = existingKeys;
   await writeGeneratedKeys(updatedKeys);
 
   console.info("created new key: ", newKeyName);
   const { address, publicKey, privateKey, mnemonic, hexSeed } =
-    generateWalletKeys();
+    await generateWalletKeys();
   const timestamp = getCurrentUnixTimestamp();
 
   const comKey = comKeySchema.parse({

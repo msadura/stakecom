@@ -38,7 +38,7 @@ export const callPythonScript = ({
   onClose = defaultOnClose,
 }: CallPythonScriptParams) => {
   // Call the Python script with the seed hex argument
-  const process = spawn("python", [scriptFile, ...params]);
+  const process = spawn("python3", [scriptFile, ...params]);
 
   // Handle the output from the Python script
   process.stdout.on("data", onSuccess);

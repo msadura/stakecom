@@ -48,7 +48,6 @@ export const createKey = async () => {
   const updatedKeys = existingKeys;
   await writeGeneratedKeys(updatedKeys);
 
-  console.info("created new key: ", newKeyName);
   const { address, publicKey, privateKey, mnemonic, hexSeed } =
     await generateWalletKeys();
   const timestamp = getCurrentUnixTimestamp();
@@ -73,5 +72,5 @@ export const createKey = async () => {
 
   await writeComKey(comKeyFile, newKeyName);
 
-  console.info("comKeyFile", comKeyFile);
+  console.info("✅ Created new key: ", newKeyName);
 };

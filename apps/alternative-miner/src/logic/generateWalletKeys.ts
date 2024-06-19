@@ -1,36 +1,29 @@
 import { Keyring } from "@polkadot/keyring";
 import { u8aToHex } from "@polkadot/util";
 import {
-  ed25519PairFromSeed,
   mnemonicGenerate,
   mnemonicToMiniSecret,
+  sr25519PairFromSeed,
 } from "@polkadot/util-crypto";
 
 // create a keyring with some non-default values specified
 // ss58Format specific to Commune
 const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
 
-export const generateWalletKeys = (keyName: Lowercase<string>) => {
+export const generateWalletKeys = () => {
   // Create mnemonic string using BIP39
   const mnemonic = mnemonicGenerate();
-
   const seed = mnemonicToMiniSecret(mnemonic);
+  const hexSeed = u8aToHex(seed);
+  const { publicKey, secretKey } = sr25519PairFromSeed(seed);
 
-  // create & add the pair to the keyring with the type and some additional
-  // metadata specified
-  const keyPair = keyring.addFromUri(
-    mnemonic,
-    { name: keyName, path: keyName },
-    "ed25519",
-  );
-
-  const { secretKey } = ed25519PairFromSeed(seed);
+  const address = keyring.encodeAddress(publicKey, 42);
 
   return {
-    publicKey: u8aToHex(keyPair.publicKey), // .slice(2),
-    privateKey: u8aToHex(secretKey), //.slice(2),
-    address: keyPair.address,
+    publicKey: u8aToHex(publicKey).slice(2),
+    privateKey: u8aToHex(secretKey).slice(2),
+    address,
     mnemonic,
-    hexSeed: u8aToHex(seed).slice(2),
+    hexSeed: hexSeed.slice(2),
   };
 };

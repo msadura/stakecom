@@ -50,7 +50,7 @@ export const createKey = async () => {
 
   console.info("created new key: ", newKeyName);
   const { address, publicKey, privateKey, mnemonic, hexSeed } =
-    generateWalletKeys(newKeyName);
+    generateWalletKeys();
   const timestamp = getCurrentUnixTimestamp();
 
   const comKey = comKeySchema.parse({

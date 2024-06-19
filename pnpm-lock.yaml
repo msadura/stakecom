@@ -76,6 +76,61 @@ importers:
         specifier: latest
         version: 1.1.13
 
+  apps/alternative-miner:
+    dependencies:
+      '@hono/zod-validator':
+        specifier: 0.2.2
+        version: 0.2.2(hono@4.4.5)(zod@3.23.8)
+      '@polkadot/keyring':
+        specifier: 12.6.2
+        version: 12.6.2(@polkadot/util-crypto@12.6.2)(@polkadot/util@12.6.2)
+      '@polkadot/util':
+        specifier: 12.6.2
+        version: 12.6.2
+      '@polkadot/util-crypto':
+        specifier: 12.6.2
+        version: 12.6.2(@polkadot/util@12.6.2)
+      '@stakecom/commune-sdk':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/commune-sdk
+      '@stakecom/core':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/core
+      '@stakecom/db':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/db
+      bun-utilities:
+        specifier: 0.2.1
+        version: 0.2.1
+      figlet:
+        specifier: 1.7.0
+        version: 1.7.0
+      hono:
+        specifier: 4.4.5
+        version: 4.4.5
+      ky:
+        specifier: 1.3.0
+        version: 1.3.0
+      nameforgejs:
+        specifier: 1.4.1
+        version: 1.4.1
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@stakecom/eslint-config':
+        specifier: ^0.2.0
+        version: link:../../tooling/eslint
+      '@stakecom/prettier-config':
+        specifier: ^0.1.0
+        version: link:../../tooling/prettier
+      '@stakecom/tsconfig':
+        specifier: ^0.1.0
+        version: link:../../tooling/typescript
+      bun-types:
+        specifier: 1.1.13
+        version: 1.1.13
+
   apps/miner-stats:
     dependencies:
       '@stakecom/commune-sdk':
@@ -9456,6 +9511,12 @@ packages:
       node-domexception: 1.0.0
       web-streams-polyfill: 3.3.3
 
+  /figlet@1.7.0:
+    resolution: {integrity: sha512-gO8l3wvqo0V7wEFLXPbkX83b7MVjRrk1oRLfYlZXol8nEpb/ON9pcKLI4qpBv5YtOTfrINtqb7b40iYY2FTWFg==}
+    engines: {node: '>= 0.4.0'}
+    hasBin: true
+    dev: false
+
   /figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
@@ -11460,6 +11521,10 @@ packages:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
+
+  /nameforgejs@1.4.1:
+    resolution: {integrity: sha512-uf+tmEsBci0T6Yhgbyy6/AXgcpL23ubYYGUGv1mBlTTwAZSQdE9tfPL5SyCRgklj/IEEf7UXh+GFLdInTpoWsQ==}
+    dev: false
 
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}

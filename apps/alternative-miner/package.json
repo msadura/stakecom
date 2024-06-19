@@ -1,0 +1,37 @@
+{
+  "name": "@stakecom/alternative-miner",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --env-file=../../.env --watch src/index.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "0.2.2",
+    "@stakecom/commune-sdk": "workspace:^0.1.0",
+    "@stakecom/core": "workspace:^0.1.0",
+    "@stakecom/db": "workspace:^0.1.0",
+    "bun-utilities": "0.2.1",
+    "figlet": "1.7.0",
+    "hono": "4.4.5",
+    "zod": "3.23.8",
+    "ky": "1.3.0",
+    "nameforgejs": "1.4.1",
+    "@polkadot/util-crypto": "12.6.2",
+    "@polkadot/keyring": "12.6.2",
+    "@polkadot/util": "12.6.2"
+  },
+  "devDependencies": {
+    "@stakecom/eslint-config": "^0.2.0",
+    "@stakecom/prettier-config": "^0.1.0",
+    "@stakecom/tsconfig": "^0.1.0",
+    "bun-types": "1.1.13"
+  },
+  "module": "src/index.js",
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@stakecom/eslint-config/base"
+    ]
+  },
+  "prettier": "@stakecom/prettier-config"
+}

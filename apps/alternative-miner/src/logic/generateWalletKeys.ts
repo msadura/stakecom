@@ -5,6 +5,7 @@ import {
   mnemonicGenerate,
   mnemonicToMiniSecret,
   mnemonicValidate,
+  sr25519PairFromSeed,
 } from "@polkadot/util-crypto";
 
 export const generateWalletKeys = async () => {
@@ -30,13 +31,13 @@ export const generateWalletKeys = async () => {
   // Add a new pair to the keyring using the seed
   const keyPair = keyring.addFromSeed(seed);
 
-  // The private key in SR25519 consists of both the seed and the public key
-  const privateKey = new Uint8Array([...seed, ...keyPair.publicKey]);
+  const { secretKey } = sr25519PairFromSeed(seed);
+
   const address = keyring.encodeAddress(keyPair.publicKey, 42);
 
   return {
     publicKey: u8aToHex(keyPair.publicKey).slice(2),
-    privateKey: u8aToHex(privateKey).slice(2),
+    privateKey: u8aToHex(secretKey).slice(2),
     address,
     mnemonic,
     hexSeed: hexSeed.slice(2),

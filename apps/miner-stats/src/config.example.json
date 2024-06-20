@@ -18,6 +18,8 @@
     { "pattern": "/^chani[0-9]$/i", "label": "🔥 DRAGO" },
     { "pattern": "/^gorax[0-9]$/i", "label": "🔥 GORAX" }
   ],
+  "unstakeTargetAddress": "",
+  "unstakeMinLeftAmount": 11,
   "register": [
     { "pattern": "/^ezek[0-9]$/i", "label": "🔥 EZEK",  "ipTemplate": "213.199.60.156:812x" },
     { "pattern": "/^fiskk[0-9]$/i", "label": "🔥 FISKK", "ipTemplate": "213.199.60.156:813x"  },

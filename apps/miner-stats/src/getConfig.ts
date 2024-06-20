@@ -10,6 +10,8 @@ const minerSchema = z.object({
 const configSchema = z.object({
   stats: z.array(minerSchema),
   unstake: z.array(minerSchema),
+  unstakeTargetAddress: z.string().min(1),
+  unstakeMinLeftAmount: z.number().int().nonnegative().default(11), // 10 for registration fee + 1 for gas
   register: z.array(minerSchema.extend({ ipTemplate: z.string() })),
 });
 

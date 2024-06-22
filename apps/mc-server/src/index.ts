@@ -92,7 +92,10 @@ const refreshData = () => {
   checkMinerHealth(MINER_NAME)
     .then(() => {
       const { icon, ...minerHealth } = getMinerHealth();
-      console.log(icon, `[${MINER_NAME}] health:`, minerHealth);
+      console.log(
+        icon,
+        `[${MINER_NAME}] registered: ${minerHealth.registered}, active: ${minerHealth.active}, lowEmission: ${minerHealth.lowEmission}`,
+      );
     })
     .catch(() => console.log("Failed to refresh health"));
   getModules({ refresh: true }).catch(() =>

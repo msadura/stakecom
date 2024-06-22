@@ -68,9 +68,16 @@ export default {
 
 app.post("/method/generate", async (c) => {
   // Do not fetch api if miner is unregistered or banned
-  const health = getMinerHealth();
+  let health = getMinerHealth();
+  // TODO - refresh health in this case to verify if miner is still unregistered
+
+  if (!health.registered) {
+    await checkMinerHealth(MINER_NAME);
+    health = getMinerHealth();
+  }
+
   if (!health.registered || health.lowEmission) {
-    return c.json({ error: "Invalid request" }, 400);
+    return c.json({ error: "Invalid miner state" }, 400);
   }
 
   const req = c.req;

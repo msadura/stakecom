@@ -31,7 +31,7 @@ export const getMinerHealth = () => {
 };
 
 export async function checkMinerHealth(minerName: string) {
-  const modules = await getModules({ refresh: false });
+  const modules = await getModules({ refresh: true });
   const minerModule = modules.find((module) => module.name === minerName);
 
   if (!minerModule) {

@@ -5,14 +5,15 @@ import { getModules } from "./getModules";
 interface MinerHealth {
   registered: boolean;
   active: boolean;
-  lowEmissions: boolean;
+  lowEmission: boolean;
+  icon: string;
 }
 
 const icons = {
   fine: "🟢",
   unregistered: "🔴",
   inactive: "🟡",
-  lowEmissions: "🐢",
+  lowEmission: "🐢",
 };
 
 const isSlowEmission = (emission: number) =>
@@ -21,27 +22,12 @@ const isSlowEmission = (emission: number) =>
 const minerHealth: MinerHealth = {
   registered: true,
   active: true,
-  lowEmissions: false,
+  lowEmission: false,
+  icon: icons.fine,
 };
 
 export const getMinerHealth = () => {
   return { ...minerHealth };
-};
-
-const getIcon = () => {
-  if (!minerHealth.registered) {
-    return icons.unregistered;
-  }
-
-  if (minerHealth.lowEmissions) {
-    return icons.lowEmissions;
-  }
-
-  if (!minerHealth.active) {
-    return icons.inactive;
-  }
-
-  return icons.fine;
 };
 
 export async function checkMinerHealth(minerName: string) {
@@ -51,13 +37,21 @@ export async function checkMinerHealth(minerName: string) {
   if (!minerModule) {
     minerHealth.registered = false;
     minerHealth.active = false;
+    minerHealth.icon = icons.unregistered;
     return;
   }
 
-  minerHealth.active = minerModule.emission > 0;
-  minerHealth.lowEmissions = isSlowEmission(minerModule.emission);
+  minerHealth.registered = true;
 
-  console.log(getIcon(), `[${minerName}] health:`, minerHealth);
+  if (minerModule.emission === 0) {
+    minerHealth.active = false;
+    minerHealth.icon = icons.inactive;
+    return;
+  }
 
-  return minerHealth;
+  // if miner was marked as lowEmission once it will keep the state even if emission goes to 0
+  minerHealth.active = true;
+  const isLowEmission = isSlowEmission(minerModule.emission);
+  minerHealth.lowEmission = isLowEmission;
+  minerHealth.icon = isLowEmission ? icons.lowEmission : icons.fine;
 }

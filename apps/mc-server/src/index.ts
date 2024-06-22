@@ -4,7 +4,7 @@ import { logger } from "hono/logger";
 import ky, { HTTPError } from "ky";
 
 import type { TweetsRes } from "./types";
-import { checkMinerHealth } from "./checkMinerHealth";
+import { checkMinerHealth, getMinerHealth } from "./checkMinerHealth";
 import { getModules } from "./getModules";
 import { validatorRequestBodySchema } from "./types";
 import { getRequestIp } from "./utils/getRequestIp";
@@ -42,6 +42,12 @@ export default {
 };
 
 app.post("/method/generate", async (c) => {
+  // Do not fetch api if miner is unregistered or banned
+  const health = getMinerHealth();
+  if (!health.registered || health.lowEmission) {
+    return c.json({ error: "Invalid request" }, 400);
+  }
+
   const req = c.req;
 
   if (!DEV_MODE) {
@@ -94,9 +100,12 @@ app.post("/method/generate", async (c) => {
 const refreshData = () => {
   console.log("🔥", "[REFRESH DATA]");
 
-  checkMinerHealth(MINER_NAME).catch(() =>
-    console.log("Failed to refresh health"),
-  );
+  checkMinerHealth(MINER_NAME)
+    .then(() => {
+      const minerHealth = getMinerHealth();
+      console.log(minerHealth.icon, `[${MINER_NAME}] health:`, minerHealth);
+    })
+    .catch(() => console.log("Failed to refresh health"));
   getModules({ refresh: true }).catch(() =>
     console.log("Failed to refresh modules"),
   );

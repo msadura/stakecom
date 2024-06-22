@@ -1,4 +1,7 @@
+import { getSubnetModules } from "@stakecom/commune-sdk";
+
 import { classifyModules } from "./classifyModules";
+import { getActiveModules } from "./getActiveModules";
 import { queryMiner } from "./queryMiner";
 
 // await queryMiner({
@@ -8,6 +11,11 @@ import { queryMiner } from "./queryMiner";
 //   minerName: "",
 // });
 
-await classifyModules();
+// await classifyModules();
+
+const mod = await getSubnetModules({ networkId: 17 });
+console.log("🔥a:", mod.active.length);
+console.log("🔥v:", mod.validators.length);
+console.log("🔥i:", mod.inactive.length);
 
 process.exit(0);

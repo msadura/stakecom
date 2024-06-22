@@ -1,4 +1,3 @@
-import { parseArgs } from "util";
 import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
@@ -6,59 +5,17 @@ import ky, { HTTPError } from "ky";
 
 import type { TweetsRes } from "./types";
 import { checkMinerHealth, getMinerHealth } from "./checkMinerHealth";
+import { getEnv } from "./getEnv";
 import { getModules } from "./getModules";
 import { validatorRequestBodySchema } from "./types";
 import { getRequestIp } from "./utils/getRequestIp";
 import { verifyValidator } from "./utils/verifyValidator";
 
-const { values } = parseArgs({
-  args: Bun.argv,
-  options: {
-    miner: {
-      type: "string",
-    },
-    port: {
-      type: "string",
-    },
-    apiUrl: {
-      type: "string",
-      default: "http://good-fucking-proxy.com:3000",
-    },
-    dev: {
-      type: "boolean",
-    },
-  },
-  strict: true,
-  allowPositionals: true,
-});
-
-console.log("🔥", values);
-
 const app = new Hono();
 
 app.use(logger());
 
-const PORT = values.port || process.env.PORT;
-const MINER_NAME = values.miner || process.env.MINER_NAME;
-const API_URL =
-  values.apiUrl || process.env.API_URL || "http://good-fucking-proxy.com:3000";
-const DEV_MODE = values.dev || process.env.DEV_MODE === "true";
-
-if (!MINER_NAME) {
-  throw new Error("MINER_NAME var is required");
-}
-
-if (!PORT) {
-  throw new Error("PORT var is required");
-}
-
-if (!API_URL) {
-  throw new Error("API_URL var is required");
-}
-
-console.log("🔥 MINER_NAME: ", MINER_NAME);
-console.log("🔥 PORT: ", PORT);
-console.log("🔥 API_URL: ", API_URL);
+const { PORT, DEV_MODE, MINER_NAME, API_URL } = getEnv();
 
 export default {
   port: PORT,

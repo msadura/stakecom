@@ -16,3 +16,10 @@ or
 additional params:
 - `apiUrl` / `API_URL` - if you do not want to fetch form default proxy url
 - `dev` / `DEV` - if you want to test requests (server does not then verify if request comes from validator)
+
+
+# Run as background service
+
+You can use pm2 to run server as background service:
+
+`pm2 start "pnpm mc:serve --miner=key-name --port=8001" --name=key-name`

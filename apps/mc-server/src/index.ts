@@ -1,3 +1,4 @@
+import { parseArgs } from "util";
 import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
@@ -10,14 +11,38 @@ import { validatorRequestBodySchema } from "./types";
 import { getRequestIp } from "./utils/getRequestIp";
 import { verifyValidator } from "./utils/verifyValidator";
 
+const { values } = parseArgs({
+  args: Bun.argv,
+  options: {
+    miner: {
+      type: "string",
+    },
+    port: {
+      type: "string",
+    },
+    apiUrl: {
+      type: "string",
+      default: "http://good-fucking-proxy.com:3000",
+    },
+    dev: {
+      type: "boolean",
+    },
+  },
+  strict: true,
+  allowPositionals: true,
+});
+
+console.log("🔥", values);
+
 const app = new Hono();
 
 app.use(logger());
 
-const PORT = process.env.PORT;
-const MINER_NAME = process.env.MINER_NAME;
-const API_URL = process.env.API_URL || "http://good-fucking-proxy.com:3000";
-const DEV_MODE = process.env.DEV_MODE === "true";
+const PORT = values.port || process.env.PORT;
+const MINER_NAME = values.miner || process.env.MINER_NAME;
+const API_URL =
+  values.apiUrl || process.env.API_URL || "http://good-fucking-proxy.com:3000";
+const DEV_MODE = values.dev || process.env.DEV_MODE === "true";
 
 if (!MINER_NAME) {
   throw new Error("MINER_NAME var is required");
@@ -102,8 +127,8 @@ const refreshData = () => {
 
   checkMinerHealth(MINER_NAME)
     .then(() => {
-      const minerHealth = getMinerHealth();
-      console.log(minerHealth.icon, `[${MINER_NAME}] health:`, minerHealth);
+      const { icon, ...minerHealth } = getMinerHealth();
+      console.log(icon, `[${MINER_NAME}] health:`, minerHealth);
     })
     .catch(() => console.log("Failed to refresh health"));
   getModules({ refresh: true }).catch(() =>

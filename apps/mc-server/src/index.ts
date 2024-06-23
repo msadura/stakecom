@@ -23,6 +23,9 @@ export default {
   host: "0.0.0.0",
 };
 
+const MAX_RESULTS = 50;
+const START_TIME = "2024-04-01T5:00:00Z";
+
 app.post("/method/generate", async (c) => {
   // Do not fetch api if miner is unregistered or banned
   let health = getMinerHealth();
@@ -51,7 +54,12 @@ app.post("/method/generate", async (c) => {
 
   const queryParams = new URLSearchParams({
     query: parsedBody.params.prompt,
+    max_results: MAX_RESULTS.toString(),
+    start_time: START_TIME,
+    "user.fields": "id,username,name",
+    "tweet.fields": "created_at,author_id",
   }).toString();
+
   const requestUrl = `${API_URL}?${queryParams}`;
 
   const startTimestamp = performance.now();

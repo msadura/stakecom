@@ -1,4 +1,8 @@
 {
+  "miners": [
+    { "pattern": "/^ezek[0-9]$/i", "label": "🔥 EZEK",  "ipTemplate": "213.199.60.156:812x", "name": "exek" },
+    { "pattern": "/^fiskk[0-9]$/i", "label": "🔥 FISKK", "ipTemplate": "213.199.60.156:813x", "name": "fiskk"  },
+  ],
   "stats": [
     { "pattern": "/^wraith[0-9]+$/i", "label": "🔥 Wraith" },
     { "pattern": "/^goblin[0-9]+$/i", "label": "🔥 Goblin" },

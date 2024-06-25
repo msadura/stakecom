@@ -34,7 +34,7 @@ function getConfigFromeExtendedMiners(
   }));
 
   const unstake = miners.map((miner) => ({
-    pattern: new RegExp(`^${miner.name}$[0-9]`, "i"),
+    pattern: new RegExp(`^${miner.name}[0-9]$`, "i"),
     label: miner.label,
   }));
 

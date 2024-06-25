@@ -109,7 +109,7 @@ export async function unstake({
   signer,
 }: StakeInput) {
   let unstakeAmount = amount;
-  console.log("🔥 amount", amount);
+
   if (!amount || amount === 0n) {
     unstakeAmount = await getStakeByModule({
       networkId,
@@ -124,7 +124,7 @@ export async function unstake({
       msg: "No stake found to unstake",
     };
   }
-  console.log("🔥 unstake amount", unstakeAmount);
+
   const api = await getClient();
   const tx = api.tx.subspaceModule.removeStake(
     networkId,

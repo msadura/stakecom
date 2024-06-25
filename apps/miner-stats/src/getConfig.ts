@@ -15,13 +15,15 @@ const minerExtendedSchema = z.object({
 });
 
 const configSchema = z.object({
+  unstakeTargetAddress: z.string().min(1),
+  unstakeMinLeftAmount: z.number().int().nonnegative().default(11), // 10 for registration fee + 1 for gas
   stats: z.array(minerSchema).optional(),
   unstake: z.array(minerSchema).optional(),
   register: z.array(minerSchema.extend({ ipTemplate: z.string() })).optional(),
   miners: z.array(minerExtendedSchema).optional(),
 });
 
-function getConfigFromeExtendedMiners(
+function getConfigFromExtendedMiners(
   miners: z.infer<typeof configSchema>["miners"],
 ) {
   if (!miners) {
@@ -61,6 +63,8 @@ export async function getConfig() {
   const config = configSchema.parse(content);
 
   if (config.miners) {
-    return getConfigFromeExtendedMiners(config.miners);
+    return { ...config, ...getConfigFromExtendedMiners(config.miners) };
   }
+
+  return config;
 }

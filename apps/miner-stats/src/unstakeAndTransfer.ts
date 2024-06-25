@@ -12,7 +12,7 @@ import { getConfig } from "./getConfig";
 import { getFilteredKeys } from "./getKeys";
 
 const config = await getConfig();
-const servers = config.unstake;
+const servers = config.unstake || [];
 const destAddress = config.unstakeTargetAddress;
 const MIN_BALANCE = toAmountValue(config.unstakeMinLeftAmount);
 
@@ -22,11 +22,6 @@ const unstakeAndTransferSingle = async (key: ComKey) => {
     address: key.ss58_address,
     networkId: 17,
   });
-
-  console.log(
-    "🔥🔥🔥🔥🔥",
-    `${key.path}, balance: ${formatCOMAmount(balance)}, stake: ${formatCOMAmount(stakeTotal)}`,
-  );
 
   const total = balance + stakeTotal;
   const unstakeAmount = stakeTotal - toAmountValue(0.1);

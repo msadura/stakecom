@@ -5,6 +5,7 @@ import type { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 import type { ISubmittableResult } from "@polkadot/types/types";
 
 import type {
+  DeregisterInput,
   RegisterInput,
   StakeInput,
   TransferInput,
@@ -165,6 +166,22 @@ export async function register({
     signer,
     api,
     successMessage: `Module ${name} registered on subnet ${subnetName}`,
+  });
+}
+
+export async function deregister({
+  networkId = 0,
+  signer,
+  moduleName = "",
+}: DeregisterInput) {
+  const api = await getClient();
+  const tx = api.tx.subspaceModule.deregister(networkId);
+
+  return broadcastTx({
+    tx,
+    signer,
+    api,
+    successMessage: `Module ${moduleName ? moduleName + " " : ""} registered on subnet ${networkId}`,
   });
 }
 

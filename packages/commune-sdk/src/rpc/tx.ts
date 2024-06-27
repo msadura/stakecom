@@ -34,6 +34,18 @@ export async function estimateTransferFee({
   return fees.partialFee;
 }
 
+export async function estimateDeregisterFee({
+  networkId = 0,
+  signer,
+}: DeregisterInput) {
+  const api = await getClient();
+  const fees = await api.tx.subspaceModule
+    .deregister(networkId)
+    .paymentInfo(signer);
+
+  return fees.partialFee;
+}
+
 export async function transfer({ amount, recipient, signer }: TransferInput) {
   const api = await getClient();
 
@@ -181,7 +193,7 @@ export async function deregister({
     tx,
     signer,
     api,
-    successMessage: `Module ${moduleName ? moduleName + " " : ""} registered on subnet ${networkId}`,
+    successMessage: `Module ${moduleName ? moduleName + " " : ""}deregistered on subnet ${networkId}`,
   });
 }
 

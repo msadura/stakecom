@@ -101,7 +101,7 @@ export const registerKeys = async ({
   }
 };
 
-for (const server of servers) {
+for (const server of servers || []) {
   await registerKeys(server);
 }
 

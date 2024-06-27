@@ -9,6 +9,7 @@ import { getEnv } from "./getEnv";
 import { getModules } from "./getModules";
 import { validatorRequestBodySchema } from "./types";
 import { getRequestIp } from "./utils/getRequestIp";
+import { registerMiner } from "./utils/registerMiner";
 import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
@@ -104,6 +105,22 @@ const refreshData = () => {
         icon,
         `[${MINER_NAME}] registered: ${minerHealth.registered}, active: ${minerHealth.active}, lowEmission: ${minerHealth.lowEmission}`,
       );
+
+      // if not registered and not banned - register
+      if (!minerHealth.registered && !minerHealth.lowEmission) {
+        console.log("🔥", "Registering miner");
+        registerMiner({
+          minerName: MINER_NAME,
+          port: Number(PORT),
+          networkId: 17,
+        })
+          .then(() => {
+            console.log("🔥", "Miner registered again");
+          })
+          .catch(() => {
+            console.log("🔥", "Failed to register.");
+          });
+      }
     })
     .catch(() => console.log("Failed to refresh health"));
   getModules({ refresh: true }).catch(() =>

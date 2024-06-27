@@ -6,6 +6,8 @@ interface MinerHealth {
   registered: boolean;
   active: boolean;
   lowEmission: boolean;
+  bans: number;
+  registrations: number;
   icon: string;
 }
 
@@ -23,11 +25,20 @@ const minerHealth: MinerHealth = {
   registered: true,
   active: true,
   lowEmission: false,
+  // TODO - stats to redis
+  bans: 0,
+  registrations: 0,
   icon: icons.fine,
 };
 
-export const getMinerHealth = () => {
-  return { ...minerHealth };
+export const getMinerHealth = () => ({ ...minerHealth });
+export const incrementBans = () => minerHealth.bans++;
+export const incrementRegistrations = () => minerHealth.registrations++;
+export const resetMinerHealth = () => {
+  minerHealth.registered = false;
+  minerHealth.active = false;
+  minerHealth.lowEmission = false;
+  minerHealth.icon = icons.inactive;
 };
 
 export async function checkMinerHealth(minerName: string) {

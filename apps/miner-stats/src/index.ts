@@ -5,7 +5,8 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 import { getConfig } from "./getConfig";
 import { getKeys } from "./getKeys";
 
-const servers = await getConfig().then((config) => config.stats);
+const config = await getConfig();
+const servers = config.stats || [];
 
 const getProxyStats = async () => {
   return (await (
@@ -138,6 +139,14 @@ const registeredTotal = sGroups.reduce(
 const countTotal = sGroups.reduce(
   (acc, { countTotal }) => acc + (countTotal || 0),
   0,
+);
+
+const { balance: bankBalance } = await getBalances({
+  address: config.unstakeTargetAddress,
+  networkId: 17,
+});
+console.log(
+  `🔥 Bank balance:     ${formatCOMAmount(bankBalance, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(bankBalance) * coinStats.price), { maxDecimals: 2 })} USD`,
 );
 console.log(
   `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coinStats.price), { maxDecimals: 2 })} USD`,

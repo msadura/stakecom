@@ -1,6 +1,6 @@
 import { getBalances, getEmission } from "@stakecom/commune-sdk";
 import { COMAI_DECIMALS } from "@stakecom/core";
-import { formatCOMAmount } from "@stakecom/core/formatters";
+import { fnum, formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getConfig } from "./getConfig";
 import { getKeys } from "./getKeys";
@@ -149,7 +149,7 @@ const { balance: bankBalance } = await getBalances({
   networkId: 17,
 });
 console.log(
-  `🔥 Bank balance:     ${formatCOMAmount(bankBalance, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(bankBalance) * coinStats.price), { maxDecimals: 2 })} USD`,
+  `🔥 Bank balance: ${formatCOMAmount(bankBalance, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(bankBalance) * coinStats.price), { maxDecimals: 2 })} USD`,
 );
 console.log(
   `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coinStats.price), { maxDecimals: 2 })} USD`,
@@ -164,10 +164,10 @@ console.log(
   `🔥 Coin price $comai: ${coinStats.price.toFixed(2)} USD (change ${coinStats.change.daily.toFixed(2)}%)`,
 );
 console.log(
-  `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl}s ttl`,
+  `🔥 Proxy: ${fnum(proxyStats.requests)} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl}s ttl`,
 );
 console.log(
-  `🔥 Tweets: fetched ${proxyStats.fetched}, retained ${proxyStats.retained} (${proxyStats.retainRatio}), total ${proxyStats.fetched + proxyStats.retained}`,
+  `🔥 Tweets: fetched ${fnum(proxyStats.fetched)}, retained ${fnum(proxyStats.retained)} (${proxyStats.retainRatio}), total ${fnum(proxyStats.fetched + proxyStats.retained)}`,
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("🔥 ==========================");

@@ -25,12 +25,12 @@ export async function fixMinerHealth({
       port,
       networkId,
     })
-      .then((e: any) => {
+      .then(() => {
         incrementRegistrations();
-        console.log("🔥", "Miner registered again", e);
+        console.log("🔥", "Miner registered again");
       })
-      .catch(() => {
-        console.log("🔥", "Failed to re-register.");
+      .catch((e: any) => {
+        console.log("🔥", "Failed to re-register.", e.message);
       });
 
     return;

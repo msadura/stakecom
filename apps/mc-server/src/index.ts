@@ -106,6 +106,10 @@ const refreshData = () => {
         icon,
         `[${MINER_NAME}] registered: ${minerHealth.registered}, active: ${minerHealth.active}, lowEmission: ${minerHealth.lowEmission}`,
       );
+      console.log(
+        "📊",
+        `[${MINER_NAME}] registrations: ${minerHealth.registrations}, bans: ${minerHealth.bans}`,
+      );
 
       return fixMinerHealth({
         minerName: MINER_NAME,

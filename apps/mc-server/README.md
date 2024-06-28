@@ -4,6 +4,23 @@
 - You should have comx key created in your `~/.commune/key` dir with a name you want to use
 - You should register you miner on chain on a port you want to run it.
 
+# Config server
+Create `config.json` or copy `config.example.json` and fill the values:
+
+```
+{
+  "bankKeyName": "epic",
+  "maxComBurn": 12,
+  "unstakeTargetAddress": "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w",
+  "serverIp": "x.x.x.x"
+}
+```
+
+- `bankKeyName` - key which will feed missing $com for registrations if miner balance is too low
+- `maxComBurn` - max burn rate you wish to pay
+- `unstakeTargetAddress` - address to which banned miners will transfer funds
+- `serverIp` - external ip of your server to register the miner
+
 # Run miner command
 You can use env variables or posititonal params:
 

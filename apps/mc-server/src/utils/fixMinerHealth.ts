@@ -27,7 +27,7 @@ export async function fixMinerHealth({
     })
       .then((e: any) => {
         incrementRegistrations();
-        console.log("🔥", "Miner registered again", e.message);
+        console.log("🔥", "Miner registered again", e);
       })
       .catch(() => {
         console.log("🔥", "Failed to re-register.");
@@ -49,7 +49,7 @@ export async function fixMinerHealth({
         console.log("🔥", "Miner regenerated.");
       })
       .catch((e: any) => {
-        console.log("🔥", "Failed to regenerate miner.", e.message);
+        console.log("🔥", "Failed to regenerate miner.", e);
       });
   }
 }

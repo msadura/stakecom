@@ -27,8 +27,6 @@ export const getKeys = async () => {
 
   fileNames.sort();
 
-  console.log("🔥", fileNames);
-
   // load and parse files
   const keys = await Promise.all(
     fileNames.map(async (fileName) => {

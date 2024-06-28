@@ -1,6 +1,6 @@
 export const fnum = (num: number, dec = 2): string => {
   let suffix = "";
-  while (num > 10 ** 3) {
+  while (num >= 10 ** 3) {
     num /= 10 ** 3;
     suffix += "k";
   }

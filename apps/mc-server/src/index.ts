@@ -4,12 +4,12 @@ import { logger } from "hono/logger";
 import ky, { HTTPError } from "ky";
 
 import type { TweetsRes } from "./types";
-import { checkMinerHealth, getMinerHealth } from "./checkMinerHealth";
 import { getEnv } from "./getEnv";
 import { getModules } from "./getModules";
 import { validatorRequestBodySchema } from "./types";
+import { checkMinerHealth, getMinerHealth } from "./utils/checkMinerHealth";
+import { fixMinerHealth } from "./utils/fixMinerHealth";
 import { getRequestIp } from "./utils/getRequestIp";
-import { registerMiner } from "./utils/registerMiner";
 import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
@@ -26,11 +26,12 @@ export default {
 
 const MAX_RESULTS = 50;
 const START_TIME = "2024-04-01T5:00:00Z";
+const NETWORK_ID = 17;
 
 app.post("/method/generate", async (c) => {
   // Do not fetch api if miner is unregistered or banned
   let health = getMinerHealth();
-  // TODO - refresh health in this case to verify if miner is still unregistered
+  // TODO - load miner key and check if targe_key from body is the same
 
   if (!health.registered) {
     await checkMinerHealth(MINER_NAME);
@@ -94,7 +95,7 @@ app.post("/method/generate", async (c) => {
   }
 });
 
-// refresh modules periodically
+// refresh miner state periodically
 const refreshData = () => {
   console.log("🔥", "[REFRESH DATA]");
 
@@ -106,23 +107,14 @@ const refreshData = () => {
         `[${MINER_NAME}] registered: ${minerHealth.registered}, active: ${minerHealth.active}, lowEmission: ${minerHealth.lowEmission}`,
       );
 
-      // if not registered and not banned - register
-      if (!minerHealth.registered && !minerHealth.lowEmission) {
-        console.log("🔥", "Registering miner");
-        registerMiner({
-          minerName: MINER_NAME,
-          port: Number(PORT),
-          networkId: 17,
-        })
-          .then(() => {
-            console.log("🔥", "Miner registered again");
-          })
-          .catch(() => {
-            console.log("🔥", "Failed to register.");
-          });
-      }
+      return fixMinerHealth({
+        minerName: MINER_NAME,
+        port: Number(PORT),
+        networkId: NETWORK_ID,
+      });
     })
     .catch(() => console.log("Failed to refresh health"));
+
   getModules({ refresh: true }).catch(() =>
     console.log("Failed to refresh modules"),
   );

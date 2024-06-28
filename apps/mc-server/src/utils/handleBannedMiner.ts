@@ -3,6 +3,7 @@ import { homedir } from "bun-utilities/os";
 
 import {
   deregister,
+  estimateTransferFee,
   getBalances,
   getSigner,
   transferAll,
@@ -11,10 +12,10 @@ import {
 import { toAmountValue } from "@stakecom/commune-sdk/utils";
 import { formatCOMAmount } from "@stakecom/core/formatters";
 
-import type { ComKey } from "../../../aim-server/src/loadComKey";
-import { loadComKey } from "../../../aim-server/src/loadComKey";
-import { resetMinerHealth } from "../checkMinerHealth";
+import type { ComKey } from "./loadComKey";
 import { getConfig } from "../getConfig";
+import { resetMinerHealth } from "./checkMinerHealth";
+import { loadComKey } from "./loadComKey";
 import { registerMiner } from "./registerMiner";
 
 const MIN_BALANCE = toAmountValue(0.01);
@@ -32,6 +33,12 @@ const wipeMiner = async ({
     address: key.ss58_address,
     networkId,
   });
+  const fee = await estimateTransferFee({
+    amount: balance,
+    recipient: config.unstakeTargetAddress,
+    signer,
+  });
+  const transferFee = fee.toBigInt();
 
   const total = balance + stakeTotal;
 
@@ -50,7 +57,7 @@ const wipeMiner = async ({
     });
   }
 
-  if (total < MIN_BALANCE) {
+  if (total < MIN_BALANCE + transferFee) {
     console.log(
       "🔥",
       `Key ${key.path} has insufficient balance: ${formatCOMAmount(total)}`,
@@ -108,8 +115,6 @@ export async function handleNewKey({ minerKey }: { minerKey: ComKey }) {
     .replaceAll(":", "-")
     .replaceAll(",", "-");
 
-  console.log("🔥", backupDate);
-
   const makeDirProc = Bun.spawn([
     "mkdir",
     "-p",
@@ -131,6 +136,8 @@ export async function handleNewKey({ minerKey }: { minerKey: ComKey }) {
   if (backupProc.exitCode !== 0) {
     throw new Error(`Failed to backup key: ${minerKey.path}`);
   }
+
+  console.log("🔥", `Key backed up: ${minerKey.path}`);
 
   // generate new key
   const generateKeyProc = Bun.spawn([`comx`, `key`, `create`, minerKey.path]);
@@ -169,6 +176,8 @@ export async function handleBannedMiner({
 
   if (!deregisterRes.success) {
     throw new Error(`Failed to deregister: ${deregisterRes.errorCode}`);
+  } else {
+    console.log("🔥", "Miner deregistered");
   }
 
   // generate new key

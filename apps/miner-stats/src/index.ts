@@ -118,7 +118,7 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
   };
 };
 
-const sGroups = await Promise.all(servers.map(getFilteredBalance));
+const sGroups = await Promise.all(servers?.map(getFilteredBalance) || []);
 const sGroupsTotal = sGroups.reduce(
   (acc, { sumBalance }) => acc + sumBalance,
   0n,

@@ -1,6 +1,6 @@
 import { COMAI_DECIMALS } from "@stakecom/commune-sdk";
 
-import { getModules } from "./getModules";
+import { getModules } from "../getModules";
 
 interface MinerHealth {
   registered: boolean;
@@ -48,7 +48,9 @@ export async function checkMinerHealth(minerName: string) {
   if (!minerModule) {
     minerHealth.registered = false;
     minerHealth.active = false;
-    minerHealth.icon = icons.unregistered;
+    minerHealth.icon = minerHealth.lowEmission
+      ? icons.lowEmission
+      : icons.unregistered;
     return;
   }
 
@@ -56,7 +58,9 @@ export async function checkMinerHealth(minerName: string) {
 
   if (minerModule.emission === 0) {
     minerHealth.active = false;
-    minerHealth.icon = icons.inactive;
+    minerHealth.icon = minerHealth.lowEmission
+      ? icons.lowEmission
+      : icons.inactive;
     return;
   }
 

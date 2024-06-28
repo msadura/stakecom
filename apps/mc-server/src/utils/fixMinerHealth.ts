@@ -45,7 +45,6 @@ export async function fixMinerHealth({
     await handleBannedMiner({ minerName, port, networkId })
       .then(() => {
         incrementBans();
-        incrementRegistrations();
         console.log("🔥", "Miner regenerated.");
       })
       .catch((e: any) => {

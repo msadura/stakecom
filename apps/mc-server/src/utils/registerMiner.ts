@@ -22,7 +22,7 @@ export const registerMiner = async ({
 }) => {
   const config = await getConfig();
   const bankKeyName = config.bankKeyName;
-  const maxBurn = config.maxBurn;
+  const maxBurn = toAmountValue(config.maxBurn);
   const bankKey = await loadComKey(bankKeyName);
   const minerKey = await loadComKey(minerName);
 

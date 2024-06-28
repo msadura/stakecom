@@ -16,6 +16,9 @@ const getProxyStats = async () => {
     hits: number;
     misses: number;
     ratio: string;
+    fetched: number;
+    retained: number;
+    retainRatio: string;
     size: number;
     ttl: number;
   };
@@ -161,7 +164,10 @@ console.log(
   `🔥 Coin price $comai: ${coinStats.price.toFixed(2)} USD (change ${coinStats.change.daily.toFixed(2)}%)`,
 );
 console.log(
-  `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl / 1000}s ttl`,
+  `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl}s ttl`,
+);
+console.log(
+  `🔥 Tweets: fetched ${proxyStats.fetched}, retained ${proxyStats.retained} (${proxyStats.retainRatio}), total ${proxyStats.fetched + proxyStats.retained} requested`,
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("🔥 ==========================");

@@ -108,7 +108,7 @@ const refreshData = () => {
       );
       console.log(
         "📊",
-        `[${MINER_NAME}] registrations: ${minerHealth.registrations}, bans: ${minerHealth.bans}`,
+        `[${MINER_NAME}] deregistrations: ${minerHealth.registrations}, bans: ${minerHealth.bans}`,
       );
 
       return fixMinerHealth({

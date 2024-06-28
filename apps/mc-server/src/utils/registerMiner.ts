@@ -39,7 +39,9 @@ export const registerMiner = async ({
 
   const burn = await getBurn(networkId);
   if (burn > maxBurn) {
-    throw new Error(`Burn amount is too high: ${formatCOMAmount(burn)}`);
+    throw new Error(
+      `Burn amount is too high:  ${formatCOMAmount(burn)} > ${config.maxBurn}`,
+    );
   }
 
   const { balance, uid } = await getBalances({

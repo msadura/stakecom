@@ -1,4 +1,6 @@
 import { Glob } from "bun";
+// @ts-expect-error - no types
+import { homedir } from "bun-utilities/os";
 
 export interface ComKey {
   path: string;
@@ -14,31 +16,41 @@ export interface ComKey {
 
 export const getKeys = async () => {
   const glob = new Glob("**/*.json");
-  const current = import.meta.dir;
+  const communePath = `${homedir()}/.commune`;
 
   const fileNames: string[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(`${current}/keys`)) {
+  for await (const file of glob.scan(`${communePath}/key`)) {
     fileNames.push(file);
   }
 
   fileNames.sort();
 
+  console.log("🔥", fileNames);
+
   // load and parse files
   const keys = await Promise.all(
     fileNames.map(async (fileName) => {
-      const path = `${current}/keys/${fileName}`;
+      const path = `${communePath}/key/${fileName}`;
       const file = Bun.file(path);
 
-      const fileContent = (await file.json()) as { data: string };
-      const content = JSON.parse(fileContent.data) as ComKey;
+      try {
+        const fileContent = (await file.json()) as { data: string };
+        const content = JSON.parse(fileContent.data) as ComKey;
 
-      return content;
+        if (!content.path) {
+          return null;
+        }
+
+        return content;
+      } catch {
+        return null;
+      }
     }),
   );
 
-  return keys;
+  return keys.filter((key): key is ComKey => key !== null);
 };
 
 export const getFilteredKeys = async (pattern: RegExp) => {

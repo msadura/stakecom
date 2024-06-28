@@ -167,7 +167,7 @@ console.log(
   `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl}s ttl`,
 );
 console.log(
-  `🔥 Tweets: fetched ${proxyStats.fetched}, retained ${proxyStats.retained} (${proxyStats.retainRatio}), total ${proxyStats.fetched + proxyStats.retained} requested`,
+  `🔥 Tweets: fetched ${proxyStats.fetched}, retained ${proxyStats.retained} (${proxyStats.retainRatio}), total ${proxyStats.fetched + proxyStats.retained}`,
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("🔥 ==========================");

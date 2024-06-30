@@ -68,7 +68,8 @@ app.post("/method/generate", async (c) => {
 
   try {
     const res = await ky.get(requestUrl, {
-      timeout: 12000,
+      retry: 0, // retries handled by the proxy
+      timeout: 16 * 1000, // proxy times out after 15s so we need to give it extra margin
     });
 
     const data: TweetsRes = await res.json();

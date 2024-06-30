@@ -2,6 +2,7 @@ import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import ky, { HTTPError } from "ky";
+import { random } from "lodash";
 
 import type { TweetsRes } from "./types";
 import { getEnv } from "./getEnv";
@@ -129,5 +130,5 @@ refreshData();
 
 setInterval(
   refreshData,
-  5 * 60 * 1000, // 5 minutes
+  random(2, 3, true) * 60 * 1000, // 2-3 minutes to avoid spamming rpc at the same time
 );

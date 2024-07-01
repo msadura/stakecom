@@ -2,6 +2,7 @@ import {
   getBalances,
   getBurn,
   getSigner,
+  getSubnetModules,
   register,
   transfer,
 } from "@stakecom/commune-sdk";
@@ -25,6 +26,7 @@ export const registerKeys = async ({
 }) => {
   const bankKey = await getKeyByName(bankName);
   const filteredKeys = await getFilteredKeys(pattern);
+  const modules = await getSubnetModules({ networkId: 17 });
 
   console.log("🔥", `Number of keys to register:`, filteredKeys.length);
 
@@ -37,6 +39,11 @@ export const registerKeys = async ({
   for (const key of filteredKeys) {
     const { ss58_address, path } = key;
 
+    if (modules.all.find((m) => m.name === path)) {
+      console.log("🔥", `${path} - already registered`);
+      continue;
+    }
+
     const minerNumber = path.match(/\d+/)?.[0];
     if (!minerNumber) {
       throw new Error(`Miner number not found in path: ${path}`);
@@ -47,15 +54,10 @@ export const registerKeys = async ({
       throw new Error(`Burn amount is too high: ${formatCOMAmount(burn)}`);
     }
 
-    const { balance, uid } = await getBalances({
+    const { balance } = await getBalances({
       address: key.ss58_address,
       networkId: 17,
     });
-
-    if (uid) {
-      console.log("🔥", `${path} - already registered`);
-      continue;
-    }
 
     // not enough balance, feed first
     if (balance < burn + toAmountValue("1")) {
@@ -101,7 +103,7 @@ export const registerKeys = async ({
   }
 };
 
-for (const server of servers) {
+for (const server of servers || []) {
   await registerKeys(server);
 }
 

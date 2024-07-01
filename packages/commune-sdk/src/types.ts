@@ -40,6 +40,11 @@ export interface RegisterInput extends GenericTxInput {
   address: string;
 }
 
+export interface DeregisterInput extends GenericTxInput {
+  networkId?: number;
+  moduleName?: string;
+}
+
 export interface TxError {
   code: string;
   reason?: string;

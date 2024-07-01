@@ -1,0 +1,36 @@
+{
+  "name": "@stakecom/mc-server",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --env-file=../../.env --watch src/index.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "0.2.2",
+    "@isaacs/ttlcache": "^1.4.1",
+    "@stakecom/commune-sdk": "workspace:^0.1.0",
+    "@stakecom/core": "workspace:^0.1.0",
+    "@stakecom/db": "workspace:^0.1.0",
+    "bun-utilities": "^0.2.1",
+    "hono": "^4.3.10",
+    "ioredis": "^5.4.1",
+    "ky": "^1.2.2",
+    "lodash": "^4.17.21",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@stakecom/eslint-config": "^0.2.0",
+    "@stakecom/prettier-config": "^0.1.0",
+    "@stakecom/tsconfig": "^0.1.0",
+    "@types/lodash": "^4.14.202",
+    "bun-types": "latest"
+  },
+  "module": "src/index.js",
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@stakecom/eslint-config/base"
+    ]
+  },
+  "prettier": "@stakecom/prettier-config"
+}

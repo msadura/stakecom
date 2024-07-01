@@ -1,11 +1,12 @@
 import { getBalances, getEmission } from "@stakecom/commune-sdk";
 import { COMAI_DECIMALS } from "@stakecom/core";
-import { formatCOMAmount } from "@stakecom/core/formatters";
+import { fnum, formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getConfig } from "./getConfig";
 import { getKeys } from "./getKeys";
 
-const servers = await getConfig().then((config) => config.stats);
+const config = await getConfig();
+const servers = config.stats || [];
 
 const getProxyStats = async () => {
   return (await (
@@ -15,6 +16,9 @@ const getProxyStats = async () => {
     hits: number;
     misses: number;
     ratio: string;
+    fetched: number;
+    retained: number;
+    retainRatio: string;
     size: number;
     ttl: number;
   };
@@ -118,7 +122,7 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
   };
 };
 
-const sGroups = await Promise.all(servers.map(getFilteredBalance));
+const sGroups = await Promise.all(servers?.map(getFilteredBalance) || []);
 const sGroupsTotal = sGroups.reduce(
   (acc, { sumBalance }) => acc + sumBalance,
   0n,
@@ -139,6 +143,14 @@ const countTotal = sGroups.reduce(
   (acc, { countTotal }) => acc + (countTotal || 0),
   0,
 );
+
+const { balance: bankBalance } = await getBalances({
+  address: config.unstakeTargetAddress,
+  networkId: 17,
+});
+console.log(
+  `🔥 Bank balance: ${formatCOMAmount(bankBalance, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(bankBalance) * coinStats.price), { maxDecimals: 2 })} USD`,
+);
 console.log(
   `🔥 Current balances: ${formatCOMAmount(sGroupsTotal, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(sGroupsTotal) * coinStats.price), { maxDecimals: 2 })} USD`,
 );
@@ -152,7 +164,10 @@ console.log(
   `🔥 Coin price $comai: ${coinStats.price.toFixed(2)} USD (change ${coinStats.change.daily.toFixed(2)}%)`,
 );
 console.log(
-  `🔥 Proxy: ${proxyStats.requests} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl / 1000}s ttl`,
+  `🔥 Proxy: ${fnum(proxyStats.requests)} reqs, ${proxyStats.ratio} cache rate, ${proxyStats.ttl}s ttl`,
+);
+console.log(
+  `🔥 Tweets: fetched ${fnum(proxyStats.fetched)}, retained ${fnum(proxyStats.retained)} (${proxyStats.retainRatio}), total ${fnum(proxyStats.fetched + proxyStats.retained)}`,
 );
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));
 console.log("🔥 ==========================");

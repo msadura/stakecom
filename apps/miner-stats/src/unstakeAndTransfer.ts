@@ -11,10 +11,10 @@ import type { ComKey } from "./getKeys";
 import { getConfig } from "./getConfig";
 import { getFilteredKeys } from "./getKeys";
 
-const destAddress = "5Fh5GBGmsDV5Sz11Vj6KcPCixHoTtBNK2LQLK5jq9VjQTK5w";
-const MIN_BALANCE = toAmountValue("1");
-
-const servers = await getConfig().then((config) => config.unstake);
+const config = await getConfig();
+const servers = config.unstake || [];
+const destAddress = config.unstakeTargetAddress;
+const MIN_BALANCE = toAmountValue(config.unstakeMinLeftAmount);
 
 const unstakeAndTransferSingle = async (key: ComKey) => {
   const signer = await getSigner(key.mnemonic);
@@ -22,11 +22,6 @@ const unstakeAndTransferSingle = async (key: ComKey) => {
     address: key.ss58_address,
     networkId: 17,
   });
-
-  console.log(
-    "🔥🔥🔥🔥🔥",
-    `${key.path}, balance: ${formatCOMAmount(balance)}, stake: ${formatCOMAmount(stakeTotal)}`,
-  );
 
   const total = balance + stakeTotal;
   const unstakeAmount = stakeTotal - toAmountValue(0.1);
@@ -46,7 +41,7 @@ const unstakeAndTransferSingle = async (key: ComKey) => {
     });
   }
 
-  if (total < MIN_BALANCE * 2n) {
+  if (total < MIN_BALANCE) {
     console.log(
       "🔥",
       `Key ${key.path} has insufficient balance: ${formatCOMAmount(total)}`,
@@ -118,11 +113,10 @@ const unstakeAndTransferFilteredKeys = async ({
   return sumBalance;
 };
 
-let unstakedSum = 0n;
-for (const server of servers) {
-  const unstaked = await unstakeAndTransferFilteredKeys(server);
-  unstakedSum += unstaked;
-}
+const unstaking = await Promise.all(
+  servers.map((server) => unstakeAndTransferFilteredKeys(server)),
+);
+const unstakedSum = unstaking.reduce((acc, balance) => acc + balance, 0n);
 
 console.log("🔥 Payed out total:", formatCOMAmount(unstakedSum));
 console.log("🔥 Time:", new Date().toLocaleString("pl-PL"));

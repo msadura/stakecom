@@ -5,6 +5,7 @@ import type { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 import type { ISubmittableResult } from "@polkadot/types/types";
 
 import type {
+  DeregisterInput,
   RegisterInput,
   StakeInput,
   TransferInput,
@@ -28,6 +29,18 @@ export async function estimateTransferFee({
   const api = await getClient();
   const fees = await api.tx.balances
     .transferKeepAlive(recipient, amount)
+    .paymentInfo(signer);
+
+  return fees.partialFee;
+}
+
+export async function estimateDeregisterFee({
+  networkId = 0,
+  signer,
+}: DeregisterInput) {
+  const api = await getClient();
+  const fees = await api.tx.subspaceModule
+    .deregister(networkId)
     .paymentInfo(signer);
 
   return fees.partialFee;
@@ -109,7 +122,7 @@ export async function unstake({
   signer,
 }: StakeInput) {
   let unstakeAmount = amount;
-  console.log("🔥 amount", amount);
+
   if (!amount || amount === 0n) {
     unstakeAmount = await getStakeByModule({
       networkId,
@@ -124,7 +137,7 @@ export async function unstake({
       msg: "No stake found to unstake",
     };
   }
-  console.log("🔥 unstake amount", unstakeAmount);
+
   const api = await getClient();
   const tx = api.tx.subspaceModule.removeStake(
     networkId,
@@ -165,6 +178,22 @@ export async function register({
     signer,
     api,
     successMessage: `Module ${name} registered on subnet ${subnetName}`,
+  });
+}
+
+export async function deregister({
+  networkId = 0,
+  signer,
+  moduleName = "",
+}: DeregisterInput) {
+  const api = await getClient();
+  const tx = api.tx.subspaceModule.deregister(networkId);
+
+  return broadcastTx({
+    tx,
+    signer,
+    api,
+    successMessage: `Module ${moduleName ? moduleName + " " : ""}deregistered on subnet ${networkId}`,
   });
 }
 

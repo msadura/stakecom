@@ -126,9 +126,8 @@ const refreshData = () => {
   );
 };
 
-refreshData();
+// init between 0-90 seconds to avoid registering multiple miners at the same time
+setTimeout(refreshData, random(0, 1.5, true) * 60 * 1000);
 
-setInterval(
-  refreshData,
-  random(2, 3, true) * 60 * 1000, // 2-3 minutes to avoid spamming rpc at the same time
-);
+// run every 2-3 minutes at random to avoid spamming rpc at the same time
+setInterval(refreshData, random(2, 3, true) * 60 * 1000);

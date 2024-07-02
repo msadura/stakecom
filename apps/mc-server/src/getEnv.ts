@@ -21,7 +21,7 @@ const { values } = parseArgs({
   allowPositionals: true,
 });
 
-const PORT = values.port || process.env.PORT;
+const PORT = Number(values.port || process.env.PORT);
 const MINER_NAME = values.miner || process.env.MINER_NAME;
 const API_URL =
   values.apiUrl || process.env.API_URL || "http://good-fucking-proxy.com:3000";

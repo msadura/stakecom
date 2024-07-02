@@ -148,7 +148,7 @@ export async function handleNewKey({ minerKey }: { minerKey: ComKey }) {
   }
 }
 
-export async function handleBannedMiner({
+export async function regenerateMiner({
   minerName,
   port,
   networkId = 17,

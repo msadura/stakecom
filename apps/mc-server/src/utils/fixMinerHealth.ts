@@ -3,7 +3,7 @@ import {
   incrementBans,
   incrementRegistrations,
 } from "./checkMinerHealth";
-import { handleBannedMiner } from "./handleBannedMiner";
+import { regenerateMiner } from "./regenerateMiner";
 import { registerMiner } from "./registerMiner";
 
 export async function fixMinerHealth({
@@ -42,7 +42,7 @@ export async function fixMinerHealth({
       "Miner is banned trying to wipe and regen with new key...",
     );
 
-    await handleBannedMiner({ minerName, port, networkId })
+    await regenerateMiner({ minerName, port, networkId })
       .then(() => {
         incrementBans();
         console.log("🔥", "Miner regenerated.");

@@ -1,4 +1,4 @@
-import { getBalances, getEmission } from "@stakecom/commune-sdk";
+import { getAddresses, getBalances, getEmission } from "@stakecom/commune-sdk";
 import { COMAI_DECIMALS } from "@stakecom/core";
 import { fnum, formatCOMAmount } from "@stakecom/core/formatters";
 
@@ -38,10 +38,11 @@ const getCoinStats = async () => {
   return { price, change };
 };
 
-const [emission, proxyStats, coinStats] = await Promise.all([
+const [emission, proxyStats, coinStats, addresses] = await Promise.all([
   getEmission({ networkId: 17 }),
   getProxyStats(),
   getCoinStats(),
+  getAddresses(17),
 ]);
 const isSlowEmission = (emission: number) =>
   emission > 0 && emission < 0.1 * 10 ** COMAI_DECIMALS;
@@ -87,7 +88,7 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
     balances
       .map(({ name, balance, uid, emission }) => ({
         name,
-        // address: ellipsize(address),
+        port: addresses[uid]?.split(":")[1] || "-",
         balance: formatCOMAmount(balance, { maxDecimals: 2 }),
         uid: typeof uid === "number" ? String(uid) : "-",
         emission:
@@ -98,14 +99,14 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
       .concat([
         {
           name: "--",
-          // address: "--",
+          port: "--",
           uid: "--",
           balance: "--",
           emission: "--",
         },
         {
           name: "",
-          // address: "",
+          port: "",
           uid: `${countRegistered} / ${countTotal}`,
           balance: formatCOMAmount(sumBalance, { maxDecimals: 2 }),
           emission: `${countWithEmission} / ${balances.length}`,

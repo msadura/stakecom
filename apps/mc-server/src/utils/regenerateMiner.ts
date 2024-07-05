@@ -6,6 +6,7 @@ import {
   estimateTransferFee,
   getBalances,
   getSigner,
+  transfer,
   transferAll,
   unstake,
 } from "@stakecom/commune-sdk";
@@ -29,6 +30,13 @@ const wipeMiner = async ({
 }) => {
   const config = await getConfig();
   const signer = await getSigner(key.mnemonic);
+  const bankKeyName = config.bankKeyName;
+  const bankKey = await loadComKey(bankKeyName);
+
+  if (!bankKey) {
+    throw new Error(`Bank key not found: ${bankKeyName}`);
+  }
+
   const { balance, stakeTotal } = await getBalances({
     address: key.ss58_address,
     networkId,
@@ -41,6 +49,29 @@ const wipeMiner = async ({
   const transferFee = fee.toBigInt();
 
   const total = balance + stakeTotal;
+
+  // not enough balance to unstake, feed first
+  if (balance < transferFee + BigInt(1)) {
+    const bankSigner = await getSigner(bankKey.mnemonic);
+    const feedAmount = transferFee + toAmountValue("1") - balance;
+    console.log(
+      "🔥",
+      `Feeding ${key.path} with ${formatCOMAmount(feedAmount)} COM`,
+    );
+
+    try {
+      await transfer({
+        signer: bankSigner,
+        recipient: key.ss58_address,
+        amount: feedAmount,
+      });
+
+      console.log("✅", `${key.path} - funds transfered`);
+    } catch (err) {
+      console.error("❌", `${key.path} - funds error`, err);
+      throw err;
+    }
+  }
 
   if (stakeTotal > 0n && stakeTotal > 0n) {
     console.log(

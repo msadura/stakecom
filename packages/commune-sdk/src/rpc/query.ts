@@ -103,6 +103,18 @@ export const getBurn = async (networkId = 0) => {
   return BigInt(burn.toString());
 };
 
+export const getRegisteredMinersCount = async (
+  networkId: number,
+  ip: string,
+) => {
+  const addresses = await getAddresses(networkId);
+  const registeredAddresses = Object.values(addresses).filter((address) =>
+    address.startsWith(ip),
+  );
+
+  return registeredAddresses.length;
+};
+
 export const getSubnetName = async (networkId = 0) => {
   const api = await getClient();
   const name = await api.query.subspaceModule.subnetNames(networkId);

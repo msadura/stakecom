@@ -1,6 +1,7 @@
 import {
   getBalances,
   getBurn,
+  getRegisteredMinersCount,
   getSigner,
   register,
   transfer,
@@ -36,6 +37,18 @@ export const registerMiner = async ({
 
   const bankSigner = await getSigner(bankKey.mnemonic);
   const minerSigner = await getSigner(minerKey.mnemonic);
+
+  if (config.maxMiners !== -1) {
+    const registeredMinersCount = await getRegisteredMinersCount(
+      networkId,
+      config.serverIp,
+    );
+    if (registeredMinersCount >= config.maxMiners) {
+      throw new Error(
+        `Max miners reached: ${registeredMinersCount} >= ${config.maxMiners}; skipping registration for ${minerKey.path}`,
+      );
+    }
+  }
 
   const burn = await getBurn(networkId);
   if (burn > maxBurn) {

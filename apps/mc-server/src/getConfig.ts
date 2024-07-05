@@ -3,6 +3,7 @@ import { z } from "zod";
 const configSchema = z.object({
   bankKeyName: z.string().min(1),
   maxBurn: z.number().int().default(12),
+  maxMiners: z.number().int().default(-1), // -1 means no limit
   unstakeTargetAddress: z.string().min(1),
   serverIp: z.string().ip(),
 });

@@ -96,7 +96,7 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
         name,
         port: addresses[uid]?.split(":")[1] || "-",
         balance:
-          `${formatCOMAmount(balance + stake, { maxDecimals: 2 })} ${isDustBalance(balance) ? "💨" : ""}`.trim(),
+          `${formatCOMAmount(balance + stake, { maxDecimals: 2 })} ${stake && isDustBalance(balance) ? "💨" : ""}`.trim(),
         uid: typeof uid === "number" ? String(uid) : "-",
         emission:
           typeof uid === "number"

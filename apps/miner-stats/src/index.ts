@@ -50,7 +50,7 @@ const isZeroEmission = (emission: number) => emission === 0;
 const isGoodEmission = (emission: number) =>
   !isSlowEmission(emission) && !isZeroEmission(emission);
 const isDustBalance = (balance: bigint) =>
-  balance > 0n && balance < BigInt(0.3 * 10 ** COMAI_DECIMALS);
+  balance < BigInt(0.3 * 10 ** COMAI_DECIMALS);
 
 const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
   const keys = await getKeys();

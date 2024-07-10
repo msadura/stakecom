@@ -50,7 +50,7 @@ const isZeroEmission = (emission: number) => emission === 0;
 const isGoodEmission = (emission: number) =>
   !isSlowEmission(emission) && !isZeroEmission(emission);
 const isDustBalance = (balance: bigint) =>
-  balance < BigInt(0.3 * 10 ** COMAI_DECIMALS);
+  balance > 0n && balance < BigInt(0.3 * 10 ** COMAI_DECIMALS);
 
 const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
   const keys = await getKeys();
@@ -96,7 +96,7 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
         name,
         port: addresses[uid]?.split(":")[1] || "-",
         balance:
-          `${formatCOMAmount(balance + stake, { maxDecimals: 2 })} ${isDustBalance(balance) ? "🧹" : ""}`.trim(),
+          `${formatCOMAmount(balance + stake, { maxDecimals: 2 })} ${isDustBalance(balance) ? "💨" : ""}`.trim(),
         uid: typeof uid === "number" ? String(uid) : "-",
         emission:
           typeof uid === "number"

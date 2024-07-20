@@ -1,10 +1,6 @@
-import {
-  getMinerHealth,
-  incrementBans,
-  incrementRegistrations,
-} from "./checkMinerHealth";
+import { getMinerHealth, incrementBans } from "./checkMinerHealth";
 import { regenerateMiner } from "./regenerateMiner";
-import { registerMiner } from "./registerMiner";
+import { safeRegisterMiner } from "./safeRegisterMiner";
 
 export async function fixMinerHealth({
   minerName,
@@ -19,20 +15,7 @@ export async function fixMinerHealth({
 
   // if not registered and not banned - register
   if (!registered && !lowEmission) {
-    console.log("🔥", "Trying to re-register miner...");
-    await registerMiner({
-      minerName,
-      port,
-      networkId,
-    })
-      .then(() => {
-        incrementRegistrations();
-        console.log("🔥", "Miner registered again");
-      })
-      .catch((e: any) => {
-        console.log("🔥", "Failed to re-register.", e.message);
-      });
-
+    await safeRegisterMiner({ minerName, port, networkId });
     return;
   }
 

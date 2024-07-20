@@ -29,7 +29,8 @@
     "proxy": "bun apps/twitterProxy/src/index.ts",
     "mc:serve": "bun apps/mc-server/src/index.ts",
     "mc:serve:dev": "DEV_MODE=true PORT=8811 bun --watch apps/mc-server/src/index.ts",
-    "mc:regen": "bun apps/mc-server/src/scripts/regenerate.ts"
+    "mc:regen": "bun apps/mc-server/src/scripts/regenerate.ts",
+    "mc:test": "bun apps/mc-server/src/test.ts"
   },
   "devDependencies": {
     "@stakecom/prettier-config": "workspace:^0.1.0",

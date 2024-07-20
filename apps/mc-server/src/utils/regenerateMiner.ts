@@ -17,7 +17,7 @@ import type { ComKey } from "./loadComKey";
 import { getConfig } from "../getConfig";
 import { getMinerHealth, resetMinerHealth } from "./checkMinerHealth";
 import { loadComKey } from "./loadComKey";
-import { registerMiner } from "./registerMiner";
+import { safeRegisterMiner } from "./safeRegisterMiner";
 
 const MIN_BALANCE = toAmountValue(0.01);
 
@@ -224,5 +224,5 @@ export async function regenerateMiner({
   resetMinerHealth();
 
   // register new key
-  await registerMiner({ minerName, port });
+  await safeRegisterMiner({ minerName, port, networkId });
 }

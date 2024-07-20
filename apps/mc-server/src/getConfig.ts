@@ -6,6 +6,7 @@ const configSchema = z.object({
   maxMiners: z.number().int().default(-1), // -1 means no limit
   unstakeTargetAddress: z.string().min(1),
   serverIp: z.string().ip(),
+  tenantNickname: z.string().min(3),
 });
 
 export async function getConfig() {

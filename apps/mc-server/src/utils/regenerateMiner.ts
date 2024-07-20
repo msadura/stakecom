@@ -15,7 +15,7 @@ import { formatCOMAmount } from "@stakecom/core/formatters";
 
 import type { ComKey } from "./loadComKey";
 import { getConfig } from "../getConfig";
-import { resetMinerHealth } from "./checkMinerHealth";
+import { getMinerHealth, resetMinerHealth } from "./checkMinerHealth";
 import { loadComKey } from "./loadComKey";
 import { registerMiner } from "./registerMiner";
 
@@ -198,17 +198,23 @@ export async function regenerateMiner({
   // unstake and transfer funds
   await wipeMiner({ key: minerKey, networkId });
 
-  // deregister miner
-  const deregisterRes = await deregister({
-    moduleName: minerName,
-    signer,
-    networkId,
-  });
+  const { registered } = getMinerHealth();
 
-  if (!deregisterRes.success) {
-    throw new Error(`Failed to deregister: ${deregisterRes.errorCode}`);
+  if (registered) {
+    // deregister miner
+    const deregisterRes = await deregister({
+      moduleName: minerName,
+      signer,
+      networkId,
+    });
+
+    if (!deregisterRes.success) {
+      throw new Error(`Failed to deregister: ${deregisterRes.errorCode}`);
+    } else {
+      console.log("🔥", "Miner deregistered");
+    }
   } else {
-    console.log("🔥", "Miner deregistered");
+    console.log("🔥", "Miner already not registered");
   }
 
   // generate new key

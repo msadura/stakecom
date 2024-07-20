@@ -1,8 +1,8 @@
 import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
-import { logger } from "hono/logger";
 import ky, { HTTPError } from "ky";
 import { random } from "lodash";
+import ms from "pretty-ms";
 
 import type { TweetsRes } from "./types";
 import { getEnv } from "./getEnv";
@@ -14,8 +14,6 @@ import { getRequestIp } from "./utils/getRequestIp";
 import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
-
-app.use(logger());
 
 const { PORT, DEV_MODE, MINER_NAME, API_URL } = getEnv();
 
@@ -76,14 +74,17 @@ app.post("/method/generate", async (c) => {
     const data: TweetsRes = await res.json();
     const endTimestamp = performance.now();
     const time = endTimestamp - startTimestamp;
-    const timeInSec = time / 1000;
 
-    console.log(`🟢 [SUCCESS] [${MINER_NAME}] - ${timeInSec.toFixed(2)}s`);
+    console.log(
+      `✔️ ${res.status} ${res.statusText} (${MINER_NAME}) ${ms(time)}`,
+    );
 
     return c.json(data.data, 200);
   } catch (error: any) {
     if (error instanceof HTTPError) {
-      console.log(`🔴 [ERROR] [${MINER_NAME}] - ${error.response.status}`);
+      console.log(
+        `⭕ ${error.response.status} ${error.response.statusText} (${MINER_NAME}) '${await error.response.text()}'`,
+      );
 
       return c.json(
         { error: error.response.statusText },
@@ -91,7 +92,7 @@ app.post("/method/generate", async (c) => {
       );
     }
 
-    console.log(`🔴 [ERROR] [${MINER_NAME}] - ${error.message}`);
+    console.log(`⭕ (${MINER_NAME}) '${await error.message}'`);
 
     return c.json({ error: error.message }, 500);
   }
@@ -99,18 +100,12 @@ app.post("/method/generate", async (c) => {
 
 // refresh miner state periodically
 const refreshData = () => {
-  console.log("🔥", "[REFRESH DATA]");
-
   checkMinerHealth(MINER_NAME)
     .then(() => {
       const { icon, ...minerHealth } = getMinerHealth();
       console.log(
         icon,
-        `[${MINER_NAME}] registered: ${minerHealth.registered}, active: ${minerHealth.active}, lowEmission: ${minerHealth.lowEmission}`,
-      );
-      console.log(
-        "📊",
-        `[${MINER_NAME}] deregistrations: ${minerHealth.registrations}, bans: ${minerHealth.bans}`,
+        `[${MINER_NAME}] registered: ${minerHealth.registered}, active: ${minerHealth.active}, lowEmission: ${minerHealth.lowEmission}, deregistrations: ${minerHealth.registrations}, bans: ${minerHealth.bans}`,
       );
 
       return fixMinerHealth({

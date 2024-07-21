@@ -32,7 +32,7 @@ const KNOWN_IPS: Record<string, string[]> = {
   karol: ["88.99.209.216"],
   radek: ["136.243.67.174"],
   marek: ["213.199.60.156", "144.76.237.12"],
-  mariusz: ["49.12.175.12", "156.67.26.110"],
+  mariusz: ["49.12.175.12", "156.67.26.110", "49.12.175.2"],
 };
 
 type GroupedByKnownMinerData = Record<

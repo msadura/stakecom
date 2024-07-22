@@ -1,6 +1,7 @@
 import { COMAI_DECIMALS } from "@stakecom/commune-sdk";
 
 import { getModules } from "../getModules";
+import { setIpBan } from "./registerLock";
 
 interface MinerHealth {
   registered: boolean;
@@ -9,6 +10,7 @@ interface MinerHealth {
   bans: number;
   registrations: number;
   icon: string;
+  wasActive?: boolean;
 }
 
 const icons = {
@@ -39,6 +41,7 @@ export const resetMinerHealth = () => {
   minerHealth.active = false;
   minerHealth.lowEmission = false;
   minerHealth.icon = icons.inactive;
+  minerHealth.wasActive = false;
 };
 
 export async function checkMinerHealth(minerName: string) {
@@ -66,7 +69,15 @@ export async function checkMinerHealth(minerName: string) {
 
   // if miner was marked as lowEmission once it will keep the state even if emission goes to 0
   minerHealth.active = true;
+  minerHealth.wasActive = true;
   const isLowEmission = isSlowEmission(minerModule.emission);
+
+  if (!isLowEmission) {
+    minerHealth.wasActive = true;
+  } else if (minerHealth.wasActive) {
+    await setIpBan(true);
+  }
+
   minerHealth.lowEmission = isLowEmission;
   minerHealth.icon = isLowEmission ? icons.lowEmission : icons.fine;
 }

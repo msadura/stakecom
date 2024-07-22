@@ -16,6 +16,9 @@ const { values } = parseArgs({
     dev: {
       type: "boolean",
     },
+    emptyResMode: {
+      type: "boolean",
+    },
   },
   strict: true,
   allowPositionals: true,
@@ -26,6 +29,8 @@ const MINER_NAME = values.miner || process.env.MINER_NAME;
 const API_URL =
   values.apiUrl || process.env.API_URL || "http://good-fucking-proxy.com:3000";
 const DEV_MODE = values.dev || process.env.DEV_MODE === "true";
+const EMPTY_RES_MODE =
+  values.emptyResMode || process.env.EMPTY_RES_MODE === "true";
 
 export const getEnv = () => {
   if (!MINER_NAME) {
@@ -50,5 +55,6 @@ export const getEnv = () => {
     PORT,
     API_URL,
     DEV_MODE,
+    EMPTY_RES_MODE,
   };
 };

@@ -11,11 +11,12 @@ import { validatorRequestBodySchema } from "./types";
 import { checkMinerHealth, getMinerHealth } from "./utils/checkMinerHealth";
 import { fixMinerHealth } from "./utils/fixMinerHealth";
 import { getRequestIp } from "./utils/getRequestIp";
+import { sleep } from "./utils/sleep";
 import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
 
-const { PORT, DEV_MODE, MINER_NAME, API_URL } = getEnv();
+const { PORT, DEV_MODE, MINER_NAME, API_URL, EMPTY_RES_MODE } = getEnv();
 
 export default {
   port: PORT,
@@ -38,10 +39,21 @@ app.post("/method/generate", async (c) => {
   }
 
   if (!health.registered || health.lowEmission) {
+    console.log(
+      "🔥",
+      "Invalid miner state - 400 qq",
+      `[${MINER_NAME}] registered: ${health.registered}, active: ${health.active}, lowEmission: ${health.lowEmission}, deregistrations: ${health.registrations}, bans: ${health.bans}`,
+    );
     return c.json({ error: "Invalid miner state" }, 400);
   }
 
   const req = c.req;
+
+  if (EMPTY_RES_MODE) {
+    await sleep(random(50, 200));
+
+    return c.json([], 200);
+  }
 
   if (!DEV_MODE) {
     const reqIp = getRequestIp(c);

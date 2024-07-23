@@ -1,4 +1,5 @@
 import {
+  isIpBanned,
   isRegistrationLocked,
   lockRegistration,
   setLastRegistered,
@@ -17,6 +18,12 @@ export async function safeRegisterMiner({
 }) {
   try {
     const locked = await isRegistrationLocked();
+    const isBanned = await isIpBanned();
+
+    if (isBanned) {
+      console.log("🔥", "IP is banned :(, skipping...");
+      return;
+    }
 
     // TODO: check if last registration was too recent if chain is full (200 modules).
     // Cooldown time ~10-15mins

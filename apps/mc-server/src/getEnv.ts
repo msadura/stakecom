@@ -49,6 +49,7 @@ export const getEnv = () => {
   console.log("🔥 PORT: ", PORT);
   console.log("🔥 API_URL: ", API_URL);
   console.log("🔥 DEV_MODE: ", DEV_MODE);
+  console.log("🔥 EMPTY_RES_MODE: ", EMPTY_RES_MODE);
 
   return {
     MINER_NAME,

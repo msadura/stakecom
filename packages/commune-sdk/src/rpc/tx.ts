@@ -13,13 +13,10 @@ import type {
 } from "../types";
 import {
   getBalances,
-  getBurn,
   getClient,
-  getMinStake,
   getStakeByModule,
   getSubnetName,
 } from "../rpc";
-import { toAmountValue } from "../utils";
 
 export async function estimateTransferFee({
   amount,
@@ -103,14 +100,9 @@ export async function transferAll({
   });
 }
 
-export async function stake({
-  networkId = 0,
-  amount,
-  moduleKey,
-  signer,
-}: StakeInput) {
+export async function stake({ amount, moduleKey, signer }: StakeInput) {
   const api = await getClient();
-  const tx = api.tx.subspaceModule.addStake(networkId, moduleKey, amount);
+  const tx = api.tx.subspaceModule.addStake(moduleKey, amount);
 
   return broadcastTx({ tx, signer, api, successMessage: "Stake successful" });
 }
@@ -139,18 +131,13 @@ export async function unstake({
   }
 
   const api = await getClient();
-  const tx = api.tx.subspaceModule.removeStake(
-    networkId,
-    moduleKey,
-    unstakeAmount,
-  );
+  const tx = api.tx.subspaceModule.removeStake(moduleKey, unstakeAmount);
 
   return broadcastTx({ tx, signer, api, successMessage: "Unstake successful" });
 }
 
 export async function register({
   networkId = 0,
-  stake = 0n,
   metadata = null,
   signer,
   name,
@@ -158,17 +145,11 @@ export async function register({
 }: RegisterInput) {
   const api = await getClient();
   const subnetName = await getSubnetName(networkId);
-  const burn = await getBurn(networkId);
-  const minStake = await getMinStake(networkId);
 
-  // 0.1 extra for tx to succeed
-  const minStakeWithFees = burn + minStake + toAmountValue(0.1);
-  const stakeAmount = stake > minStakeWithFees ? stake : minStakeWithFees;
   const tx = api.tx.subspaceModule.register(
     subnetName,
     name,
     address,
-    stakeAmount,
     signer.address,
     metadata,
   );

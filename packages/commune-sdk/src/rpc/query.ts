@@ -44,7 +44,7 @@ export const getBalances = async ({
   const api = await getClient();
   const [balanceData, stakeToData, uidsData] = await api.queryMulti([
     [api.query.system.account, address],
-    [api.query.subspaceModule.stakeTo, [networkId, address]],
+    [api.query.subspaceModule.stakeTo, [address, address]],
     [api.query.subspaceModule.uids, [networkId, address]],
   ]);
 
@@ -65,7 +65,6 @@ export const getBalances = async ({
 };
 
 export const getStakeByModule = async ({
-  networkId = 0,
   address,
   moduleKey,
 }: {
@@ -76,14 +75,13 @@ export const getStakeByModule = async ({
   const api = await getClient();
 
   const stakeToData = await api.query.subspaceModule.stakeTo(
-    networkId,
+    moduleKey,
     address,
   );
 
-  const stakeData = stakeToData?.toJSON();
-  const stake = getStakesDict(stakeData);
+  const stakeData = stakeToData?.toBigInt();
 
-  return stake[moduleKey] || 0n;
+  return stakeData;
 };
 
 function getStakesDict(stakes: Record<string, any>) {
@@ -124,9 +122,9 @@ export const getSubnetName = async (networkId = 0) => {
 
 export const getMinStake = async (networkId = 0) => {
   const api = await getClient();
-  const minStake = await api.query.subspaceModule.minStake(networkId);
+  const minStake = await api.query.subspaceModule.minStake?.(networkId);
 
-  return BigInt(minStake.toString());
+  return minStake ? BigInt(minStake.toString()) : 0n;
 };
 
 export const getSubnetModules = async ({

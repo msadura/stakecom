@@ -3,158 +3,16 @@
 
 // import type lookup before we augment - in some environments
 // this is required to allow for ambient/previous definitions
-import "@polkadot/types/types/registry";
+import '@polkadot/types/types/registry';
 
-import type {
-  EthbloomBloom,
-  EthereumBlock,
-  EthereumHeader,
-  EthereumLog,
-  EthereumReceiptEip658ReceiptData,
-  EthereumReceiptReceiptV3,
-  EthereumTransactionAccessListItem,
-  EthereumTransactionEip1559Transaction,
-  EthereumTransactionEip2930Transaction,
-  EthereumTransactionLegacyTransaction,
-  EthereumTransactionTransactionAction,
-  EthereumTransactionTransactionSignature,
-  EthereumTransactionTransactionV2,
-  EthereumTypesHashH64,
-  EvmCoreErrorExitError,
-  EvmCoreErrorExitFatal,
-  EvmCoreErrorExitReason,
-  EvmCoreErrorExitRevert,
-  EvmCoreErrorExitSucceed,
-  FinalityGrandpaEquivocationPrecommit,
-  FinalityGrandpaEquivocationPrevote,
-  FinalityGrandpaPrecommit,
-  FinalityGrandpaPrevote,
-  FpRpcTransactionStatus,
-  FrameSupportDispatchDispatchClass,
-  FrameSupportDispatchDispatchInfo,
-  FrameSupportDispatchPays,
-  FrameSupportDispatchPerDispatchClassU32,
-  FrameSupportDispatchPerDispatchClassWeight,
-  FrameSupportDispatchPerDispatchClassWeightsPerClass,
-  FrameSupportDispatchRawOrigin,
-  FrameSupportTokensMiscBalanceStatus,
-  FrameSystemAccountInfo,
-  FrameSystemCall,
-  FrameSystemError,
-  FrameSystemEvent,
-  FrameSystemEventRecord,
-  FrameSystemExtensionsCheckGenesis,
-  FrameSystemExtensionsCheckNonce,
-  FrameSystemExtensionsCheckNonZeroSender,
-  FrameSystemExtensionsCheckSpecVersion,
-  FrameSystemExtensionsCheckTxVersion,
-  FrameSystemExtensionsCheckWeight,
-  FrameSystemLastRuntimeUpgradeInfo,
-  FrameSystemLimitsBlockLength,
-  FrameSystemLimitsBlockWeights,
-  FrameSystemLimitsWeightsPerClass,
-  FrameSystemPhase,
-  NodeSubspaceRuntimeOriginCaller,
-  NodeSubspaceRuntimeRuntime,
-  PalletBalancesAccountData,
-  PalletBalancesBalanceLock,
-  PalletBalancesCall,
-  PalletBalancesError,
-  PalletBalancesEvent,
-  PalletBalancesIdAmount,
-  PalletBalancesReasons,
-  PalletBalancesReserveData,
-  PalletBaseFeeCall,
-  PalletBaseFeeEvent,
-  PalletEthereumCall,
-  PalletEthereumError,
-  PalletEthereumEvent,
-  PalletEthereumRawOrigin,
-  PalletEvmCall,
-  PalletEvmCodeMetadata,
-  PalletEvmError,
-  PalletEvmEvent,
-  PalletGrandpaCall,
-  PalletGrandpaError,
-  PalletGrandpaEvent,
-  PalletGrandpaStoredPendingChange,
-  PalletGrandpaStoredState,
-  PalletMultisigCall,
-  PalletMultisigError,
-  PalletMultisigEvent,
-  PalletMultisigMultisig,
-  PalletMultisigTimepoint,
-  PalletSubspaceCall,
-  PalletSubspaceError,
-  PalletSubspaceEvent,
-  PalletSubspaceGlobalParams,
-  PalletSubspaceSubnetParams,
-  PalletSubspaceVotingApplicationStatus,
-  PalletSubspaceVotingCuratorApplication,
-  PalletSubspaceVotingProposal,
-  PalletSubspaceVotingProposalData,
-  PalletSubspaceVotingProposalStatus,
-  PalletSubspaceVotingVoteMode,
-  PalletSudoCall,
-  PalletSudoError,
-  PalletSudoEvent,
-  PalletTimestampCall,
-  PalletTransactionPaymentChargeTransactionPayment,
-  PalletTransactionPaymentEvent,
-  PalletTransactionPaymentReleases,
-  PalletUtilityCall,
-  PalletUtilityError,
-  PalletUtilityEvent,
-  SpArithmeticArithmeticError,
-  SpConsensusAuraSr25519AppSr25519Public,
-  SpConsensusGrandpaAppPublic,
-  SpConsensusGrandpaAppSignature,
-  SpConsensusGrandpaEquivocation,
-  SpConsensusGrandpaEquivocationProof,
-  SpCoreEcdsaSignature,
-  SpCoreEd25519Public,
-  SpCoreEd25519Signature,
-  SpCoreSr25519Public,
-  SpCoreSr25519Signature,
-  SpCoreVoid,
-  SpRuntimeDigest,
-  SpRuntimeDigestDigestItem,
-  SpRuntimeDispatchError,
-  SpRuntimeModuleError,
-  SpRuntimeMultiSignature,
-  SpRuntimeTokenError,
-  SpRuntimeTransactionalError,
-  SpVersionRuntimeVersion,
-  SpWeightsRuntimeDbWeight,
-  SpWeightsWeightV2Weight,
-} from "@polkadot/types/lookup";
+import type { FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FrameSupportDispatchDispatchClass, FrameSupportDispatchDispatchInfo, FrameSupportDispatchPays, FrameSupportDispatchPerDispatchClassU32, FrameSupportDispatchPerDispatchClassWeight, FrameSupportDispatchPerDispatchClassWeightsPerClass, FrameSupportDispatchRawOrigin, FrameSupportPalletId, FrameSupportTokensMiscBalanceStatus, FrameSystemAccountInfo, FrameSystemCall, FrameSystemCodeUpgradeAuthorization, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonZeroSender, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, NodeSubspaceRuntimeOriginCaller, NodeSubspaceRuntimeRuntime, PalletBalancesAccountData, PalletBalancesAdjustmentDirection, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesIdAmount, PalletBalancesReasons, PalletBalancesReserveData, PalletBaseFeeCall, PalletBaseFeeEvent, PalletGovernanceApiGovernanceConfiguration, PalletGovernanceApiVoteMode, PalletGovernanceCall, PalletGovernanceDaoApplicationStatus, PalletGovernanceDaoCuratorApplication, PalletGovernanceError, PalletGovernanceEvent, PalletGovernanceProposal, PalletGovernanceProposalProposalData, PalletGovernanceProposalProposalStatus, PalletGovernanceProposalUnrewardedProposal, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletMultisigCall, PalletMultisigError, PalletMultisigEvent, PalletMultisigMultisig, PalletMultisigTimepoint, PalletSubnetEmissionApiSubnetConsensus, PalletSubnetEmissionEvent, PalletSubspaceCall, PalletSubspaceError, PalletSubspaceEvent, PalletSubspaceGlobalBurnConfiguration, PalletSubspaceGlobalParams, PalletSubspaceGlobalSubnetBurnConfiguration, PalletSubspaceSubnetParams, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentEvent, PalletTransactionPaymentReleases, PalletUtilityCall, PalletUtilityError, PalletUtilityEvent, SpArithmeticArithmeticError, SpConsensusAuraSr25519AppSr25519Public, SpConsensusGrandpaAppPublic, SpConsensusGrandpaAppSignature, SpConsensusGrandpaEquivocation, SpConsensusGrandpaEquivocationProof, SpCoreVoid, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpRuntimeTransactionalError, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight, SpWeightsWeightV2Weight } from '@polkadot/types/lookup';
 
-declare module "@polkadot/types/types/registry" {
+declare module '@polkadot/types/types/registry' {
   interface InterfaceTypes {
-    EthbloomBloom: EthbloomBloom;
-    EthereumBlock: EthereumBlock;
-    EthereumHeader: EthereumHeader;
-    EthereumLog: EthereumLog;
-    EthereumReceiptEip658ReceiptData: EthereumReceiptEip658ReceiptData;
-    EthereumReceiptReceiptV3: EthereumReceiptReceiptV3;
-    EthereumTransactionAccessListItem: EthereumTransactionAccessListItem;
-    EthereumTransactionEip1559Transaction: EthereumTransactionEip1559Transaction;
-    EthereumTransactionEip2930Transaction: EthereumTransactionEip2930Transaction;
-    EthereumTransactionLegacyTransaction: EthereumTransactionLegacyTransaction;
-    EthereumTransactionTransactionAction: EthereumTransactionTransactionAction;
-    EthereumTransactionTransactionSignature: EthereumTransactionTransactionSignature;
-    EthereumTransactionTransactionV2: EthereumTransactionTransactionV2;
-    EthereumTypesHashH64: EthereumTypesHashH64;
-    EvmCoreErrorExitError: EvmCoreErrorExitError;
-    EvmCoreErrorExitFatal: EvmCoreErrorExitFatal;
-    EvmCoreErrorExitReason: EvmCoreErrorExitReason;
-    EvmCoreErrorExitRevert: EvmCoreErrorExitRevert;
-    EvmCoreErrorExitSucceed: EvmCoreErrorExitSucceed;
     FinalityGrandpaEquivocationPrecommit: FinalityGrandpaEquivocationPrecommit;
     FinalityGrandpaEquivocationPrevote: FinalityGrandpaEquivocationPrevote;
     FinalityGrandpaPrecommit: FinalityGrandpaPrecommit;
     FinalityGrandpaPrevote: FinalityGrandpaPrevote;
-    FpRpcTransactionStatus: FpRpcTransactionStatus;
     FrameSupportDispatchDispatchClass: FrameSupportDispatchDispatchClass;
     FrameSupportDispatchDispatchInfo: FrameSupportDispatchDispatchInfo;
     FrameSupportDispatchPays: FrameSupportDispatchPays;
@@ -162,9 +20,11 @@ declare module "@polkadot/types/types/registry" {
     FrameSupportDispatchPerDispatchClassWeight: FrameSupportDispatchPerDispatchClassWeight;
     FrameSupportDispatchPerDispatchClassWeightsPerClass: FrameSupportDispatchPerDispatchClassWeightsPerClass;
     FrameSupportDispatchRawOrigin: FrameSupportDispatchRawOrigin;
+    FrameSupportPalletId: FrameSupportPalletId;
     FrameSupportTokensMiscBalanceStatus: FrameSupportTokensMiscBalanceStatus;
     FrameSystemAccountInfo: FrameSystemAccountInfo;
     FrameSystemCall: FrameSystemCall;
+    FrameSystemCodeUpgradeAuthorization: FrameSystemCodeUpgradeAuthorization;
     FrameSystemError: FrameSystemError;
     FrameSystemEvent: FrameSystemEvent;
     FrameSystemEventRecord: FrameSystemEventRecord;
@@ -182,6 +42,7 @@ declare module "@polkadot/types/types/registry" {
     NodeSubspaceRuntimeOriginCaller: NodeSubspaceRuntimeOriginCaller;
     NodeSubspaceRuntimeRuntime: NodeSubspaceRuntimeRuntime;
     PalletBalancesAccountData: PalletBalancesAccountData;
+    PalletBalancesAdjustmentDirection: PalletBalancesAdjustmentDirection;
     PalletBalancesBalanceLock: PalletBalancesBalanceLock;
     PalletBalancesCall: PalletBalancesCall;
     PalletBalancesError: PalletBalancesError;
@@ -191,14 +52,17 @@ declare module "@polkadot/types/types/registry" {
     PalletBalancesReserveData: PalletBalancesReserveData;
     PalletBaseFeeCall: PalletBaseFeeCall;
     PalletBaseFeeEvent: PalletBaseFeeEvent;
-    PalletEthereumCall: PalletEthereumCall;
-    PalletEthereumError: PalletEthereumError;
-    PalletEthereumEvent: PalletEthereumEvent;
-    PalletEthereumRawOrigin: PalletEthereumRawOrigin;
-    PalletEvmCall: PalletEvmCall;
-    PalletEvmCodeMetadata: PalletEvmCodeMetadata;
-    PalletEvmError: PalletEvmError;
-    PalletEvmEvent: PalletEvmEvent;
+    PalletGovernanceApiGovernanceConfiguration: PalletGovernanceApiGovernanceConfiguration;
+    PalletGovernanceApiVoteMode: PalletGovernanceApiVoteMode;
+    PalletGovernanceCall: PalletGovernanceCall;
+    PalletGovernanceDaoApplicationStatus: PalletGovernanceDaoApplicationStatus;
+    PalletGovernanceDaoCuratorApplication: PalletGovernanceDaoCuratorApplication;
+    PalletGovernanceError: PalletGovernanceError;
+    PalletGovernanceEvent: PalletGovernanceEvent;
+    PalletGovernanceProposal: PalletGovernanceProposal;
+    PalletGovernanceProposalProposalData: PalletGovernanceProposalProposalData;
+    PalletGovernanceProposalProposalStatus: PalletGovernanceProposalProposalStatus;
+    PalletGovernanceProposalUnrewardedProposal: PalletGovernanceProposalUnrewardedProposal;
     PalletGrandpaCall: PalletGrandpaCall;
     PalletGrandpaError: PalletGrandpaError;
     PalletGrandpaEvent: PalletGrandpaEvent;
@@ -209,17 +73,15 @@ declare module "@polkadot/types/types/registry" {
     PalletMultisigEvent: PalletMultisigEvent;
     PalletMultisigMultisig: PalletMultisigMultisig;
     PalletMultisigTimepoint: PalletMultisigTimepoint;
+    PalletSubnetEmissionApiSubnetConsensus: PalletSubnetEmissionApiSubnetConsensus;
+    PalletSubnetEmissionEvent: PalletSubnetEmissionEvent;
     PalletSubspaceCall: PalletSubspaceCall;
     PalletSubspaceError: PalletSubspaceError;
     PalletSubspaceEvent: PalletSubspaceEvent;
+    PalletSubspaceGlobalBurnConfiguration: PalletSubspaceGlobalBurnConfiguration;
     PalletSubspaceGlobalParams: PalletSubspaceGlobalParams;
+    PalletSubspaceGlobalSubnetBurnConfiguration: PalletSubspaceGlobalSubnetBurnConfiguration;
     PalletSubspaceSubnetParams: PalletSubspaceSubnetParams;
-    PalletSubspaceVotingApplicationStatus: PalletSubspaceVotingApplicationStatus;
-    PalletSubspaceVotingCuratorApplication: PalletSubspaceVotingCuratorApplication;
-    PalletSubspaceVotingProposal: PalletSubspaceVotingProposal;
-    PalletSubspaceVotingProposalData: PalletSubspaceVotingProposalData;
-    PalletSubspaceVotingProposalStatus: PalletSubspaceVotingProposalStatus;
-    PalletSubspaceVotingVoteMode: PalletSubspaceVotingVoteMode;
     PalletSudoCall: PalletSudoCall;
     PalletSudoError: PalletSudoError;
     PalletSudoEvent: PalletSudoEvent;
@@ -236,11 +98,6 @@ declare module "@polkadot/types/types/registry" {
     SpConsensusGrandpaAppSignature: SpConsensusGrandpaAppSignature;
     SpConsensusGrandpaEquivocation: SpConsensusGrandpaEquivocation;
     SpConsensusGrandpaEquivocationProof: SpConsensusGrandpaEquivocationProof;
-    SpCoreEcdsaSignature: SpCoreEcdsaSignature;
-    SpCoreEd25519Public: SpCoreEd25519Public;
-    SpCoreEd25519Signature: SpCoreEd25519Signature;
-    SpCoreSr25519Public: SpCoreSr25519Public;
-    SpCoreSr25519Signature: SpCoreSr25519Signature;
     SpCoreVoid: SpCoreVoid;
     SpRuntimeDigest: SpRuntimeDigest;
     SpRuntimeDigestDigestItem: SpRuntimeDigestDigestItem;

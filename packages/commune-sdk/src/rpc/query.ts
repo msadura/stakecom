@@ -96,7 +96,7 @@ function getStakesDict(stakes: Record<string, any>) {
 
 export const getBurn = async (networkId = 0) => {
   const api = await getClient();
-  const burn = await api.query.subspaceModule.burn(networkId);
+  const burn = await api.query.subspaceModule.subnetBurn(networkId);
 
   return BigInt(burn.toString());
 };

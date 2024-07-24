@@ -21,7 +21,7 @@ const icons = {
 };
 
 const isSlowEmission = (emission: number) =>
-  emission > 0 && emission < 0.1 * 10 ** COMAI_DECIMALS;
+  emission > 0 && emission <= 0.05 * 10 ** COMAI_DECIMALS;
 
 const minerHealth: MinerHealth = {
   registered: true,

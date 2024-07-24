@@ -14,7 +14,7 @@ export interface ComKey {
   derive_path: null | string;
 }
 
-export const getKeys = async () => {
+export const getKeys = async ({ includeBackups = false } = {}) => {
   const glob = new Glob("**/*.json");
   const communePath = `${homedir()}/.commune`;
 
@@ -23,6 +23,13 @@ export const getKeys = async () => {
   // Scans the current working directory and each of its sub-directories recursively
   for await (const file of glob.scan(`${communePath}/key`)) {
     fileNames.push(file);
+  }
+
+  // Include backups directory if requested
+  if (includeBackups) {
+    for await (const file of glob.scan(`${communePath}/backups`)) {
+      fileNames.push(file);
+    }
   }
 
   fileNames.sort();

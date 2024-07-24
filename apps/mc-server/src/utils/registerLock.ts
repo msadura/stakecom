@@ -8,7 +8,7 @@ const regLastKey = `reg-last:${config.tenantNickname}`;
 const regBanKey = `reg-ban:${config.tenantNickname}`;
 
 export const lockRegistration = (minerName: string) => {
-  return redisServer.set(regLockKey, minerName);
+  return redisServer.set(regLockKey, minerName, "EX", 300); // expire lock in 5 minutes if not unlocked
 };
 
 export const unlockRegistration = () => {

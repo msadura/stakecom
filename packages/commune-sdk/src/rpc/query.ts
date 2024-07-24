@@ -44,6 +44,7 @@ export const getBalances = async ({
   const api = await getClient();
   const [balanceData, stakeToData, uidsData] = await api.queryMulti([
     [api.query.system.account, address],
+    // TODO: This returns only self-stake (miner, validator)
     [api.query.subspaceModule.stakeTo, [address, address]],
     [api.query.subspaceModule.uids, [networkId, address]],
   ]);
@@ -54,14 +55,9 @@ export const getBalances = async ({
   };
   const balance = BigInt(accountBalanceData.data.free);
 
-  const stakeData = stakeToData?.toJSON() as
-    | [string, number][]
-    | Record<string, number>;
+  const stakeTotal = BigInt(stakeToData?.toString() || 0);
 
-  const stake = getStakesDict(stakeData);
-  const stakeTotal = Object.values(stake).reduce((acc, v) => acc + v, 0n);
-
-  return { balance, stake, stakeTotal, uid };
+  return { balance, stakeTotal, uid };
 };
 
 export const getStakeByModule = async ({
@@ -83,16 +79,6 @@ export const getStakeByModule = async ({
 
   return stakeData;
 };
-
-function getStakesDict(stakes: Record<string, any>) {
-  return Object.entries(stakes).reduce(
-    (acc, [key, value]) => {
-      acc[key] = BigInt(value);
-      return acc;
-    },
-    {} as Record<string, bigint>,
-  );
-}
 
 export const getBurn = async (networkId = 0) => {
   const api = await getClient();

@@ -11,7 +11,6 @@ export type NetworkEmission = Record<number, number>;
 
 export interface AccountBalances {
   balance: bigint;
-  stake: Record<string, bigint>;
   stakeTotal: bigint;
   uid: number;
 }

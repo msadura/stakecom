@@ -17,19 +17,13 @@ export interface ComKey {
 export const getKeys = async ({ includeBackups = false } = {}) => {
   const glob = new Glob("**/*.json");
   const communePath = `${homedir()}/.commune`;
+  const keysPath = includeBackups ? "" : "/key";
 
   const fileNames: string[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(`${communePath}/key`)) {
+  for await (const file of glob.scan(`${communePath}/${keysPath}`)) {
     fileNames.push(file);
-  }
-
-  // Include backups directory if requested
-  if (includeBackups) {
-    for await (const file of glob.scan(`${communePath}/backups`)) {
-      fileNames.push(file);
-    }
   }
 
   fileNames.sort();
@@ -37,7 +31,7 @@ export const getKeys = async ({ includeBackups = false } = {}) => {
   // load and parse files
   const keys = await Promise.all(
     fileNames.map(async (fileName) => {
-      const path = `${communePath}/key/${fileName}`;
+      const path = `${communePath}/${keysPath}/${fileName}`;
       const file = Bun.file(path);
 
       try {

@@ -1,6 +1,11 @@
-import { getSubnetModules } from "@stakecom/commune-sdk";
+import { encodeAddress, getSubnetModules } from "@stakecom/commune-sdk";
 
 const mod = await getSubnetModules({ networkId: 17 });
+const addrFromPub = encodeAddress(
+  "0xa07197787142430adaf8799ba66243a3c5997ce817de15969513cad6a04f680c",
+);
+
+console.log("🔥addr:", addrFromPub);
 console.log("🔥 all modules:", mod.all.length);
 // console.log("🔥a:", mod.active.length);
 // console.log("🔥v:", mod.validators.length);

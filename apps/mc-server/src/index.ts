@@ -1,6 +1,5 @@
 import type { StatusCode } from "hono/utils/http-status";
-import { Hono } from "hono";
-import { logger } from "hono/logger";
+import { Context, Hono, Next } from "hono";
 import ky, { HTTPError } from "ky";
 import { random } from "lodash";
 import ms from "pretty-ms";
@@ -19,7 +18,14 @@ import { sleep } from "./utils/sleep";
 import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
-app.use(logger());
+app.use(async (c: Context, next: Next) => {
+  const now = performance.now();
+  await next();
+  const xKey = c.req.header("x-key");
+  console.log(
+    `[${xKey ?? "key header missing"}] ${c.res.status === 200 ? "🚀" : "🔥"} ${c.res.status} ${c.req.method} ${c.req.url} - ${ms(performance.now() - now)}`,
+  );
+});
 
 const { PORT, DEV_MODE, MINER_NAME, API_URL, EMPTY_RES_MODE } = getEnv();
 

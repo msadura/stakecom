@@ -1,4 +1,4 @@
-import { getModules } from "./apps/mc-server/src/getModules";
+import { COMAI_DECIMALS, getSubnetModules } from "./packages/commune-sdk/src";
 
 type ComModuleInfo = {
   uid: number;
@@ -33,6 +33,8 @@ const KNOWN_IPS: Record<string, string[]> = {
   radek: ["136.243.67.174"],
   marek: ["213.199.60.156", "144.76.237.12"],
   mariusz: ["49.12.175.12", "156.67.26.110", "49.12.175.2"],
+  fam: ["162.84.196.28"],
+  suspiciousDick: ["94.241.31.84"],
 };
 
 type GroupedByKnownMinerData = Record<
@@ -104,10 +106,14 @@ const groupByMiner = (
 type NetworkSummary = { others: number; known: number };
 const getNetworkSummary = (groupedData: GroupedByKnownMinerData) => {
   const summary: NetworkSummary = { others: 0, known: 0 };
+  const trackedKnown = [];
 
   Object.keys(groupedData).forEach((key) => {
     if (KNOWN_MINER_NAMES.includes(key as KnownMinerName)) {
-      summary.known += 1;
+      if (!trackedKnown.includes(key)) {
+        summary.known += 1;
+        trackedKnown.push(key);
+      }
     } else {
       summary.others += 1;
     }
@@ -116,27 +122,102 @@ const getNetworkSummary = (groupedData: GroupedByKnownMinerData) => {
   return summary;
 };
 
+type TotalSummary = Record<
+  string,
+  {
+    activeCount: number;
+    inactiveCount: number;
+    totalCount: number;
+    emission: number;
+    isDick: boolean;
+    isGay: boolean;
+  }
+>;
+
+const getTotalSummary = (
+  groupedInactive: GroupedByKnownMinerData,
+  groupedActive: GroupedByKnownMinerData,
+): TotalSummary => {
+  const activeMinerKeys = Object.keys(groupedActive);
+  const inactiveOnlyMinerKeys = Object.keys(groupedInactive).filter(
+    (key) => !activeMinerKeys.includes(key),
+  );
+  const minerKeys = [...activeMinerKeys, ...inactiveOnlyMinerKeys];
+
+  return minerKeys.reduce((acc, key) => {
+    const activeCount = groupedActive[key]?.count || 0;
+    const inactiveCount = groupedInactive[key]?.count || 0;
+    const totalCount = activeCount + inactiveCount;
+    const emission =
+      (groupedInactive[key]?.emission || 0) +
+      (groupedActive[key]?.emission || 0);
+    const isDick = totalCount > 30;
+    const isGay = activeCount > 30;
+
+    acc[key] = {
+      activeCount,
+      inactiveCount,
+      totalCount,
+      emission,
+      isDick,
+      isGay,
+    };
+
+    return acc;
+  }, {} as TotalSummary);
+};
+
 const printNetworkSummary = (summary: NetworkSummary) => {
   console.table([summary], ["others", "known"]);
 };
 
-const printSummary = (groupedData: GroupedByKnownMinerData) => {
-  const tableHeader = ["miner", "count", "isDick"];
-  const tableData = Object.entries(groupedData).map(([miner, data]) => {
-    return { miner, count: data.count, isDick: data.isDick ? "🍆" : "" };
-  });
+const printTotalSummary = (groupedData: TotalSummary) => {
+  const tableHeader = [
+    "miner",
+    "count",
+    "active",
+    "inactive",
+    "emission",
+    "isDick",
+    "isGay",
+  ];
+  const tableData = Object.entries(groupedData).map(([miner, data]) => ({
+    miner,
+    count: data.totalCount,
+    active: data.activeCount,
+    inactive: data.inactiveCount,
+    emission: `~${Number(data.emission / 10 ** COMAI_DECIMALS).toFixed(2)}`,
+    isDick: data.isDick ? "🍆" : "",
+    isGay: data.isGay ? "🌈" : "",
+  }));
 
   console.table(tableData, tableHeader);
 };
 
 const main = async () => {
-  const res = await getModules({ refresh: false });
-  const groupedData = groupByIp(res);
-  const groupedByMiner = groupByMiner(groupedData);
+  const subnetModules = await getSubnetModules({ networkId: 17 });
 
-  const networkSummary = getNetworkSummary(groupedByMiner);
+  // All
+  const groupedAllData = groupByIp(subnetModules.all);
+  const groupedAllByMiner = groupByMiner(groupedAllData);
+  const networkSummary = getNetworkSummary(groupedAllByMiner);
+
+  // Inactive
+  const groupedInactiveData = groupByIp(subnetModules.inactive);
+  const groupedInactiveByMiner = groupByMiner(groupedInactiveData);
+
+  // Active only
+  const groupedActive = groupByIp(subnetModules.active);
+  const groupedActiveByMiner = groupByMiner(groupedActive);
+
+  const totalSummary = getTotalSummary(
+    groupedInactiveByMiner,
+    groupedActiveByMiner,
+  );
+
   printNetworkSummary(networkSummary);
-  printSummary(groupedByMiner);
+  printTotalSummary(totalSummary);
+
   process.exit();
 };
 

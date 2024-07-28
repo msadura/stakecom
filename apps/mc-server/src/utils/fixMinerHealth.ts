@@ -19,19 +19,19 @@ export async function fixMinerHealth({
     return;
   }
 
-  if (lowEmission) {
-    console.log(
-      "🐢",
-      "Miner is banned trying to wipe and regen with new key...",
-    );
+  // if (lowEmission) {
+  //   console.log(
+  //     "🐢",
+  //     "Miner is banned trying to wipe and regen with new key...",
+  //   );
 
-    await regenerateMiner({ minerName, port, networkId })
-      .then(() => {
-        incrementBans();
-        console.log("🔥", "Miner regenerated.");
-      })
-      .catch((e: any) => {
-        console.log("🔥", "Failed to regenerate miner.", e);
-      });
-  }
+  //   await regenerateMiner({ minerName, port, networkId })
+  //     .then(() => {
+  //       incrementBans();
+  //       console.log("🔥", "Miner regenerated.");
+  //     })
+  //     .catch((e: any) => {
+  //       console.log("🔥", "Failed to regenerate miner.", e);
+  //     });
+  // }
 }

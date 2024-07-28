@@ -44,7 +44,8 @@ export const getBalances = async ({
   const api = await getClient();
   const [balanceData, stakeToData, uidsData] = await api.queryMulti([
     [api.query.system.account, address],
-    [api.query.subspaceModule.stakeTo, [networkId, address]],
+    // TODO: This returns only self-stake (miner, validator)
+    [api.query.subspaceModule.stakeTo, [address, address]],
     [api.query.subspaceModule.uids, [networkId, address]],
   ]);
 
@@ -54,18 +55,12 @@ export const getBalances = async ({
   };
   const balance = BigInt(accountBalanceData.data.free);
 
-  const stakeData = stakeToData?.toJSON() as
-    | [string, number][]
-    | Record<string, number>;
+  const stakeTotal = BigInt(stakeToData?.toString() || 0);
 
-  const stake = getStakesDict(stakeData);
-  const stakeTotal = Object.values(stake).reduce((acc, v) => acc + v, 0n);
-
-  return { balance, stake, stakeTotal, uid };
+  return { balance, stakeTotal, uid };
 };
 
 export const getStakeByModule = async ({
-  networkId = 0,
   address,
   moduleKey,
 }: {
@@ -76,25 +71,14 @@ export const getStakeByModule = async ({
   const api = await getClient();
 
   const stakeToData = await api.query.subspaceModule.stakeTo(
-    networkId,
+    moduleKey,
     address,
   );
 
-  const stakeData = stakeToData?.toJSON();
-  const stake = getStakesDict(stakeData);
+  const stakeData = stakeToData?.toBigInt();
 
-  return stake[moduleKey] || 0n;
+  return stakeData;
 };
-
-function getStakesDict(stakes: Record<string, any>) {
-  return Object.entries(stakes).reduce(
-    (acc, [key, value]) => {
-      acc[key] = BigInt(value);
-      return acc;
-    },
-    {} as Record<string, bigint>,
-  );
-}
 
 export const getBurn = async (networkId = 0) => {
   const api = await getClient();
@@ -124,9 +108,9 @@ export const getSubnetName = async (networkId = 0) => {
 
 export const getMinStake = async (networkId = 0) => {
   const api = await getClient();
-  const minStake = await api.query.subspaceModule.minStake(networkId);
+  const minStake = await api.query.subspaceModule.minStake?.(networkId);
 
-  return BigInt(minStake.toString());
+  return minStake ? BigInt(minStake.toString()) : 0n;
 };
 
 export const getSubnetModules = async ({

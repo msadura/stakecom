@@ -69,7 +69,21 @@ export const registerMiner = async ({
 
   // not enough balance, feed first
   if (balance < burn + toAmountValue("1")) {
+    const bankBalance = await getBalances({
+      address: bankKey.ss58_address,
+      networkId,
+    });
+
     const feedAmount = burn + toAmountValue("1") - balance;
+
+    if (bankBalance.balance < feedAmount) {
+      throw new Error(
+        `Bank balance too low: ${formatCOMAmount(
+          bankBalance.balance,
+        )} < ${formatCOMAmount(feedAmount)}`,
+      );
+    }
+
     console.log(
       "🔥",
       `Feeding ${minerKey.path} with ${formatCOMAmount(feedAmount)} COM`,

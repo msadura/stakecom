@@ -8,7 +8,7 @@ const regLastKey = `reg-last:${config.tenantNickname}`;
 const regBanKey = `reg-ban:${config.tenantNickname}`;
 
 export const lockRegistration = (minerName: string) => {
-  return redisServer.set(regLockKey, minerName);
+  return redisServer.set(regLockKey, minerName, "EX", 300); // expire lock in 5 minutes if not unlocked
 };
 
 export const unlockRegistration = () => {
@@ -29,14 +29,15 @@ export const getLastRegistered = async () => {
   return last ? parseInt(last) : null;
 };
 
-export const isIpBanned = async () => {
-  const isBanStr = await redisServer.get(regBanKey);
+export const isIpBanned = () => {
+  return false;
+  // const isBanStr = await redisServer.get(regBanKey);
 
-  try {
-    return JSON.parse(isBanStr || "") as boolean;
-  } catch (e) {
-    return false;
-  }
+  // try {
+  //   return JSON.parse(isBanStr || "") as boolean;
+  // } catch (e) {
+  //   return false;
+  // }
 };
 
 export const setIpBan = (isBan: boolean) => {

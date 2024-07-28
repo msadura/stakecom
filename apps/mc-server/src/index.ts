@@ -1,8 +1,12 @@
 import type { StatusCode } from "hono/utils/http-status";
 import { Hono } from "hono";
+import { logger } from "hono/logger";
 import ky, { HTTPError } from "ky";
 import { random } from "lodash";
 import ms from "pretty-ms";
+
+import { encodeAddress } from "@stakecom/commune-sdk";
+import { isHex } from "@stakecom/commune-sdk/utils";
 
 import type { TweetsRes } from "./types";
 import { getEnv } from "./getEnv";
@@ -15,6 +19,7 @@ import { sleep } from "./utils/sleep";
 import { verifyValidator } from "./utils/verifyValidator";
 
 const app = new Hono();
+app.use(logger());
 
 const { PORT, DEV_MODE, MINER_NAME, API_URL, EMPTY_RES_MODE } = getEnv();
 
@@ -55,9 +60,14 @@ app.post("/method/generate", async (c) => {
     return c.json([], 200);
   }
 
+  const reqPublicKey = req.header("X-KEY");
+  if (!reqPublicKey) {
+    console.log("❌", "Missing X-KEY header");
+    return c.json({ error: "Missing X-KEY header" }, 400);
+  }
+
   if (!DEV_MODE) {
-    const reqIp = getRequestIp(c);
-    await verifyValidator(reqIp);
+    await verifyValidator(c);
   } else {
     console.log("🔥", "DEV_MODE enabled, skipping ip check");
   }

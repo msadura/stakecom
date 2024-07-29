@@ -20,6 +20,8 @@ export async function queryLibreTranslate({
     q: prompt,
     source,
     target,
+    api_key: LIBRE_TRANSLATE_API_KEY,
+    alternatives: 0,
   };
 
   const res = await ky.post(`https://libretranslate.com/translate`, {

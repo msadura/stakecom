@@ -3,9 +3,11 @@ import { COMAI_DECIMALS } from "@stakecom/core";
 import { fnum, formatCOMAmount } from "@stakecom/core/formatters";
 
 import { getConfig } from "./getConfig";
+import { getEnv } from "./getEnv";
 import { getKeys } from "./getKeys";
 
 const config = await getConfig();
+const { NETWORK_ID } = getEnv();
 const servers = config.stats || [];
 
 const getProxyStats = async () => {
@@ -39,10 +41,10 @@ const getCoinStats = async () => {
 };
 
 const [emission, proxyStats, coinStats, addresses] = await Promise.all([
-  getEmission({ networkId: 17 }),
+  getEmission({ networkId: NETWORK_ID }),
   getProxyStats(),
   getCoinStats(),
-  getAddresses(17),
+  getAddresses(NETWORK_ID),
 ]);
 const isSlowEmission = (emission: number) =>
   emission > 0 && emission < 0.1 * 10 ** COMAI_DECIMALS;
@@ -62,7 +64,7 @@ const getFilteredBalance = async ({ pattern }: { pattern: RegExp }) => {
     filteredKeys.map(async (key) => {
       const { balance, stakeTotal, uid } = await getBalances({
         address: key.ss58_address,
-        networkId: 17,
+        networkId: NETWORK_ID,
       });
 
       return {
@@ -154,7 +156,7 @@ const countTotal = sGroups.reduce(
 
 const { balance: bankBalance } = await getBalances({
   address: config.unstakeTargetAddress,
-  networkId: 17,
+  networkId: NETWORK_ID,
 });
 console.log(
   `🔥 Bank balance: ${formatCOMAmount(bankBalance, { maxDecimals: 2 })} $comai / 💰 ${formatCOMAmount(Math.floor(Number(bankBalance) * coinStats.price), { maxDecimals: 2 })} USD`,

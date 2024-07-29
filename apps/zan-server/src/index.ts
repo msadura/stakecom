@@ -103,7 +103,7 @@ app.post("/method/generate", async (c) => {
 
 // refresh miner state periodically
 const refreshData = () => {
-  checkMinerHealth(MINER_NAME)
+  checkMinerHealth(MINER_NAME, NETWORK_ID)
     .then(() => {
       const { icon, ...minerHealth } = getMinerHealth();
       console.log(

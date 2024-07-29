@@ -66,7 +66,6 @@ app.post("/method/generate", async (c) => {
   }
 
   const body = await req.json();
-  console.log("🔥 body", body);
   const parsedBody = validatorRequestBodySchema.parse(body);
 
   const startTimestamp = performance.now();

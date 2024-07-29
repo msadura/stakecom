@@ -15,11 +15,11 @@ import { getConfig } from "../getConfig";
 export const registerMiner = async ({
   minerName,
   port,
-  networkId = 17,
+  networkId,
 }: {
   minerName: string;
   port: number;
-  networkId?: number;
+  networkId: number;
 }) => {
   const config = await getConfig();
   const bankKeyName = config.bankKeyName;

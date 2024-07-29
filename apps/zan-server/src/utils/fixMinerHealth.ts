@@ -1,11 +1,10 @@
-import { getMinerHealth, incrementBans } from "./checkMinerHealth";
-import { regenerateMiner } from "./regenerateMiner";
+import { getMinerHealth } from "./checkMinerHealth";
 import { safeRegisterMiner } from "./safeRegisterMiner";
 
 export async function fixMinerHealth({
   minerName,
   port,
-  networkId = 17,
+  networkId,
 }: {
   minerName: string;
   port: number;

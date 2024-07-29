@@ -119,7 +119,7 @@ const refreshData = () => {
     })
     .catch(() => console.log("Failed to refresh health"));
 
-  getModules({ refresh: true }).catch(() =>
+  getModules({ refresh: true, networkId: NETWORK_ID }).catch(() =>
     console.log("Failed to refresh modules"),
   );
 };

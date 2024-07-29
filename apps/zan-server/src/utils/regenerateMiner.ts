@@ -23,10 +23,10 @@ const MIN_BALANCE = toAmountValue(0.01);
 
 const wipeMiner = async ({
   key,
-  networkId = 17,
+  networkId,
 }: {
   key: ComKey;
-  networkId?: number;
+  networkId: number;
 }) => {
   const config = await getConfig();
   const signer = await getSigner(key.mnemonic);
@@ -182,11 +182,11 @@ export async function handleNewKey({ minerKey }: { minerKey: ComKey }) {
 export async function regenerateMiner({
   minerName,
   port,
-  networkId = 17,
+  networkId,
 }: {
   minerName: string;
   port: number;
-  networkId?: number;
+  networkId: number;
 }) {
   const minerKey = await loadComKey(minerName);
   const signer = await getSigner(minerKey.mnemonic);

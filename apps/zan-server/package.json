@@ -1,5 +1,5 @@
 {
-  "name": "@stakecom/mc-server",
+  "name": "@stakecom/zan-server",
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

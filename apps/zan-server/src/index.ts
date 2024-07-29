@@ -42,7 +42,7 @@ app.post("/method/generate", async (c) => {
     health = getMinerHealth();
   }
 
-  if (!health.registered || health.lowEmission) {
+  if (!health.registered) {
     console.log(
       "🔥",
       "Invalid miner state - 400 qq",

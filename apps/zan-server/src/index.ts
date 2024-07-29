@@ -38,7 +38,7 @@ app.post("/method/generate", async (c) => {
   // TODO - load miner key and check if target_key from body is the same
 
   if (!health.registered) {
-    await checkMinerHealth(MINER_NAME);
+    await checkMinerHealth(MINER_NAME, NETWORK_ID);
     health = getMinerHealth();
   }
 

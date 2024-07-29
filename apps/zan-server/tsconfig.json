@@ -1,0 +1,9 @@
+{
+  "extends": "@stakecom/tsconfig/base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "types": ["bun-types"]
+  },
+  "include": [".", "../miner-stats/src/generate.ts"],
+  "exclude": ["node_modules"]
+}

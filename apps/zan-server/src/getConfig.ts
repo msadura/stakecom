@@ -1,0 +1,22 @@
+import { z } from "zod";
+
+const configSchema = z.object({
+  bankKeyName: z.string().min(1),
+  maxBurn: z.number().int().default(12),
+  maxMiners: z.number().int().default(-1), // -1 means no limit
+  unstakeTargetAddress: z.string().min(1),
+  serverIp: z.string().ip(),
+  tenantNickname: z.string().min(3),
+});
+
+export async function getConfig() {
+  const current = import.meta.dir;
+  const path = `${current}/config.json`;
+  const file = Bun.file(path);
+
+  const content: unknown = await file.json();
+
+  const config = configSchema.parse(content);
+
+  return config;
+}

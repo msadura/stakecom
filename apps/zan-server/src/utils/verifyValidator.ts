@@ -5,7 +5,7 @@ import { isHex } from "@stakecom/commune-sdk/utils";
 
 import { getValidators } from "../getValidators";
 
-export async function verifyValidator(c: Context) {
+export async function verifyValidator(c: Context, networkId: number) {
   // const ip = getRequestIp(c);
 
   const reqPublicKey = c.req.header("X-KEY");
@@ -18,7 +18,7 @@ export async function verifyValidator(c: Context) {
     isHex(reqPublicKey) ? reqPublicKey : `0x${reqPublicKey}`,
   );
 
-  const validators = await getValidators({ refresh: false });
+  const validators = await getValidators({ refresh: false, networkId });
   // const validatorIps = validators.map(
   //   (v) => v.address.split(":")[0] || v.address,
   // );

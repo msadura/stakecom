@@ -60,7 +60,7 @@ app.post("/method/generate", async (c) => {
   }
 
   if (!DEV_MODE) {
-    await verifyValidator(c);
+    await verifyValidator(c, NETWORK_ID);
   } else {
     console.log("🔥", "DEV_MODE enabled, skipping ip check");
   }
